@@ -577,5 +577,7 @@ public class HomeController {
 	  
 	  map.addAttribute("loginGridlast", loginGridLast);
 	  
-	  return "pages/userDetail/lastLoginUserDetail"; }
+	  return "pages/userDetail/lastLoginUserDetail"; 
+		System.out.println("this is change");
+	}
 }
