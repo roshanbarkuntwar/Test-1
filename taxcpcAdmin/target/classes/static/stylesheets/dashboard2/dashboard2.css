@@ -1,0 +1,29 @@
+/* line 1, ../../sass/dashboard2/dashboard2.scss */
+.welcome-content {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  margin-top: 8%;
+}
+/* line 6, ../../sass/dashboard2/dashboard2.scss */
+.welcome-content h2 {
+  color: #4e8dff;
+  font-size: 35px;
+  margin-bottom: 18px;
+}
+
+/* line 15, ../../sass/dashboard2/dashboard2.scss */
+.important-notice {
+  background: #e0dcdc;
+  padding: 10px;
+  border: 1px solid #ddd;
+  position: fixed;
+  bottom: 10px;
+}
+/* line 21, ../../sass/dashboard2/dashboard2.scss */
+.important-notice p {
+  font-size: 15px;
+  color: #5f5b5b;
+  line-height: 22px;
+  margin-bottom: 0;
+}

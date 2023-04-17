@@ -1,0 +1,174 @@
+/* line 5, ../../sass/login/login.scss */
+body {
+  /*background: linear-gradient(45deg,#a6c6ff 50%,#ffffff 50%);*/
+  background: url(../../images/lines.png);
+  background-size: contain;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+}
+@media only screen and (min-width: 240px) and (max-width: 737px) {
+  /* line 5, ../../sass/login/login.scss */
+  body {
+    /*background: linear-gradient(116deg, #a6c6ff 50%, #fff 50%)        */
+  }
+}
+/* line 20, ../../sass/login/login.scss */
+body .login-wrap {
+  border-radius: 10px;
+  width: 75%;
+  /* box-shadow: 0px 1px 20px rgba(48, 51, 58, 0.05), 2px 2px 20px rgba(46, 48, 51, 0.13);*/
+}
+@media only screen and (min-width: 1900px) and (max-width: 1920px) {
+  /* line 20, ../../sass/login/login.scss */
+  body .login-wrap {
+    width: 75%;
+  }
+}
+@media only screen and (min-width: 1400px) and (max-width: 1600px) {
+  /* line 20, ../../sass/login/login.scss */
+  body .login-wrap {
+    width: 67%;
+  }
+}
+@media only screen and (min-width: 1000px) and (max-width: 1024px) {
+  /* line 20, ../../sass/login/login.scss */
+  body .login-wrap {
+    width: 93%;
+  }
+}
+@media only screen and (min-width: 737px) and (max-width: 800px) {
+  /* line 20, ../../sass/login/login.scss */
+  body .login-wrap {
+    width: 93%;
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 359px) {
+  /* line 20, ../../sass/login/login.scss */
+  body .login-wrap {
+    width: 99%;
+  }
+}
+@media only screen and (min-width: 361px) and (max-width: 480px) {
+  /* line 20, ../../sass/login/login.scss */
+  body .login-wrap {
+    width: 99%;
+  }
+}
+/* line 62, ../../sass/login/login.scss */
+body .login-wrap .login-vector {
+  /*background: #f5f7fb;*/
+  background: #fff;
+}
+/* line 66, ../../sass/login/login.scss */
+body .login-wrap .login-vector img {
+  margin: auto;
+  /*margin-top:90px;*/
+}
+/* line 72, ../../sass/login/login.scss */
+body .login-wrap .login-vector .browser-compatibility {
+  bottom: 0;
+  color: #000000;
+  font-weight: 500;
+}
+/* line 79, ../../sass/login/login.scss */
+body .login-wrap .login-vector .login-heading {
+  position: absolute;
+  top: 34px;
+  left: 160px;
+}
+/* line 84, ../../sass/login/login.scss */
+body .login-wrap .login-vector .login-heading h3 {
+  color: #638bd4;
+}
+/* line 91, ../../sass/login/login.scss */
+body .login-wrap .bg-light-blue {
+  background-color: #f3f7ff;
+  /* background-image: url(../../images/login-page.png);*/
+  box-shadow: 0px 1px 20px rgba(48, 51, 58, 0.5), 2px 2px 20px rgba(46, 48, 51, 0.13);
+  padding: 70px 0;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* line 102, ../../sass/login/login.scss */
+body .login-wrap .login-form label {
+  color: #000;
+}
+/* line 105, ../../sass/login/login.scss */
+body .login-wrap .login-form h2 {
+  color: #4e8dff;
+  font-size: 40px;
+  margin-bottom: 35px !important;
+  text-align: center;
+}
+/* line 111, ../../sass/login/login.scss */
+body .login-wrap .login-form p {
+  margin-bottom: 16px;
+  color: #040404 !important;
+  font-weight: 600;
+  font-size: 16px;
+}
+/* line 117, ../../sass/login/login.scss */
+body .login-wrap .login-form .form-control {
+  /* border: none;*/
+  border: 1px solid #d5d5d5;
+}
+/* line 123, ../../sass/login/login.scss */
+body .login-wrap .login-form .form-control:active, body .login-wrap .login-form .form-control:focus {
+  box-shadow: none;
+}
+/* line 128, ../../sass/login/login.scss */
+body .login-wrap .login-form input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+/* line 132, ../../sass/login/login.scss */
+body .login-wrap .login-form .forgot-password {
+  color: #333;
+}
+/* line 140, ../../sass/login/login.scss */
+body .login-wrap .login-form .login-btn {
+  /* background: linear-gradient(60deg,#2358b7, #689eff);
+   box-shadow: 0px 7px 30px 0px rgba(56, 107, 196, 0.89);*/
+  padding: 4px 68px !important;
+  border-radius: 23px;
+  font-size: 18px;
+  background: #4e8dff;
+}
+/* line 150, ../../sass/login/login.scss */
+body .login-wrap .login-form .sign-up-btn {
+  color: #2d62c1;
+  cursor: pointer;
+}
+/* line 157, ../../sass/login/login.scss */
+body .copyright-issue {
+  bottom: 0px;
+  font-size: 14px;
+  word-spacing: 4px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  left: 0;
+}
+@media only screen and (min-width: 240px) and (max-width: 737px) {
+  /* line 157, ../../sass/login/login.scss */
+  body .copyright-issue {
+    text-align: center;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+}
+@media only screen and (min-width: 240px) and (max-width: 737px) {
+  /* line 174, ../../sass/login/login.scss */
+  body .copyright-issue div {
+    width: 100%;
+  }
+}
+
+/* line 188, ../../sass/login/login.scss */
+.welcome-text {
+  text-align: right;
+  font-size: 39px;
+  font-weight: 800;
+  /* text-transform: uppercase; */
+  color: #4e8dff;
+  margin-bottom: 30px;
+}

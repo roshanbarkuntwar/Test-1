@@ -1,0 +1,250 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+<link href="./static/css/global/calendar/dhtmlxcalendar.css" rel="stylesheet">
+<link rel="stylesheet" href="./static/css/global/bootstrap-select.css">
+<link rel="stylesheet" href="./static/css/global/bootstrap-multiselect.css">
+
+	<div class="right-section">
+	
+		<div class="tab-section col-md-12 mt-3">
+	        <ul class="nav nav-pills">
+				<li class="nav-item mr-5" onclick="openWorkForm('W')"><a class="nav-link" data-toggle="pill" href="#"><p>Wishlist Work Dashboard</p> </a></li>				
+				<li class="nav-item mr-5" onclick="openWorkForm('P')"><a class="nav-link"data-toggle="pill" href="#"><p>Pending Work Dashboard</p> </a></li>
+				<li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#"><p> Wishlist / Pending Work Entry</p></a></li> 
+			</ul>
+		 	<div class="clearfix"></div>
+		</div>
+		 <div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4"> 
+			<input type="hidden" id="action" name="action" th:value="${action}"/>
+			<input type="hidden" id="Action" name="Action" th:value="${Action}"/>
+		     <input type="hidden" id="mark" name="mark" th:value="${mark}"/>
+			 <input type="hidden" id="status" name="status" th:value="${status}"/>
+				<form id="wishlistPendingForm" th:object="${workEntity}" autocomplete="off" class="px-2 py-2">
+				    <input type="hidden" id="work_code" name="work_code" th:value="${workEntity != null ? workEntity.work_code : ''}"/>   
+	             	<div class="row form-group pt-2">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Work Type<span class="text-danger font-weight-bold ml-1"></span>
+	                        </label>
+	                    </div>	
+	                    <div class="col-lg-7 col-xl-6">
+	                        <div class="form-check form-check-inline">
+								<input type="radio" class="form-check-input ml-2" name="workTypeBtn" id="workTypeBtn1" value="W" th:checked="${workEntity != null && 'W'.equals(workEntity.work_type) ? 'checked' : ''}"/> <label class="form-check-label" for="workTypeBtn1">Wishlist</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input type="radio" class="form-check-input ml-2" name="workTypeBtn" id="workTypeBtn2" value="P" th:checked="${workEntity != null && 'P'.equals(workEntity.work_type)}" /> <label class="form-check-label" for="workTypeBtn2">Pending</label>
+							</div>
+	                    </div>
+	                    <input type="hidden" id="work_type" name="work_type"/>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Work Nature<span class="text-danger font-weight-bold ml-1"></span>
+	                        </label>
+	                    </div>	
+	                    <div class="col-lg-7 col-xl-6">
+	                        <div class="form-check form-check-inline">
+								<input type="radio" class="form-check-input ml-2" name="workNatureBtn" id="workNatureBtn1" value="N" th:checked="${workEntity != null && 'N'.equals(workEntity.work_nature) ? 'checked' : ''}"/> <label class="form-check-label" for="workNatureBtn1">New Development</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input type="radio" class="form-check-input ml-2" name="workNatureBtn" id="workNatureBtn2" value="E" th:checked="${workEntity != null && 'E'.equals(workEntity.work_nature)}"/> <label class="form-check-label" for="workNatureBtn2">Enhancement</label>
+							</div>
+							<input type="hidden" id="work_nature" name="work_nature" />
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Priority
+	                        </label>
+	                    </div>	
+	                    <div class="col-lg-7 col-xl-6">
+						<select class="form-control" id="work_priority" name="work_priority">
+							<option value="">--Select Priority--</option>
+							<option value="High" th:selected="${workEntity != null && 'High'.equals(workEntity.work_priority)}">High</option>
+						    <option value="Medium" th:selected="${workEntity != null && 'Medium'.equals(workEntity.work_priority)}">Medium</option>
+							<option value="Low" th:selected="${workEntity != null && 'Low'.equals(workEntity.work_priority)}">Low</option>
+						</select>
+					</div>
+	                </div>
+	                
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            On which Application<span class="text-danger font-weight-bold ml-1"></span>
+	                        </label>
+	                    </div>	
+	                    
+	                    <div class="col-lg-7 col-xl-6">
+						<select class="form-control" id="project_code" name="project_code">
+			             <option value="">--Select Application Name--</option>
+  						<option th:each="project : ${projectList.entrySet()}" th:value="${project.key}" th:text="${project.value}" th:selected="${workEntity != null && workEntity.project_code!= null && workEntity.project_code.contains(project.key)}"></option>
+                       </select>
+                        </div>
+	                </div>
+	                
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Tentative Completion Date<span class="text-danger font-weight-bold ml-1"></span>
+	                        </label>
+	                    </div>	
+	                    <div class="col-lg-7 col-xl-6">
+	                    <div th:if="${action != null && action == 'edit' }">
+	                    	<input type="text" name="completion_date" id="completion_date" class="form-control" placeholder="Tentative Completion Date" th:value="${workEntity != null && workEntity.completion_date != null ? #dates.format(workEntity.completion_date, 'dd-MM-yyyy') : ''}" /> 
+	                    	</div>
+	                    	<div th:unless="${action != null && action == 'edit' }">
+	                    	<div class="input-group" >
+	                    	 <input type="text" name="completion_date" id="completion_date" class="form-control" placeholder="Tentative Completion Date" th:value="${workEntity != null && workEntity.completion_date != null ? #dates.format(workEntity.completion_date, 'dd-MM-yyyy') : ''}" onmouseover="openCalendar('completion_date', 'completionDateCal');"  oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');" /> 
+							<div class="input-group-append">
+                                <button type="button" class="btn btn-primary addon-btn" id="completionDateBtn" onmouseover="openCalendar('completion_date', 'completionDateCal');"><i class="fa fa-calendar" id="completionDateCal"></i>
+                               </button>
+                            </div> 
+	                    	</div>
+	                    	</div>
+	                
+	                  
+	                    </div>
+	                </div>
+	                
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            To be done by
+	                        </label>
+	                    </div>	
+	                    <div class="col-lg-7 col-xl-6">
+	                      <select type="text" class="form-control" id="user_code" name="user_code" th:value="${workEntity  != null  && workEntity.user_code != null  && workEntity.user_code != null ? workEntity.user_code : ''}" multiple="multiple">
+		                 <option th:each="user : ${userList.entrySet()}"  th:value="${user.key}" th:text="${user.value}" th:selected="${workEntity != null && workEntity.user_code!= null &&  workEntity.user_code.contains(user.key)}"></option>
+                          </select>  
+	                    </div>
+	                    </div>
+	                      
+	                
+	                <div class="row form-group" id="details1">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Detailed Work Description<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-6">
+	                       <textarea class="form-control" rows="12" id="work_description" name="work_description"  th:value="${workEntity.work_description}"  th:text="${workEntity != null ? workEntity.work_description : ''}" maxlength="4010" ></textarea>
+	                        </div>
+	                      
+	                  </div>
+	                    
+	                    <div class="row form-group" id="details">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Detailed Work Description<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-6">
+	                       <textarea  class="form-control" rows="12" id="work" name="work_description"  th:value="${workEntity.work_description}"  th:text="${workEntity != null ? workEntity.work_description : ''}" ondblclick="myFunction()"   data-toggle="modal"  data-target="#detail-modal"></textarea>
+	                        </div>
+	                      
+	                  </div> 
+	                  
+	                    <div class="row form-group" id="remark-done">
+	                    <div class="col-lg-4 col-xl-4 text-right"  >
+	                        <label class="control-label">
+	                           Remark<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                       </div>
+	                    <div class="col-lg-7 col-xl-6">
+	                       <textarea class="form-control" rows="5" id="remark" name="remark"  th:value="${workEntity.remark}"  th:text="${workEntity != null ? workEntity.remark : ''}"></textarea>
+	                       </div>
+	                    </div>
+	                    
+	                    <div class="row form-group" id="link">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> External Link </label>
+						</div>
+						<div class="col-lg-7 col-xl-6">
+							<input type="text" class="form-control" id="external_link"
+						 name="external_link" placeholder="www.google.com"  th:value="${workEntity != null ? workEntity.external_link: ''}"/>
+						</div>
+					</div>
+	                
+	                <div class="row">
+	                    <div class="col-md-4 offset-md-4">
+	                        <div class="form-group  text-center">
+	                        	<button type="button" class="form-btn" id="btn_save" onclick="saveWishlistWork();" ><i class="fa fa-floppy-o" aria-hidden="true"></i><span th:text="${action != null && action == 'edit'  ? 'Update & Exit' : 'Save & Exit'}">Save & Exit</span></button>
+	                            <button type="button" class="form-btn"
+									th:if="${action != null && action == 'save'}"
+									onclick="window.location.href='./workEntry'">
+									Reset <i class="fa fa-undo" aria-hidden="true"></i>
+								</button>
+							<button type="button" title="Done"  id ="btn_done" class="form-btn "
+								 onclick="getDone();">
+								<i class="fa fa-save" aria-hidden="true"></i>Save & Exit
+							</button>
+							
+						
+							<button type="button"  class="form-btn" th:id="${workEntity.work_code}"  onclick="Back();">
+									<i class="fa cancel" aria-hidden="true" ></i>Cancel
+							</button>
+							
+                          	</div>               
+	                    </div>
+	                </div>
+	                
+	<!-- 	hTML MODE     -->	           
+	       
+	       
+	  <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="detail-modal" aria-modal="true"  data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" id="model">
+                    <div class="modal-header" >
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Detailed Work Description</h5>
+                        <button type="button"  title="close" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                   			<div class="row">
+                   				<div class="col-md-12">
+                   					<table class="table details-table">
+									<tbody id="workModelTableBody">
+									<tr>
+									 <textarea class="form-control"  rows="15" th:text="${workEntity.work_description}" readonly></textarea>
+									</tr>	
+									</tbody>
+								   </table>
+                              </div>
+                          </div>
+               </div>
+              </div>
+             </div>
+           </div> 
+	                             
+        </form>		
+        
+       
+		</div> 
+	</div>
+	
+
+	
+	
+	<script type="text/javascript" src="./static/js/global/bootstrap-multiselect.min.js"></script>
+	<script type="text/javascript" src="./static/js/wishlistPendingWork/wishlistPendingWork.js"></script>
+	<script type="text/javascript">
+	 onload();
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		  	$('#user_code').multiselect({
+			    buttonWidth : '160px',
+			    includeSelectAllOption : true,
+				nonSelectedText: '--Select Done By--'
+		  	});
+		});
+	</script>
+</th:block>
+</html>

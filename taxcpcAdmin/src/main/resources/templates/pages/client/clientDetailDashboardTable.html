@@ -1,0 +1,310 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/wishlistWork/wishlistWork.css"
+		rel="stylesheet" />
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+	
+	<div class="right-section">
+
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Client Detail Dashboard</p> </a></li>
+				<!-- <li onclick="window.location.href='./databasePackage'" class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p>Database Package</p></a></li>
+				<li onclick="window.location.href='./databaseIndex'" class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p>Database Index</p></a></li>
+				<li onclick="window.location.href='./databaseOther'" class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p>Others</p></a></li> -->
+
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<!-- <div class="container-fluid mt-3"> -->
+		<div class="tab-content form-wrapper px-4 py-4">
+
+			<form id="clientDashboard" th:object="${dataGridDTO}">
+
+				<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}"
+					name="filterFlag" id="filterFlag" /> 
+					<input type="hidden" th:value="${dataGridDTO.paginator.totalRecords}"
+					name="paginator.totalRecords" id="totalRecords" /> 
+					<input type="hidden" th:value="${dataGridDTO.paginator.totalPages}"
+					name="paginator.totalPages" id="totalPages" /> 
+					<input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"
+					name="paginator.recordsPerPage" id="recordsPerPage" /> 
+					<input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"
+					id="dataGridAction" /> 
+					<input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}"
+					name="paginator.pageNumber" id="pageNumber" /> 
+					<input type="hidden" id="fltrformId" value="clientDashboard"> 
+					<input type="hidden" id="client_mode" th:value="${client_mode}"> 
+					<input type="hidden" id="search_mode" th:value="${dataGridDTO.paginator.client_mode}">
+					<input type="hidden" id="action" th:value="${action}"> 
+
+				<div class="filter-section my-1 pt-1">
+					<div class="row sec-bottom">
+						<div class="col-lg-10 col-xl-11">
+							<div class="row form-group">
+								<div class="col-lg-3">
+									<input type="text" name="filter_name" id="filter_name"
+										class="form-control" title="Search Filter"
+										placeholder="Search Filter" value=""
+										onkeydown="return (event.keyCode!=13);">
+									<!--                              <input    type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."  >
+ -->
+								</div>
+
+								<div class="col-lg-3 text-right">
+									<label class="control-label">View Mode<span
+										class="text-danger font-weight-bold ml-1">*</span></label>
+								</div>
+								<div class="col-lg-7 col-xl-4">
+									<div class="form-check form-check-inline">
+										<input type="radio" class="form-check-input ml-2"
+											name="page_mode" th:id="Text"
+											onclick="differentMode(this.id);" th:value="Text" /> <label
+											class="form-check-label" for="newscheck1">Text View</label>
+
+									</div>
+									<div class="form-check form-check-inline">
+										<input type="radio" class="form-check-input ml-2"
+											name="page_mode" th:id="Card"
+											onclick="differentMode(this.id);" th:value="Card" /> <label
+											class="form-check-label" for="newscheck2">Card View</label>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn"
+								title="Search" onclick="searchClientDashboardFilter()">
+								<i class="fa search"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn" title="Clear"
+								onclick="resetClientDashboardTableForm()">
+								<i class="fa clear"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+								data-toggle="collapse" data-target="#remainingFilter"
+								title="Extra Filters Not Available" aria-expanded="false">
+								<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+							</button>
+
+						</div>
+
+
+					</div>
+
+				</div>
+				<div class="clearfix"></div>
+			</form>
+
+			<div class="clearfix"></div>
+			<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+			<div
+				th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+			<div class="clearfix"></div>
+
+
+			<div th:fragment="ajaxClientList" id="dataSpan">
+				<div class="table-responsive mt-2 w-60">
+
+					<table class="table table-bordered table-striped mb-1" id="table">
+						<thead>
+
+							<tr class="text-center">
+								<th class="th-action">Action</th>
+								<th>Sr. No.</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Entity Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc" aria-hidden="true"></i> <i
+												class="fa fa-sort-asc" aria-hidden="true"></i>
+										</div>
+									</div>
+								</th>
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Team Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Responsible Person Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Responsible Person Mobile No.</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+                                <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Responsible Person Email Id</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Branch City</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+							</tr>
+
+						</thead>
+
+					</table>
+				</div>
+			</div>
+
+			<div class="action-section bg-white text-center fixed-bottom"
+				id="actiondiv">
+				<button
+					th:if="${#session.getAttribute('LOGIN_USER').edit_right.equalsIgnoreCase('1')}"
+					type="button" class="action-btn action-btn--edit mr-2" id="editBtn"
+					onclick="editDashboardTable();" style="display: inline-block;">
+					<i class="fa fa-pencil"></i>Edit
+				</button>
+				<button
+					th:if="${#session.getAttribute('LOGIN_USER').delete_right.equalsIgnoreCase('1')}"
+					type="button" class="action-btn action-btn--delete mr-2"
+					id="deleteBtn" onclick="deleteDashboardTable();"
+					style="display: inline-block;">
+					<i class="fa fa-trash"></i>Delete
+				</button>
+				<button type="button" class="action-btn action-btn--view mr-2"
+					id="view" onclick="viewDashboardTable();"
+					style="display: inline-block;" data-toggle="modal"
+					data-target="#detail-modal">
+					<i class="fa fa-eye view-button"></i>View
+				</button>
+
+			</div>
+		</div>
+
+	<!-- 	<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog"
+			aria-labelledby="detail-modal" aria-modal="true"
+			data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalCenterTitle">Client
+							Details</h5>
+						<button type="button" title="Close" class="close"
+							data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">X</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="">
+							<div class="row">
+								<div class="col-md-12">
+									<table class="table details-table">
+										<tbody id="workModelTableBody">
+											<tr>
+												<td class="text-bold">Entity Code :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+											<tr>
+												<td class="text-bold">Entity Name :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+											<tr>
+												<td class="text-bold">Team Name :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+											<tr>
+												<td class="text-bold">Responsible Person Name :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+											<tr>
+												<td class="text-bold">Responsible Person Designation :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+											<tr>
+												<td class="text-bold">Responsible Person Mobile No.:</td>
+												<td class="pre-wrap"></td>
+											</tr>
+											<tr>
+												<td class="text-bold">Responsible Person Email Id :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+											<tr>
+												<td class="text-bold">Responsible Person Address :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+
+											<tr>
+												<td class="text-bold">Branch Address :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+
+											<tr>
+												<td class="text-bold">Branch Pin :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+											<tr>
+												<td class="text-bold">Branch City :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+											<tr>
+												<td class="text-bold">Branch State :</td>
+												<td class="pre-wrap"></td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+
+		<script type="text/javascript" src="./static/js/client/client.js"></script>
+
+		<script type="text/javascript">
+			loadDataUsingPaginator('clientDashboard');
+		</script>
+		<script type="text/javascript">
+			onloadFunction();
+
+			document.addEventListener('keypress', function(e) {
+				if (e.keyCode === 13 || e.which === 13) {
+					e.preventDefault();
+					return false;
+				}
+
+			});
+		</script>
+</th:block>

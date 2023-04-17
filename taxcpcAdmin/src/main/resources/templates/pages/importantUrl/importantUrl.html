@@ -1,0 +1,66 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+		<link href="./static/stylesheets/wishlistWork/wishlistWork.css" rel="stylesheet" />
+		<link href="./static/stylesheets/importantUrl/importantUrl.css" rel="stylesheet" /> 
+		<link href="./static/stylesheets/dashboard/dashboard-new.css" rel="stylesheet" />
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+	        <ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active" data-toggle="pill" href="#"><p>Important Weblinks Dashboard</p> </a></li>
+				<li class="nav-item" onclick="window.location.href='./importantUrlEntry'"><a class="nav-link" data-toggle="pill" href="#"><p> Important Weblinks Entry </p></a></li> 
+	            <!-- <li class="nav-item mr-5" onclick="window.location.href='./docEntry?mode=Q'"><a class="nav-link" data-toggle="pill" href="#"><p> Quick Document Entry </p></a></li>-->
+			</ul>
+		 	<div class="clearfix"></div>
+		</div>
+		 <div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4"> 
+			<input type="hidden" name="user_code" id="user_code" th:value="${#session.getAttribute('LOGIN_USER').user_code}"/>
+			<div class="row pt-3">
+				<!-- <div class="col-md-4" th:if="${linkTypeList != null}" th:each="linkType,index_count : ${linkTypeList}"> -->
+				
+				<div class="col-md-4" id="svn">
+					<div class="media p-3 kpi bg-white" th:attr="onclick=|openFormOnUrlType('SVN')|">
+						<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/svn.png" >
+						</div>
+						<div class="media-body text-muted"   >
+<!-- 							<span th:attr="onclick=|openFormOnUrlType('${linkType}')|" th:text="${linkType}"></span>
+ -->							
+                         <span   title="SVN Link"  >SVN Link</span>
+							
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-4">
+					<div class="media p-3 kpi bg-white" th:attr="onclick=|openFormOnUrlType('Website')|" >
+						<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/website.png" style="vertical-align: middle; border-style: none;">
+						</div>
+						<div class="media-body text-muted" >
+							<span title="Website Link" >Website Link</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="media p-3 kpi bg-white"  th:attr="onclick=|openFormOnUrlType('External')|">
+						<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/external.png">
+						</div>
+						<div class="media-body text-muted" >
+							<span title="External Link">External Link</span>
+						</div>
+					</div>
+				</div>
+			</div>				
+		</div> 
+	</div>
+	<script type="text/javascript" src="./static/js/importantUrl/importantUrl.js"></script>
+	<script>
+	onloadTOHideclient();
+	</script>
+</th:block>

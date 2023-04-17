@@ -1,0 +1,248 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<link href="./static/stylesheets/requisition/requisition.css"
+		rel="stylesheet">
+	<div class="right-section">
+
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li onclick="window.location.href='./deploymentDetail'"
+					class="nav-item mr-5"><a class="nav-link" data-toggle="pill"
+					href="#"><p>Deployment Dashboard</p> </a></li>
+				<li class="nav-item"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Deployment Entry</p></a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4">
+			<form id="deploymentForm" autocomplete="off">
+				<div class="row form-group ">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Application Name<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+					<div th:if="${projectList != null && !projectList.isEmpty()}" > 
+						<select class="form-control" id="project_code" name="project_code"
+							onchange="getWarFileName();">
+							<option value="">--Select Application Name--</option>
+							<option th:each="project : ${projectList.entrySet()}"
+								th:value="${project.key}" th:text="${project.value}"></option>
+						</select>
+						</div>
+						<div th:unless="${projectList != null && !projectList.isEmpty()}" > 
+							<select class="form-control" id="project_code" name="project_code"
+							onchange="getWarFileName();">
+							<option value="">--Select Application Name--</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row form-group ">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Deployment Type<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="depl_code" name="depl_code"
+							onchange="selectServerIp()">
+							<option value="">--Select Deployment Type--</option>
+							<option th:each="type : ${depl_type_list.entrySet()}"
+								th:value="${type.key}" th:text="${type.value}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-group " id="war_filename_div">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> War File Name <span
+							class="text-danger font-weight-bold ml-1">*</span></label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input class="form-control" type="text" id="war_filename"
+							name="war_filename">
+					</div>
+				</div>
+
+
+
+				<div class="row form-group ">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Database Details </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<textarea class="form-control" id="sample_data_filter_str"
+							name="sample_data_filter_str" placeholder="Database Data"
+							onclick="getSampledata()" style="resize: none;"
+							readonly="readonly"></textarea>
+					</div>
+				</div>
+
+				<div class="row form-group ">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Remark </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<textarea class="form-control" id="remark" name="remark"></textarea>
+					</div>
+				</div>
+
+				<div class="row form-group ">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label" id="serverUrl"> Server URL<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<div class="input-group">
+
+							<input type="text" id="ipPrefix" value="http://"
+								class="form-control" readonly="readonly" style="width: 15%" />
+							<input type="text" id="server_ip" name="server_ip"
+								class="form-control" placeholder="IP" style="width: 59%"
+								onblur="validateIPaddress(this);" /> <input type="text"
+								id="portPrefix" value=":" class="form-control"
+								readonly="readonly" style="width: 6%; text-align: center" /> <input
+								type="text" id="server_port" name="server_port"
+								class="form-control" placeholder="Port" style="width: 20%"
+								onkeypress="return lhsIsNumber(event);" maxlength="4"
+								onblur="validatePortNumber(this);" />
+						</div>
+					</div>
+					<input type="hidden" id="server_url" name="server_url"
+						onblur="validateIPaddress(this);" />
+				</div>
+
+				<div class="row">
+					<div class="col-md-4 offset-md-4">
+						<div class="form-group  text-center">
+							<button type="button" class="form-btn"
+								onclick="saveDeployment();">
+								<i class="fa save" aria-hidden="true"></i> Save &amp Exit
+							</button>
+							<button type="button" class="form-btn"
+								onclick="window.location.href='./deploymentEntry'">
+								<i class="fa fa-undo" aria-hidden="true"></i> Reset
+							</button>
+						</div>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+	<!-- Modal HTML -->
+	<div id="sample_data" class="modal fade" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<h4 class="modal-title">Database Details Filter</h4>
+					<button type="button" title="close" class="close"
+						onclick="closeDeplDetails();" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body error-Group-Description">
+					<form id="sample_data_form">
+						<div class="row">
+							<div class="col-md-4" style="border-right: 1px">
+								<!--<div class="col-md-6" style="border-right: 1px dashed #ccc;">-->
+								<h5>Database Code</h5>
+
+							</div>
+							<div class="col-md-8">
+								<h5>Database Data Description</h5>
+							</div>
+						</div>
+						<div id="sampleReqDiv">
+							<div class="row" th:if="${sampleDataFilter != null}"
+								th:each="sampleData,index_count : ${sampleDataFilter}">
+								<div class="col-md-4" style="border-right: 1px;">
+									<p>
+										<input type="checkbox"
+											th:id="'sample_code~'+${index_count.count}"
+											name="sample_code" th:value="${sampleData}"
+											onclick="clearUncheckedSampleValue(this.id);"> <label
+											th:for="'sample_code~'+${index_count.count}"
+											class="sample-code"
+											th:id="'sample_code_lbl~'+${index_count.count}"
+											th:text="${sampleData}">Login-Entity</label>
+									</p>
+								</div>
+								<div class="col-md-8">
+									<p>
+										<input type="text" class="form-control"
+											th:id="'sample_code_txt~'+${index_count.count}"
+											onkeyup="chkSampleCkBox(this);"
+											onblur="chkSampleCkBox(this);" tabindex="21">
+									</p>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<div class="form-group row">
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-green-btn"
+								onclick="createString();">
+								<i class="fa fa-save" aria-hidden="true"></i> Submit
+							</button>
+
+						</div>
+						<div class="col-md-6">
+							<button type="reset" class="form-btn form-red-btn"
+								onclick="refreshDeplDetails();">
+								<i class="fa fa-undo" aria-hidden="true"></i> Reset
+							</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript"
+		src="./static/js/deployment/deployment.js"></script>
+	<script type="text/javascript">
+		
+		var pattern = /\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/;
+		var x = 46;
+		$('#server_ip').keypress(function (e) {
+		    if (e.which != 8 && e.which != 0 && e.which != x && (e.which < 48 || e.which > 57)) {
+		        console.log(e.which);
+		        return false;
+		    }
+		}).keyup(function () {
+		    var this1 = $(this);
+		    if (!pattern.test(this1.val())) {
+		        $(this1).addClass("red-border");
+          		/* $(this1).focus(); */
+		        while (this1.val().indexOf("..") !== -1) {
+		            this1.val(this1.val().replace('..', '.'));
+		        }
+		        x = 46;
+		    } else {
+		        x = 0;
+		        var lastChar = this1.val().substr(this1.val().length - 1);
+		        if (lastChar == '.') {
+		            this1.val(this1.val().slice(0, -1));
+		        }
+		        var ip = this1.val().split('.');
+		        if (ip.length == 4) {
+		        	$(this1).removeClass("red-border");
+		        }
+		    }
+		});
+		
+		
+	</script>
+</th:block>

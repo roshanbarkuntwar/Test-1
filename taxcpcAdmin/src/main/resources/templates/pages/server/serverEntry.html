@@ -1,0 +1,788 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="./static/css/global/bootstrap-select.css">
+	<link rel="stylesheet"
+		href="./static/css/global/bootstrap-multiselect.css">
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5" id="server_entry"><a
+					class="nav-link active" data-toggle="pill" href="#"><p>Server Entry</p> </a></li>
+				<li class="nav-item mr-5" id="phy_server_entry" style="display: none;"><a
+					class="nav-link active" data-toggle="pill" href="#"><p>Physical Server Entry</p> </a></li>
+				<li class="nav-item mr-5" id="app_server_entry" style="display: none;"><a 
+					class="nav-link active" data-toggle="" href="#"><p>Application Server Entry</p></a></li>
+				<li class="nav-item mr-5" id="web_server_entry" style="display: none;"><a
+					class="nav-link active" data-toggle="pill" href="#"><p>Web Server Entry</p> </a></li>
+				<li class="nav-item mr-5" id="db_server_entry" style="display: none;"><a
+					class="nav-link active" data-toggle="pill" href="#"><p>Database Server Entry</p> </a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+
+		<div class="tab-content form-wrapper px-4 py-4">
+
+			<div class="clearfix"></div>
+
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+
+
+
+			<form id="serverEntryForm" autocomplete="off"
+				enctype="multipart/form-data" th:action="@{/appDetailEntry}"
+				method="post" th:object="${serverDetailModel}">
+
+				<div class="clearfix"></div>
+				<input type="hidden" id="server_id" name="server_id"
+					th:value="${serverDetailModel != null ? serverDetailModel.server_id : ''}" />
+				<input type="hidden" th:id="server_type_code_edit"
+					th:value="${server_type_code_edit}">
+
+
+				<!--  -->
+				<div class="row form-group pt-2" id="configurationDiv">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Configuration Type<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<input type="hidden" id="configuration_type1"
+						th:value="${serverDetailModel.configuration_type}" />
+
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="configuration_type"
+							name="configuration_type">
+							<option value=" ">-- Select Configuration Type --</option>
+							<option value="PSC"
+								th:selected="${serverDetailModel != null && serverDetailModel.configuration_type == 'PSC'}">PHYSICAL SERVER CONFIGURATION</option>
+							<option value="ASC"
+								th:selected="${serverDetailModel != null &&  serverDetailModel.configuration_type == 'ASC'}">APPLICATION SERVER CONFIGURATION</option>
+							<option value="WEBC"
+								th:selected="${serverDetailModel != null &&  serverDetailModel.configuration_type == 'WEBC'}">WEB SERVER CONFIGURATION</option>
+							<option value="DBC"
+								th:selected="${serverDetailModel != null &&  serverDetailModel.configuration_type == 'DBC'}">DATABASE SERVER CONFIGURATION</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group  text-center" id="btnDiv">
+					<button type="button" class="form-btn" id="btn-con"
+						onclick="selectConfigType(); ">
+						<i class="fa save" aria-hidden="true"> </i><span id="btn-config"
+							name="btn-config">Add Configuration</span>
+					</button>
+				</div>
+				
+			
+				<!-- -->
+					<div class="row form-group " id="dbServerIPDiv" style="display: none">
+					
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Server IP<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-2">
+						<div th:if="${serverIpList != null && !serverIpList.isEmpty()}">
+							<select class="form-control" id="db_server_ip" name="server_ip_config" onchange="setPublicIpDb();" style="font-weight: bold;">
+								<option value=" ">-- Select Server IP --</option>
+								<option th:each="ip : ${serverIpList.entrySet()}"
+								th:selected="${serverDetailModel!= null && serverDetailModel.server_ip != null 
+								&& serverDetailModel.server_ip.contains(ip.key)}"
+								th:value="${ip.value}" th:text="${ip.value}" ></option> 
+
+							</select>
+						</div>
+						<div
+							th:unless="${serverIpList != null && !serverIpList.isEmpty()}">
+							<select class="form-control" id="db_server_ip"
+								name="server_ip_config" onchange="setPublicIpDb();">
+								<option value=" ">-- Select Server IP --</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-lg-7 col-xl-2" id="">
+						<input type="text" class="form-control" id="db_public_ip"
+							readonly="readonly" placeholder="Public IP" name="public_ip1"
+							rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.public_ip : ''}" />
+					</div>
+				</div>
+				
+				<div class="row form-group" id="serverNameDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Server Owner <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="server_owner_name"
+							name="server_owner_name" onchange="selectEntity();">
+							<option value="">-- Select Server Name --</option>
+							<option value="LHS"
+								th:selected="${serverDetailModel != null && 'LHS'.equals(serverDetailModel.server_owner_name)}">LHS</option>
+							<option value="FGS"
+								th:selected="${serverDetailModel != null && 'FGS'.equals(serverDetailModel.server_owner_name)}">FGS</option>
+							<option value="BANK"
+								th:selected="${serverDetailModel != null && 'BANK'.equals(serverDetailModel.server_owner_name)}">BANK</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row form-group" id="entityNameDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Entity Name <span
+							id="span_id" class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="entity_code" name="entity_code"
+							multiple="multiple">
+							<!-- <option value="">--Select Entity Name--</option> -->
+							<option th:each="entity : ${entityNameList.entrySet()}"
+								th:value="${entity.key}" th:text="${entity.value}"
+								th:selected="${serverDetailModel!= null && serverDetailModel.entity_code != null && serverDetailModel.entity_code.contains(entity.key)}"></option>
+
+						</select>
+					</div>
+				</div>
+
+				<div class="row form-group" id="serverIpDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Server IP <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="server_ip"
+							placeholder="Server IP" name="server_ip"
+							onblur="validateIPaddress(this);"
+							onfocusout="checkServerIp(this);" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.server_ip : ''}" />
+					</div>
+				</div>
+				<!-- DB  -->
+				<div class="row form-group" id="dbServerIpDiv1" style="display: none">
+			
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Database Server IP 
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="db_server_ip1" placeholder="Database Server IP"  onblur="validateIPaddress(this);"
+							onfocusout="checkServerIp(this);" rows="1" readonly="readonly"
+							th:value="${serverDetailModel != null ? serverDetailModel.server_ip : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group" id="publicIpDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Public IP </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="public_ip"
+							placeholder="Public IP" name="public_ip"
+							onblur="validateIPaddress(this);" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.public_ip : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group" id="hostNameDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Host name <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="host_name"
+							placeholder="Host Name" name="host_name" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.host_name : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group" id="serverOsDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Server OS <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="server_os" name="server_os">
+							<option value="">-- Select Server OS --</option>
+							<option value="Windows"
+								th:selected="${serverDetailModel != null && 'Windows'.equals(serverDetailModel.server_os)}">Windows</option>
+							<option value="Linux"
+								th:selected="${serverDetailModel != null && 'Linux'.equals(serverDetailModel.server_os)}">Linux</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row form-group" id="remoteUserNameDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Remote Username <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="remote_username"
+							name="remote_username" rows="1" placeholder="Remote Username"
+							th:value="${serverDetailModel != null ? serverDetailModel.remote_username : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group" id="remotePwdDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Remote Password <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<div class="input-group">
+							<input type="password" class="form-control" id="remote_pwd"
+								name="remote_pwd" rows="1" placeholder="Remote Password"
+								th:value="${serverDetailModel != null ? serverDetailModel.remote_pwd : ''}" />
+
+							<div class="input-group-append">
+								<button type="button" class="btn btn-primary btn-sm addon-btn"
+									onclick="togglePasswordFields('remote_pwd', 'passwordIcon')">
+									<i id="passwordIcon" class="fa fa-eye"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row form-group" id="driveDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Drive required for mapping <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="mapped_drive" name="mapped_drive"
+							rows="1" multiple="multiple">
+
+							<option th:each="drive : ${driveList.entrySet()}"
+								th:value="${drive.value}" th:text="${drive.value}"
+								th:selected="${serverDetailModel != null && serverDetailModel.mapped_drive != null &&  serverDetailModel.mapped_drive.contains(drive.key)}"></option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row form-group" id="tagNameDiv" style="display: none">
+
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Tag Name <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="tag_name"
+							placeholder="Tag Name" name="tag_name" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.tag_name : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group" id="databaseDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Installed Database <span
+							class="text-danger font-weight-bold ml-1">*</span></label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="installed_db"
+							placeholder="Installed Database" name="installed_db" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.installed_db : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group" id="databaseToolDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Installed Database Tool<span
+							class="text-danger font-weight-bold ml-1">*</span></label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="installed_db_tool"
+							name="installed_db_tool" rows="1"
+							placeholder="Installed Database Tool"
+							th:value="${serverDetailModel != null ? serverDetailModel.installed_db_tool : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group" id="remarkDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Remark </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<textarea class="form-control" id="server_remark"
+							name="server_remark" rows="2" placeholder="Remark"
+							th:text="${serverDetailModel != null ? serverDetailModel.server_remark : ''}"></textarea>
+					</div>
+				</div>
+
+				<!-----------------app-------------------->
+				<br>
+
+				<div class="row form-group " id="appServerIPDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Server IP<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-2">
+						<div th:if="${serverIpList != null && !serverIpList.isEmpty()}">
+							<select class="form-control" id="app_server_ip"
+								name="server_ip_config" onchange="setPublicIpApp();" style="font-weight: bold;">
+								<option value=" ">-- Select Server IP --</option>
+								 <option th:each="ip : ${serverIpList.entrySet()}"
+								th:selected="${serverDetailModel!= null && serverDetailModel.server_ip != null 
+								&& serverDetailModel.server_ip.contains(ip.key)}"
+								th:value="${ip.value}" th:text="${ip.value}" ></option> 
+
+							</select>
+						</div>
+						<div
+							th:unless="${serverIpList != null && !serverIpList.isEmpty()}">
+							<select class="form-control" id="app_server_ip"
+								name="server_ip_config" onchange="setPublicIp();">
+								<option value=" ">-- Select Server IP --</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-lg-7 col-xl-2" id="">
+						<input type="text" class="form-control" id="app_public_ip"
+							readonly="readonly" placeholder="Public IP" name="public_ip1"
+							rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.public_ip : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group " id="appServerDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> App server Type<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="app_server_name"
+							name="app_server_name" onchange="validateServerName();">
+							<option value=" ">-- Select App Server Type --</option>
+							<option th:each="ip : ${appServerName.entrySet()}"
+								th:value="${ip.key}" th:text="${ip.value}"
+								th:selected="${serverDetailModel!= null && serverDetailModel.app_server_name != null 
+								&& serverDetailModel.app_server_name.contains(ip.key)}"></option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row form-group " id="appServerIPDiv1"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> App server IP<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="app_server_ip_1"
+							name="app_server_ip" onblur="validateIPaddress1(this);"
+							onchange="copyContentApp();" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_ip : ''}" />
+
+					</div>
+				</div>
+
+				<div class="row form-group " id="appServerPortDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> App server Port<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="app_server_port"
+							name="app_server_port" maxlength="4"
+							onblur="validatePortNumber(this);" onkeyup="copyContentApp()"
+							rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_port : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group " id="appServerConsoleDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> App Server Console Address<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-2">
+						<input type="text" class="form-control"
+							id="app_server_console_add" name="app_server_console_add"
+							placeholder="App Server Console IP" readonly rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_console_add : ''}" />
+					</div>
+
+					<div class="col-lg-2 col-xl-4 text-right" id="portDiv"
+						style="display: none">
+						<label class="control-label"> port<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-1" id="portDiv1">
+						<input type="text" class="form-control" id="port" name="port"
+							readonly placeholder="Port" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_port : ''}" />
+					</div>
+					<div class="col-lg-7 col-xl-1" id="controllerDiv">
+						<input type="text" class="form-control" id="app_Controller"
+							name="Controller" placeholder="Controller" rows="1" />
+						<!-- ${serverDetailModel != null ? serverDetailModel.APP_CONTROLLER : ''} -->
+					</div>
+
+				</div>
+
+				<div class="row form-group " id="appServerLogPathDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> App Server Log Path <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="app_server_log_path"
+							name="app_server_log_path" onclick="" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_log_path : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group " id="AppUsernameDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> App server username<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="app_server_username"
+							name="app_server_username" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_username : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group " id="appPasswordDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">App server password<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<div class="input-group">
+							<input type="password" class="form-control" id="app_server_pwd"
+								name="app_server_pwd" rows="1"
+								th:value="${serverDetailModel != null ? serverDetailModel.app_server_pwd : ''}" />
+
+							<div class="input-group-append">
+								<button type="button" class="btn btn-primary btn-sm addon-btn"
+									onclick="togglePasswordFields('app_server_pwd', 'passwordIcon')">
+									<i id="passwordIcon" class="fa fa-eye"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row form-group " id="appTagNameDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Tag Name </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="app_server_tag_name"
+							name="app_server_tag_name" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_tag_name : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group " id="appRemarkDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Remark </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<textarea class="form-control" id="app_server_remark"
+							name="app_server_remark" rows="2"
+							th:text="${serverDetailModel != null ? serverDetailModel.app_server_remark : ''}"></textarea>
+					</div>
+				</div>
+				<!-- ------------web--------- -->
+
+				 <div class="row form-group " id="webServerIPDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Server IP<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-2">
+							 <div th:if="${serverIpList != null && !serverIpList.isEmpty()}" > 
+							<select class="form-control" id="web_server_ip" name="server_ip_config" onchange="setPublicIpWeb();" style="font-weight: bold;" >
+							<option value=" ">-- Select Server IP --</option> 
+							 <option th:each="ip : ${serverIpList.entrySet()}"
+								
+								th:selected="${serverDetailModel!= null && serverDetailModel.server_ip != null 
+								&& serverDetailModel.server_ip.contains(ip.key)}"
+								th:value="${ip.value}" th:text="${ip.value}" ></option> 
+
+						</select>
+						</div>
+						 <div th:unless="${serverIpList != null && !serverIpList.isEmpty()}" > 
+						 	<select class="form-control" id="web_server_ip1" name="server_ip_config" onchange="setPublicIpWeb();" >
+							<option value=" ">-- Select Server IP --</option>
+							</select>
+						 </div>
+					</div>
+					
+						<div class="col-lg-7 col-xl-2" id="">
+							<input type="text" class="form-control" id="web_public_ip" readonly="readonly"
+								placeholder="Public IP" name="public_ip1"
+								rows="1"
+								th:value="${serverDetailModel != null ? serverDetailModel.public_ip : ''}"
+							 />
+						</div>
+				</div> 
+
+				<div class="row form-group " id="webServerDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Web server Type<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="web_server_name"
+							name="app_server_name" onchange="validateServerName();">
+							<option value=" ">-- Select Web Server Type --</option>
+							<option th:each="ip : ${appServerName.entrySet()}"
+								th:value="${ip.key}" th:text="${ip.value}"
+								th:selected="${serverDetailModel!= null && serverDetailModel.app_server_name != null 
+								&& serverDetailModel.app_server_name.contains(ip.key)}"></option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row form-group " id="webServerIPDiv1"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Web server IP<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="web_server_ip_1"
+							name="app_server_ip" onblur="validateIPaddress2(this);"
+							onchange="copyContentWeb();" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_ip : ''}" />
+
+					</div>
+				</div>
+
+				<div class="row form-group " id="webServerPortDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Web server Port<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="web_server_port"
+							name="app_server_port" maxlength="4"
+							onblur="validatePortNumber1(this);" onkeyup="copyContentWeb()"
+							rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_port : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group " id="webServerConsoleDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Web Server Console Address<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-2">
+						<input type="text" class="form-control" Sercver
+							id="web_server_console_add" name="app_server_console_add"
+							placeholder="Web Server Console IP" readonly rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_console_add : ''}" />
+					</div>
+
+					<div class="col-lg-2 col-xl-4 text-right" id="portDiv"
+						style="display: none">
+						<label class="control-label"> port<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-1" id="portDiv1">
+						<input type="text" class="form-control" id="port1" name="port"
+							readonly placeholder="Port" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_port : ''}" />
+					</div>
+					<div class="col-lg-7 col-xl-1" id="controllerDiv">
+						<input type="text" class="form-control" id="web_Controller"
+							name="Controller" placeholder="Controller" rows="1" />
+						<!-- ${serverDetailModel != null ? serverDetailModel.APP_CONTROLLER : ''} -->
+					</div>
+
+				</div>
+
+				<div class="row form-group " id="webServerLogPathDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Web Server Log Path <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="web_server_log_path"
+							name="app_server_log_path" onclick="" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_log_path : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group " id="webUsernameDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Web server username<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="web_server_username"
+							name="app_server_username" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_username : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group " id="webPasswordDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Web server password<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<div class="input-group">
+							<input type="password" class="form-control" id="web_server_pwd"
+								name="app_server_pwd" rows="1"
+								th:value="${serverDetailModel != null ? serverDetailModel.app_server_pwd : ''}" />
+
+							<div class="input-group-append">
+								<button type="button" class="btn btn-primary btn-sm addon-btn"
+									onclick="togglePasswordFields('app_server_pwd', 'passwordIcon')">
+									<i id="passwordIcon" class="fa fa-eye"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row form-group " id="webTagNameDiv"
+					style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Tag Name </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="web_server_tag_name"
+							name="app_server_tag_name" rows="1"
+							th:value="${serverDetailModel != null ? serverDetailModel.app_server_tag_name : ''}" />
+					</div>
+				</div>
+
+				<div class="row form-group " id="webRemarkDiv" style="display: none">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Remark </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<textarea class="form-control" id="web_server_remark"
+							name="app_server_remark" rows="2"
+							th:text="${serverDetailModel != null ? serverDetailModel.app_server_remark : ''}"></textarea>
+					</div>
+				</div>
+				<!-- ------------------ -->
+				<div class="row" id="btns_1" style="display: none">
+					<div class="col-md-4 offset-md-4">
+						<div class="form-group  text-center">
+
+
+							<button type="button" class="form-btn"
+								onclick="saveServerEntry();">
+								<i class="fa save" aria-hidden="true"> </i><span id="btn-1"
+									name="btn-1">Save &amp Exit</span>
+							</button>
+							<button type="button" class="form-btn" id="btn-2"
+								onclick="updateAppServerDetails()" style="display: none">
+								<i class="fa save" aria-hidden="true"> </i><span id="btn-22">Update
+									&amp Exit</span>
+							</button>
+
+							<button type="button" class="form-btn" onclick="resetEntryForm()"
+								th:if="${action!= null && action =='save'}">
+								<i class="fa fa-undo" aria-hidden="true"></i> Reset
+							</button>
+
+							<button type="button" class="form-btn"
+								onclick="cancelAppServerEntry();"
+								th:if="${action!= null && action =='edit'}">
+								<i class="fa cancel" aria-hidden="true"></i>Cancel
+							</button>
+
+
+
+						</div>
+					</div>
+				</div>
+			</form>
+
+
+		</div>
+	</div>
+	<script type="text/javascript" src="./static/js/global/bootstrap-multiselect.min.js"></script>
+	<script type="text/javascript" src="./static/js/server details/serverDetails.js"></script>
+	<script type="text/javascript" src="./static/js/global/lhs/lhsGlobal.js"></script>
+
+	<script type="text/javascript">
+	onLoadConfigType();
+	setPublicIpApp();
+	setPublicIpWeb();
+	setPublicIpDb();
+	
+		$(document).ready(function() {
+			$('#entity_code').multiselect({
+				buttonWidth : '160px',
+				includeSelectAllOption : true,
+				nonSelectedText : '--Select Entity Name--'
+				
+			});
+		});
+		
+			$(document).ready(function() {
+				$('#mapped_drive').multiselect({
+					buttonWidth : '200px',
+					includeSelectAllOption : true,
+					nonSelectedText : '--Select Drive Required For Mapping--'
+				});
+			});
+	</script>
+	<script type="text/javascript">
+		
+
+	
+	</script>
+
+</th:block>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<div th:fragment="getPaginatorTop">
+	<div class="row  mb-2" id="paginator_top" style="margin-top: 6px;">
+        <div class="col-lg-3" id="liTop_1">
+            <span style="vertical-align: -webkit-baseline-middle;">Total Records : <span id="totalRecordsSpan"> </span></span>
+        </div>
+        <div class="col-lg-9 justify-content-end d-flex" id="paginationBlock">
+            <button type="button" id="bulk_download_btn" class="btn form-btn mr-2 mt-0" title="Generate bulk data download request" onclick="exportToExcel()"><i class="fa download"></i>Download</button>
+            
+            <div class="cust_paginator_wrap cust_paginator_wrap d-flex justify-content-end text-center" >
+              
+                <ul class="pagination" id="page">
+                    <li class="page-item">
+
+                        <a href="#" class="page-link go-to-pageno-link pt-1">  
+                            <div class="input-group">
+                                <input class="form-control m-0" id="pagination_number" placeholder="Page No"  type="text" onkeypress="return lhsIsNumber(event);" oncopy="return false" onpaste="return false">   
+                                
+                                <div class="input-group-append">
+                                    <button class="my-0 btn btn-primary addon-btn" style="width:25px;" type="button" id="topBtn" onclick="jumpToPage(this.id);">Go</button>
+                                </div>
+                            </div>
+                        </a>   
+                    </li>
+                    <li class="page-item">
+                        <a class="current-page no-cursor page-link">
+                            <span id="pageNumberSpan" th:text="${pageNumber}">2</span>&nbsp;of&nbsp;
+                            <span  id="totalPagesSpan" th:text="${totalPages}">10</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#settings"  data-toggle="collapse" class="setting-btn page-link"> <i class="fa fa-cog" aria-hidden="true"></i></a>
+                    </li>
+                </ul>
+                <ul class="pagination" id="paginationUl">
+                    <li class="page-item" title="Go To First Page" id="first"><a class="page-link"><i class="fa fa-fast-backward"></i></a></li>  
+                    <li class="page-item"  onclick="getPreviousPage();"id="previous" title="Go To Previous Page"><a class="page-link"><i class="fa fa-chevron-left" ></i></a></li>   
+                    <li class="page-item" onclick="getNextPage();" id="next" title="Go To Next Page"><a class="page-link" ><i class="fa fa-chevron-right"></i></a>   </li>
+                    <li class="page-item" title="Go To Last Page" id="last"><a class="page-link" ><i class="fa fa-fast-forward"></i></a></li>                  
+                </ul>
+            </div>
+        </div>
+    </div>
+        <input type="hidden" th:value="${dataGridDTO.paginator.totalRecords}" name="paginator.totalRecords" id="totalRecords" />
+		<input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" />
+		<input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"   name="paginator.recordsPerPage" id="recordsPerPage" />
+		<input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}" id="dataGridAction" />
+		<input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+</div>
+</html>

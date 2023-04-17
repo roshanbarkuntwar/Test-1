@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class="h-100" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Global Error | Taxcpc Data Import</title>
+
+<link rel="icon" href="./static/images/lhs-app-fevicon.png" type="image/icon" />
+
+<script type="text/javascript" src="./static/js/global/supersized.3.2.7.min.js"></script>
+<script type="text/javascript" src="./static/js/global/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="resources/js/global/scrolltopimg.js"></script>
+
+<!--Fontawesome CSS-->
+<link rel="stylesheet" href="./static/font-awesome/css/font-awesome.min.css">
+
+<!--Bootstarp CSS-->
+<link href="./static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+<!--Project specific CSS-->
+<link href="./static/stylesheets/globalError/globalError.css" rel="stylesheet">
+
+</head>
+<body class="d-flex align-items-center justify-content-center h-100">
+
+	<div class="login-wrap bg-white mx-auto position-relative">
+		<div class="row m-0 h-100">
+			<div class="col-md-7 d-none d-md-block pl-0">
+				<div class="login-vector h-100 d-flex justify-content-cnter align-items-center p-4 position-relative h-100">
+					<img src="./static/images/global/global-error.png " class="img-fluid">
+				</div>
+			</div>
+
+			<div class="col-md-5 h-100 text-center ">
+				<img src="./static/images/login/taxcpc-logo.png" class="mt-4">
+				<div class="login-form px-md-4 pt-3 pb-0 px-1  h-100 d-flex justify-content-center align-items-center">
+
+					<form name="form" id="form" action="./logout" method="post" autocomplete="off">
+						<h2 class="font-weight-bold mb-5" th:text="${exception != null ? exception : 'Sorry! There is some problem. Please contact to support person.'}">Sorry! There is some problem. Please contact to support person.</h2>
+						<h4 class="font-weight-bold mb-5" th:text="${url != null ? 'At URL : '+url : ''}"></h4>
+						<div class="form-group mt-4">
+							<button type="submit" class="btn btn-primary btn-block rounded-0 login-btn border-0 p-2 font-weight-bold">Go To Home</button>
+						</div>
+						<div class="form-group mt-2">
+							<button type="submit" class="btn btn-primary btn-block rounded-0 login-btn border-0 p-2 font-weight-bold">Logout</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer class="position-fixed w-100 copyright-issue text-white px-md-4">
+		<div class="text-dark float-left">
+			Ⓒ 2019 <a href="http://taxcpc.com/" target="_blank" class="font-weight-bold">TaxCPC</a> All Rights Reserved
+		</div>
+
+		<div class="site-updation text-dark float-right">
+			Application Last Updated on <span th:text="${appLastBuildTimestamp}">06-07-2020 05:34 PM</span>
+		</div>
+	</footer>
+
+</body>
+</html>

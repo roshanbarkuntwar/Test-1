@@ -1,0 +1,292 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+<div class="right-section">	
+    <div class="container-fluid mt-3">
+		<div class="tab-section col-md-12 mt-3">
+	        <ul class="nav nav-pills">
+	         <li class="nav-item mr-5"   onclick="window.location.href='./entityDetail'"><a class="nav-link" data-toggle="pill" href="#"><p> Entity  Dashboard </p></a></li>
+              <li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Entity Creation</p> </a></li>
+			</ul>
+			</div>
+		    <div class="tab-content form-wrapper px-4 py-4">
+		 	<input type="hidden" id="action" name="action" th:value="${action}" />
+           <form id="entityEntryForm" autocomplete="off" th:object="${entityList}" enctype="multipart/form-data">
+           		 	<input type="hidden" id="mode" name="mode" th:value="${mode}" />
+           
+	
+		 	<div class="px-2 py-2">
+					
+					
+					<div class="row form-group pt-2" id="projectDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Entity Code<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="entity_code"
+								name="entity_code" maxlength="2"
+								placeholder=" Enter Entity Code"  th:value="${entityList != null ? entityList.entity_code : ''}"/>	
+						</div>
+					</div>	
+						<div class="row form-group">
+					   <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Entity Name<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="entity_name"
+								name="entity_name"placeholder="Enter Entity Name" th:value="${entityList != null ? entityList.entity_name : ''}"/>	
+						</div>
+						</div>
+						
+						<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Parent Code<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="parent_code" name="parent_code" maxlength="2"
+							placeholder="Enter Parent Code" th:value="${entityList != null ? entityList.parent_code : ''}"/>
+						</div>
+						</div>
+						
+						<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Division<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="division" name="division">
+							<option value="">--Select Division--</option>
+  					<option th:each="project : ${divisionList.entrySet()}" th:value="${project.key}" th:text="${project.value}" th:selected="${entityList!= null && entityList.division != null && entityList.division.contains(project.key)}"></option>
+
+							</select>	
+						</div>
+						</div>
+						
+						
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Upload Logo<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+
+						<div class="col-lg-7 col-xl-4">
+								<div class="file">
+									<input type="file" class="form-control" name="file_logo" id="file_logo"  th:text="${file}" accept="image/*"   > 
+								</div>
+						</div>
+						</div>
+						<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Address<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="add1"
+								name="add1"
+								placeholder="Enter Address" th:value="${entityList != null ? entityList.add1: ''}" />	
+						</div>
+						</div>
+												
+												
+				    	
+						<div class="row form-group">
+	                 <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">City <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="city"
+								name="city" oninput="this.value = this.value.replace(/[^A-z\-]+/g, '').replace(/(\..*)\./g, '$1');"
+								placeholder=" Enter city" th:value="${entityList != null ? entityList.city: ''}"/>	
+						</div>
+						</div>
+					
+						
+						
+					  <div class="row form-group">
+                       <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">PIN Code<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="Pin" maxlength="6"  th:value="${entityList != null ? entityList.Pin: ''}" 
+							oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');" onblur="pinCode(this);" placeholder="Enter Pin code"
+								name="Pin" />
+						</div>
+						</div>
+						
+					<div class="row form-group">
+                        <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Country<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="country" 
+								name="country"
+								placeholder="country" value="IND" th:selected="${entityList != null ? entityList.country: ''}"/>	
+						</div>
+						</div>
+						
+					 <div class="row form-group">
+                      <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Mobile Number<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="tel" class="form-control" id="phone"
+								name="phone" oninput="this.value = this.value.replace(/[^0-9\-\+]+/g, '').replace(/(\..*)\./g, '$1');"  
+								placeholder=" Enter Phone Number" th:value="${entityList != null ? entityList.phone: ''}"  pattern=[0-15]{1}[0-15]{15}  />	
+						</div>
+						</div>
+						
+						
+						
+							<div class="row form-group">
+						
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Email Id<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="email" class="form-control" id="email"  name="email" placeholder="Enter Email Id" th:value="${entityList != null ? entityList.email: ''}" />	
+						</div>
+						</div>
+						
+						<div class="row form-group">
+                          <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Currency Code<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="currency_code"
+								name="currency_code"  value="INR" 
+								th:selected="${entityList != null ? entityList.currency_code: ''}"  />	
+						</div>
+						</div>
+						 <div class="row form-group">
+                          <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Print_name / Short_name<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="print_name"
+								name="print_name"
+								placeholder=" Enter Print_name / Short_name" th:value="${entityList != null ? entityList.print_name: ''}"/>	
+						</div>
+						</div>
+						
+					<div class="row form-group">
+                     <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Website<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="url"class="form-control" id="website"
+								name="website"  onblur="isValidUrl(this);"
+								placeholder="Enter Website" th:value="${entityList != null ? entityList.website: ''}" maxlength="100"/>	
+						</div>
+						</div>
+						
+						<div class="row form-group">
+							<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">War File Name<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="add3"
+								name="add3"
+								placeholder="Enter war file" th:value="${entityList != null ? entityList.add3: ''}"/>	
+						</div>
+						</div>
+							<div class="row form-group">
+							<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Db_User<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="db_user"
+								name="db_user"
+								placeholder=" Enter Db_user" th:value="${entityList != null ? entityList.db_user: ''}"/>	
+						</div>
+						</div>
+						
+							<div class="row form-group">
+							<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Db_User_Pwd<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<div class="input-group">
+						<input type="password" class="form-control" id="db_user_pwd"
+								name="db_user_pwd"
+								placeholder=" Enter Db_user_pwd" th:value="${entityList != null ? entityList.db_user_pwd: ''}">
+						
+						<div class="input-group-append">
+							<button type="button"  class="btn btn-primary btn-sm addon-btn"
+								onclick="togglePasswordFields('db_user_pwd', 'passwordIcon')">
+								<i id="passwordIcon" class="fa fa-eye"></i>
+							</button>
+							</div>
+						</div>
+					     
+						</div>
+
+					</div>
+						
+						<div class="row">
+	                    <div class="col-md-4 offset-md-4">
+	                        <div class="form-group  text-center">
+								<button type="button" class="form-btn"
+									onclick="saveEntityWork();">
+									<i class="fa fa-floppy-o" aria-hidden="true"></i><span
+										th:text="${action != null && action == 'edit' ? 'Update & Exit' : 'Save & Exit'}">Save
+										& Exit</span>
+								</button>
+								<button type="button" class="form-btn"
+						th:if="${action != null && action == 'save'}"
+							onclick="window.location.href='./entityEntry'">
+							Reset <i class="fa fa-undo" aria-hidden="true"></i>
+						</button>
+						
+						<button type="button"  class="form-btn" th:id = "${mode}"  onclick="BackToDashboard(this.id)">
+							<i class="fa cancel" aria-hidden="true"></i>Cancel
+						</button>
+						
+
+					</div>               
+	                    </div>
+	                </div>
+	                </div>
+				</form>	
+			</div>
+
+
+</div>
+</div>
+<script type="text/javascript" src="./static/js/entityForm/entityMust.js"></script>
+
+
+</th:block>

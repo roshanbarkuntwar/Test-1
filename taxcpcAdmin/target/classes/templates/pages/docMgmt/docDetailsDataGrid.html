@@ -1,0 +1,170 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<link href="./static/stylesheets/docMgmt/docDetails.css"
+	rel="stylesheet" />
+<link href="./static/stylesheets/importantUrl/importantUrl.css"
+	rel="stylesheet" />
+<link href="./static/stylesheets/dashboard/dashboard.css"
+	rel="stylesheet" />
+<link href="./static/stylesheets/dashboard/dashboard-new.css"
+	rel="stylesheet" />
+
+<div th:fragment="ajaxDocList">
+	<table class="table table-bordered table-striped mb-1" id="table">
+		<thead>
+			<tr class="header">
+				<th>Action</th>
+				<th class="header">
+					<div class="table-head-inner text-center">
+						<div class="table-heading">Sr. No</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner text-center">
+						<div class="table-heading">Document Type</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner text-center">
+						<div class="table-heading">Document Name</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner text-center">
+						<div class="table-heading">Application Name</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+
+				<th class="header">
+					<div class="table-head-inner text-center">
+						<div class="table-heading ">Prepared By</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner text-center">
+						<div class="table-heading">Download</div>
+
+					</div>
+				</th>
+
+				<th class="header">
+					<div class="table-head-inner text-center">
+						<div class="table-heading">Link</div>
+
+					</div>
+				</th>
+
+
+			</tr>
+		</thead>
+		<tbody>
+			<input type="hidden" id="totalrecordsgrid"
+				th:value="${dataGridDTO.paginator.totalRecords}">
+			<input type="hidden" id="totalPagesgrid"
+				th:value="${dataGridDTO.paginator.totalPages}">
+			<input type="hidden" id="pageNumbergrid"
+				th:value="${dataGridDTO.paginator.pageNumber}">
+			<input type="hidden" id="recordsPerPageSelectgrid"
+				th:value="${dataGridDTO.paginator.recordsPerPage}">
+			<tr th:if="${datalist != null && !datalist.isEmpty()}"
+				th:each="dataGrid,index_count : ${datalist}"
+				th:id="${'tr-'+index_count.count}">
+				<input type="hidden" th:id="${'golbal_path-'+index_count.count}"
+					th:value="${dataGrid.google_drive_flag}">
+				<input type="hidden" th:id="${'local_path-'+index_count.count}"
+					th:value="${dataGrid.local_drive_flag}">
+				<input type="hidden" th:id="${'database_path-'+index_count.count}"
+					th:value="${dataGrid.database_flag}">
+				<input type="hidden" th:id="${'localfile-'+index_count.count}"
+					th:value="${dataGrid.local_drive_path}">
+				<input type="hidden" id="local_drive_path"
+					th:value="${dataGrid.local_drive_path}">
+				<td class="td-action text-center">
+					<div
+						class="custom-control custom-checkbox action-check checkbox-mt">
+						<input type="checkbox"
+							class="custom-control-input toggle-action-section"
+							name="actionCheckbox"
+							th:id="'action~'+${index_count.count}+'~'+${dataGrid.doc_code}+'~'+${dataGrid.user_code}"
+							onclick="openActionDiv(this.id);"> <label
+							class="custom-control-label"
+							th:for="'action~'+${index_count.count}+'~'+${dataGrid.doc_code}+'~'+${dataGrid.user_code}"></label>
+					</div>
+				</td>
+
+				<td
+					th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10"
+					class="text-center"></td>
+
+				<span th:each="doc : ${docTypeList.entrySet()}">
+					<td th:if="${doc.key} == ${dataGrid.doc_type_code}"
+					th:text="${doc.value}"></td>
+				</span>
+				<td th:text="${dataGrid.doc_name}"></td>
+				<td><span th:each="project : ${projectList.entrySet()}"
+					th:if="${project.key} == ${dataGrid.project_code}"
+					th:text="${project.value}" class="text-center"></span></td>
+
+
+				<td><span th:each="user : ${userList.entrySet()}"
+					th:if="${user.key} == ${dataGrid.user_code}"
+					th:text="${user.value}"> </span></td>
+					
+			<td class="text-center">
+					<button th:type="button"
+						class="btn btn-primary addon-btn filter-inner-btn"
+						title="Download"
+						th:id="${index_count.count}+'-'+${dataGrid.doc_code}"
+						onclick="download(this.id);">
+						<i class="fa fa-download"></i>
+
+					</button>
+
+				</td>
+
+				<td class="text-center">
+					<button th:type="button"
+						class="btn btn-primary addon-btn filter-inner-btn"
+						th:id="'url~'+${index_count.count}"
+						th:value="${dataGrid.refer_link}"
+						th:title="${dataGrid.refer_link == null ? 'There is No Link' : ' Open Link'}"
+						;
+						onclick="OpenLink(this.id);">
+						<i class="fa fa-external-link"></i>
+
+					</button>
+				</td>
+
+
+
+
+			</tr>
+
+
+			<tr th:unless="${datalist != null && !datalist.isEmpty()}">
+				<td colspan="9"
+					class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"><img
+					src="static/images/global/empty-box.png">No Record Found</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</html>
+<script type="text/javascript" src="./static/js/docMgmt/docMgmt.js"></script>

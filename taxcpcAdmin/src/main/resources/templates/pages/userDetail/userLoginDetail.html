@@ -1,0 +1,165 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<div class="right-section">
+	<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+		       <li class="nav-item mr-5"><a class="nav-link active"
+					style="cursor: not-allowed; pointer-events: all" data-toggle="pill"
+					href="#">User Login Dashboard</a></li>
+				<li class="nav-item mr-5"><a class="nav-link" data-toggle=""
+					style="cursor: not-allowed; pointer-events: all" href="#">User Details</a></li>
+
+         </ul>
+		        
+			 	<div class="clearfix"></div>
+			</div>
+		 	<div class="clearfix"></div>
+		
+			<div class="tab-content form-wrapper px-4 py-4">
+						
+			<form id="userForm" th:object="${dataGridDTO}"> 
+                   	
+<!--                	<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}" name="filterFlag" id="filterFlag" />
+ -->         		<input type="hidden" th:value="${dataGridDTO.paginator.totalRecords}" name="paginator.totalRecords" id="totalRecords" /> 
+				<input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}" name="paginator.recordsPerPage" id="recordsPerPage" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}" id="dataGridAction" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+            	<input type="hidden" id="fltrformId" value="userForm">
+				<div class="filter-section my-1 pt-1">
+                    <div class="row sec-bottom">
+                        <div class="col-lg-10 col-xl-11">
+                            <div class="row form-group">
+                                <div class="col-lg-3">
+                                 <input type="text" name="login_id" id="login_id" class="form-control" title="Login Id" placeholder="Login Id" value="">
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="text" name="user_code" value="" id="user_code" class="form-control" title="User Code" placeholder="User Code">
+                                	
+                                </div>
+                                 <div class="col-lg-3">
+                                	<input type="text" name="user_name" id="user_name" class="form-control" title="User Name" placeholder="User Name" value="">
+                                </div>
+                               <!-- <div class="col-lg-3">
+                                    <input type="text" name="login_count" id="login_count" class="form-control" title="Login Count" placeholder="Login Count" value="">
+                                </div> -->
+                                
+                                </div>
+                        </div>
+                        <div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Search" onclick="searchLoginFilter()"><i class="fa search"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Clear" onclick="resetLoginFilter()"><i class="fa clear"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn" title="No Filters"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button> 
+                        </div> 
+                    </div>  
+                </div>
+			</form>
+			<div class="clearfix"></div>
+             <div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+		<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>        
+			<div class="clearfix"></div>
+			
+			<div class="table-responsive mt-2 w-60" id="dataSpan">
+				<table class="table table-bordered table-striped mb-1" id="table">
+				<thead>
+			          <tr class="text-center">
+					<!--  <th class="th-action check-action text-center"></th> -->
+			          	<th>Sr. No.</th>
+			            <!-- <th class="th-action">Action</th> -->
+			           	<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  Login Id</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>		 
+							<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  User Code</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>	 
+					<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  User Name</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+					
+					<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                 Last Login</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+				
+					<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                 Login Count</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+				
+					<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  Action</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+				
+			          </tr>
+			        </thead>
+			  
+			        <tbody>
+			     
+			         <tr th:if="${loginDetailGrid != null && !loginDetailGrid.isEmpty()}" th:each="dataGrid,index_count : ${loginDetailGrid}" th:id="${'tr-'+index_count.count}">
+						<!--  <td class="td-action">
+						<div class="custom-control custom-checkbox action-check checkbox-mt">
+                                  <input type="checkbox" class="custom-control-input toggle-action-section" name="actionCheckbox" th:id="'action~'+${index_count.count}+'~'+${dataGrid.user_code}" onclick="openActionDiv(this.id);">
+                                  <label class="custom-control-label" th:for="'action~'+${index_count.count}+'~'+${dataGrid.user_code}"></label>
+                              </div>
+                              </td>
+					 <td th:text="${index_count.count}"></td> -->
+			
+ 					 <td th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10" class="text-center"></td> 
+ 				     <td th:text="${dataGrid.login_id}"></td>
+				<td th:text="${dataGrid.user_code}"></td>
+				<td th:text="${dataGrid.user_name}"></td>
+				<td th:text="${dataGrid.login_time}"></td>
+				<td th:text="${dataGrid.login_count}"></td>
+			       <td class="text-center"><i th:id="${dataGrid.user_code}" onclick="viewUserDetails(this.id);" class="fa view text-success cursor-pointer mr-1" style="cursor: pointer;color: green;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="View"></i></td>
+			          		 
+					</tr>
+					
+					 <tr th:unless="${loginDetailGrid != null && !loginDetailGrid.isEmpty()}">
+							<td colspan="9" class="text-center">No Record Found </td>			
+						</tr>  
+					</tbody>
+				</table>
+			</div>
+					
+			</div>
+	
+		 <div class="action-section bg-white text-center fixed-bottom" id="actiondiv">
+			<!-- <button type="button" class="action-btn action-btn--edit mr-2" id="editBtn" style="display: inline-block;" onclick="editRecord('editUser');"> <i class="fa fa-pencil"></i>Edit</button>
+			<button type="button" class="action-btn action-btn--delete mr-2" id="deleteBtn"  style="display: inline-block;" onclick="deleteRecord('deleteUser');"> <i class="fa fa-trash"></i>Delete</button> -->
+		</div> 
+		<!-- <div class="tab-content form-wrapper px-4 py-4" id="dataspan"> -->
+		
+	</div>
+
+	<script type="text/javascript" src="./static/js/userDetail/userLoginDetail.js"></script>
+	
+	<script type="text/javascript">
+		loadDataUsingPaginator('userForm');
+	</script>
+	
+</th:block>

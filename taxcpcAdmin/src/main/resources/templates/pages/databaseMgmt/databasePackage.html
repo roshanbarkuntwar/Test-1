@@ -1,0 +1,187 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<div class="right-section">
+
+			<div class="tab-section col-md-12 mt-3">
+				<ul class="nav nav-pills">
+					<li class="nav-item mr-5"
+						onclick="window.location.href='./databaseObjects'"><a
+						class="nav-link " data-toggle="pill" href="#"><p>Database
+								User / Schema</p> </a></li>
+					<li class="nav-item mr-5"><a class="nav-link active"
+						onclick="window.location.href='./databasePackage'"
+						data-toggle="pill" href="#"><p>Database Package</p></a></li>
+					<!--   <li class="nav-item mr-5" onclick="window.location.href='./databaseSynonym'"><a class="nav-link " data-toggle="pill" href="#"><p>Database Synonym</p> </a></li>
+ -->
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+			<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add </th:block> Project</h4></div>  -->
+			<div class="tab-content form-wrapper px-4 py-4">
+
+				<form id="databasePackage" th:object="${dataGridDTO}" class="px-2 py-2">
+					<!--             	<input type="hidden" class="form-control" id="project_code" name="project_code" th:value="${projectEntity != null ? projectEntity.project_code : ''}">
+ -->
+
+						<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}" name="filterFlag" id="filterFlag" />
+         		<input type="hidden" th:value="${dataGridDTO.paginator.totalRecords}" name="paginator.totalRecords" id="totalRecords" /> 
+				<input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}" name="paginator.recordsPerPage" id="recordsPerPage" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}" id="dataGridAction" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+            	<input type="hidden" id="fltrformId" value="databasePackage">
+
+					<div class="filter-section my-1 pt-1">
+						<div class="row sec-bottom">
+							<div class="col-lg-10 col-xl-11">
+								<div class="row form-group">
+									<div class="col-lg-3">
+										<input type="text" name="db_object_name" id="db_object_name"
+											class="form-control" title="db_object_name"
+											placeholder="Enter Name of Database Package " value="">
+									</div>
+
+									<div class="col-lg-3">
+										<!--                                     <input type="text" name="status" value="" id="status" class="form-control" title="status" placeholder="Enter Status">
+ -->
+										<select class="form-control" name="status" id="status"
+											title="status" placeholder="Enter Status">
+											<option value="">--Select Status--</option>
+											<option value="VALID">Active</option>
+											<option value="INVALID">Inactive</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div
+								class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+								<button type="button"
+									class="btn btn-primary addon-btn filter-inner-btn"
+									title="Search" onclick="searchDatabasePackageFilter()">
+									<i class="fa search"></i>
+								</button>
+								<button type="button"
+									class="btn btn-primary addon-btn filter-inner-btn"
+									title="Clear" onclick="resetDatabasePackageFilter()">
+									<i class="fa clear"></i>
+								</button>
+								<button type="button"
+									class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+									title="No Filters">
+									<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				
+				
+				<div class="clearfix"></div>
+					<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+					<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+					<div class="clearfix"></div>
+
+				<!-- <div th:fragment="ajaxDatabasePackageList"> -->
+					<div class="table-responsive mt-2 w-60" id="dataSpan">
+						<table class="table table-bordered table-striped mb-1" id="table">
+							<thead>
+								<tr class="text-center">
+									<!-- <th class="th-action">Action</th> -->
+									<th>Sr. No.</th>
+									<th class="header">
+										<div class="table-head-inner">
+											<div class="table-heading">Name of Database Package</div>
+											<div class="sort-icon">
+												<i class="fa fa-sort-desc" aria-hidden="true"></i> <i
+													class="fa fa-sort-asc" aria-hidden="true"></i>
+											</div>
+										</div>
+									</th>
+
+									<th class="header">
+										<div class="table-head-inner">
+											<div class="table-heading">Use of Package</div>
+											<div class="sort-icon">
+												<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+											</div>
+										</div>
+									</th>
+
+									<!-- <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Remark</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th> -->
+									<th class="header">
+										<div class="table-head-inner">
+											<div class="table-heading">LastUpdate</div>
+											<div class="sort-icon">
+												<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+											</div>
+										</div>
+									</th>
+									<th class="header">
+										<div class="table-head-inner">
+											<div class="table-heading">Status</div>
+											<div class="sort-icon">
+												<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+											</div>
+										</div>
+									</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								<!-- <tr
+									th:if="${databasePackageGrid != null && !databasePackageGrid.isEmpty()}"
+									th:each="dataGrid,index_count : ${databasePackageGrid}"
+									th:id="${'tr-'+index_count.count}">
+									<td class="td-action text-center">
+									<div
+										class="custom-control custom-checkbox action-check checkbox-mt">
+										<input type="checkbox"
+											class="custom-control-input toggle-action-section "
+											name="actionCheckbox"
+											th:id="'action-'+${index_count.count}+'-'+${dataGrid.project_code}"
+											onclick="openActionDiv(this.id);"> <label
+											class="custom-control-label"
+											th:for="'action-'+${index_count.count}+'-'+${dataGrid.project_code}"></label>
+									</div>
+								</td>
+									<td th:text="${index_count.count}" class="text-center"></td>
+
+									<td th:text="${dataGrid.db_object_name}"></td>
+									<td th:text="${dataGrid.db_objects_use}"></td>
+									 <td th:text="${dataGrid.remark}"></td>
+									<td
+										th:text="${dataGrid.last_ddl_time != null ? #dates.format(dataGrid.last_ddl_time, 'dd-MM-yyyy HH:mm:ss.SS') : ''}"></td>
+									<td th:text="${dataGrid.status}"></td>
+									<td class="text-center"><span
+										th:class="${dataGrid.status == 'VALID'} ? 'text-success' : 'text-danger'"
+										th:text="${dataGrid.status == 'VALID'} ? 'Active' : 'Inactive'"></span>
+									</td>
+
+								</tr>
+								<tr
+									th:unless="${databasePackageGrid != null && !databasePackageGrid.isEmpty()}">
+									<td colspan="16" class="text-center">No Record Found</td>
+								</tr> -->
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+
+	<script type="text/javascript"
+		src="./static/js/databaseMgmt/databaseMgmt.js"></script>
+			
+		<script type="text/javascript">loadDataUsingPaginator('databasePackage');</script>
+</th:block>

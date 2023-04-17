@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<body>
+	<div th:fragment="globalLov" class="add-item-selection" id="globalLov">
+		<style>
+			.loader {
+				position: fixed;
+				left: 50%;
+				top: 50%;
+				border: 10px solid #DCDCDC;
+				border-top: 10px solid #5a95f5;
+				border-radius: 50%;
+				width: 65px;
+				height: 65px;
+				animation: spin 2s linear infinite;
+			}
+			
+			@keyframes spin { 0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform : rotate(360 deg);
+				}
+			}
+
+			
+		</style>
+		<div class="modal fade popup-wrap appParameterModal show" id="globalLovModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+		data-backdrop="static"
+		data-keyboard="false">
+			<div class="modal-dialog modal-xl" role="document">
+				<div class="modal-content" >
+					<div class="modal-header" >
+						<h5 class="modal-title text-white" id="exampleModalLabel">
+							<span id="lov_header"></span>
+							<!-- 							Lov -->
+						</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeGlobalLovModal();">
+							<span aria-hidden="true" title="Close">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row form-group my-2 mx-1">
+							<div class="input-group input-group-sm">
+								<input type="hidden" id="lov_lovid" /> 
+								<input type="hidden" id="lov_post_back_cols" /> 
+								<input type="hidden" id="lov_replacementString" /> 
+								<input type="hidden" id="lov_instant_search" /> 
+								<input type="hidden" id="lov_paginationEnabled" /> 
+								<input type="hidden" id="hiddenSelectedCellTwo" name="hiddenSelectedCellTwo" />
+				                <input type="hidden" id="hiddenSelectedCellThree" name="hiddenSelectedCellThree" />
+								<input type="text" class="form-control form-control-sm" placeholder="Search Text" name="code_field" id="lov_search_field" onkeyup="get_lov_data_instant_search(event);" title="Search Text" />
+								<div class="input-group-append">		
+									<button class="btn btn-primary" title="Search"  onclick="get_lov_data();" type="button">
+										<i aria-hidden="true" class="fa fa-search"></i>
+									</button>
+									<button class="btn btn-primary" id=""  onclick="reset_lov_data();" title="Clear" type="button">
+										<i class="fa fa-refresh"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="lov-table-container table-responsive" id="globalLovModalBody"></div>
+						<div class="text-right"></div>
+						<div class="loader" id="loaderID" style="visibility: hidden;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- <div class="modal fade" id="myModalLov" tabindex="-1" role="dialog"
+			aria-labelledby="myModal" aria-modal="true" data-backdrop="static"
+			data-keyboard="false">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content ">
+					<div class="modal-header">
+						<h5 class="modal-title" id="">Description</h5>
+						<button type="button" title="close" class="close"
+							data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">X</span>
+						</button>
+					</div>
+					<div class="modal-body" id="lovModelTableBody">
+						getting table data from String builder
+					</div>
+				</div>
+			</div>
+		</div> -->
+		<!-- <script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script> -->
+	</div>
+	
+
+
+
+</body>
+	
+</html>

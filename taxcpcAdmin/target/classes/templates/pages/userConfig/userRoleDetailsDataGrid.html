@@ -1,0 +1,114 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+<div th:fragment="ajaxRoleList">
+	<input type="hidden" id="totalrecordsgrid"
+		th:value="${dataGridDTO.paginator.totalRecords}"> <input
+		type="hidden" id="totalPagesgrid"
+		th:value="${dataGridDTO.paginator.totalPages}"> <input
+		type="hidden" id="pageNumbergrid"
+		th:value="${dataGridDTO.paginator.pageNumber}"> <input
+		type="hidden" id="recordsPerPageSelectgrid"
+		th:value="${dataGridDTO.paginator.recordsPerPage}">
+	<div class="table-responsive mt-2 w-60">
+		<table class="table table-bordered table-striped mb-1" id="table">
+			<thead>
+				<tr class="text-center">
+					<th>Action</th>
+					<th class="header">
+						<div class="table-head-inner">
+							<div class="table-heading">Sr. No</div>
+							<div class="sort-icon">
+								<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+							</div>
+						</div>
+					</th>
+					<!-- <th class="th-action">Action</th> -->
+
+					<th class="header">
+						<div class="table-head-inner">
+							<div class="table-heading">Role Type Code</div>
+							<div class="sort-icon">
+								<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+							</div>
+						</div>
+					</th>
+					<th class="header">
+						<div class="table-head-inner">
+							<div class="table-heading">Role Name</div>
+							<div class="sort-icon">
+								<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+							</div>
+						</div>
+					</th>
+
+
+					<th class="header">
+						<div class="table-head-inner">
+							<div class="table-heading">Assigned Dashboard</div>
+							<div class="sort-icon">
+								<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+							</div>
+						</div>
+					</th>
+					<th class="header">
+						<div class="table-head-inner">
+							<div class="table-heading">Status</div>
+							<div class="sort-icon">
+								<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+							</div>
+						</div>
+					</th>
+
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr th:if="${userRoleGrid != null && !userRoleGrid.isEmpty()}"
+					th:each="dataGrid,index_count : ${userRoleGrid}"
+					th:id="${'tr-'+index_count.count}">
+					<td class="td-action text-center">
+						<div
+							class="custom-control custom-checkbox action-check checkbox-mt">
+							<input type="checkbox"
+								class="custom-control-input toggle-action-section"
+								name="actionCheckbox"
+								th:id="'action~'+${index_count.count}+'~'+${dataGrid.role_code}"
+								onclick="openActionDiv(this.id);"> <label
+								class="custom-control-label"
+								th:for="'action~'+${index_count.count}+'~'+${dataGrid.role_code}"></label>
+						</div>
+					</td>
+
+					<td
+						th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10"
+						class="text-center"></td>
+
+					<td><span th:each="user : ${roleTypeList.entrySet()}"
+						th:if="${user.key} == ${dataGrid.role_type_code}"
+						th:text="${user.value}"></span></td>
+
+					<td th:text="${dataGrid.role_name}"></td>
+
+					<td
+						th:text="${dataGrid.assigned_dashboard != null ? dataGrid.assigned_dashboard : ''}"></td>
+					<td
+						th:class="${dataGrid.role_status == 'A'} ? 'text-success text-center' : 'text-danger text-center'"
+						th:text="${dataGrid.role_status != null && dataGrid.role_status == 'A'} ? 'Active' : 'Inactive'"></td>
+
+				</tr>
+
+				<tr th:unless="${userRoleGrid!= null && !userRoleGrid.isEmpty()}">
+					<td colspan="9"
+						class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"><img
+						src="static/images/global/empty-box.png">No Record Found</td>
+				</tr>
+
+
+			</tbody>
+		</table>
+	</div>
+</div>
+
+</html>

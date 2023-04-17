@@ -1,0 +1,421 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+	<link href="./static/stylesheets/wishlistWork/wishlistWork.css"
+		rel="stylesheet" />
+
+	<div class="right-section">
+
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Server Dashboard</p> </a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+
+		<div class="tab-content form-wrapper px-4 py-4">
+			<form id="serverForm" th:object="${dataGridDTO}">
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<div class="input-group">
+							<input type="hidden" id="radio_btn" th:value="${server_type}">
+
+							<!-- <input type="radio" name="btn" id="ALL"  value="ALL" onclick="serachByServerType(this.id)" checked><label>All Servers</label> -->
+							<input type="radio" name="btn" id="PSC" value="PSC" onclick="serachByServerType(this.id)" style="float: left;" checked="checked"> 
+							<label style="margin-right: 40px; margin-left: 6px;">Physical Server</label> 
+							<input type="radio" name="btn" id="ASC" value="ASC" onclick="serachByServerType(this.id)" style="float: left;">
+							<label style="margin-right: 40px; margin-left: 6px;">Application Server</label> 
+							<input type="radio" name="btn" id="DBC" value="DBC" onclick="serachByServerType(this.id)" style="float: left;">
+							<label style="margin-right: 40px; margin-left: 6px;">Database Server</label> 
+							<input type="radio" name="btn" id="WEBC" value="WEBC" onclick="serachByServerType(this.id)" style="float: left;">
+							<label style="margin-right: 40px; margin-left: 6px;">Web Server</label>
+						</div>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+
+				<!-- <input type="hidden" th:value="${dataGridDTO.filter.filterFlag}" name="filterFlag" id="filterFlag" />  -->
+					<input type="hidden" th:value="${dataGridDTO.paginator.totalRecords}" name="paginator.totalRecords" id="totalRecords" /> 
+					<input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" /> 
+					<input  type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}" name="paginator.recordsPerPage" id="recordsPerPage" /> 
+					<input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}" name="paginator.dataGridAction" id="dataGridAction" /> 
+					<input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" /> 
+					<input type="hidden" id="action" name="action" th:value="${action}" />
+
+
+
+				<div class="filter-section my-1 pt-1">
+					<div class="row sec-bottom">
+						<div class="col-lg-10 col-xl-11">
+							<div class="row form-group">
+
+								<div class="col-lg-3">
+									<div>
+										<select class="form-control" id="server_owner_name"
+											name="server_owner_name">
+											<option value="">-- Server Owner Name --</option>
+											<option value="LHS">LHS</option>
+											<option value="FGS">FGS</option>
+											<option value="BANK">BANK</option>
+										</select>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="row form-group collapse" id="extra-filter">
+							
+							<div class="col-lg-3">
+									<input type="text" placeholder="Server Ip" class="form-control" id="server_ip" name="server_ip">
+								</div>
+								
+								<div class="col-lg-3">
+									<input type="text" placeholder="Tag Name" class="form-control" id="tag_name" name="tag_name">
+								</div>
+								
+								<div class="col-lg-3">
+									<select class="form-control" id="entity_code" name="entity_code">
+										<option value="">-- Select Entity Name --</option>
+										<option th:each="entity : ${entityList.entrySet()}"
+											th:value="${entity.key}" th:text="${entity.value}"
+											th:selected="${serverDetailModel!= null && serverDetailModel.entity_code != null && serverDetailModel.entity_code.contains(entity.key)}"></option>
+								     	</select>
+								</div>
+								
+
+							</div>
+						</div>
+						<!-- </div> -->
+						<div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn"
+								title="Search" onclick="serverDetailFilter();">
+								<i class="fa search"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn" title="Clear"
+								onclick="resetServerEntry()">
+								<i class="fa clear"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+								data-toggle="collapse" data-target="#extra-filter"
+								title="Extra Filters">
+								<i class="fa fa-ellipsis-h"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+
+
+
+			</form>
+			<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+			<div
+				th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+			<!-------------------------->
+			<div th:fragment="ajaxServerList">
+				<div id="dataSpan">
+					<div class="card-body">
+						<div class="row pt-3">
+						
+									 <input type="hidden" id="totalrecordsgrid" th:value="${dataGridDTO.paginator.totalRecords}">
+									<input type="hidden" id="totalPagesgrid" th:value="${dataGridDTO.paginator.totalPages}">
+									<input type="hidden" id="pageNumbergrid" th:value="${dataGridDTO.paginator.pageNumber}">
+									<input type="hidden" id="recordsPerPageSelectgrid" th:value="${dataGridDTO.paginator.recordsPerPage}">	
+									
+							<div class="col-md-4" th:each="item ,index_count: ${serverGrid}">
+								<div class="media p-3 kpi bg-white" style="height: 160px"
+									th:attr="ondblclick=|viewServerDetails('${item.server_id}')|">
+
+									 
+									<input type="hidden" th:id="'parent_server11-'+${index_count.count}" th:value="${item.server_id}"> 
+
+									<div
+										class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+
+										<img th:if="${(item.configuration_type == 'PSC') }"
+											th:src=" './static/images/windows1.png' "
+											th:title="${'Physical Server' }"
+											style="height: 60px; width: 60px"> <img
+											th:if="${(item.configuration_type == 'DBC') }"
+											th:src=" './static/images/db_logo.jpg' "
+											th:title="${'Database Server' }"
+											style="height: 60px; width: 60px"> <img
+											th:if="${(item.configuration_type == 'ASC') }"
+											th:src=" './static/images/apps.png' "
+											th:title="${'Application Server' }"
+											style="height: 60px; width: 60px"> <img
+											th:if="${(item.configuration_type == 'WEBC') }"
+											th:src=" './static/images/webs.png' "
+											th:title="${'Web Server' }" style="height: 60px; width: 60px">
+
+									</div>
+
+
+
+
+									<div class="media-body text-muted"
+										th:if="${item.configuration_type == 'PSC'}">
+
+										<input type="hidden" th:id="configuration_type1"
+											th:value="${item.configuration_type}">
+										<div class="tag-name"></div>
+										<span th:text="${'' + item.tag_name}"
+											style="font-weight: bold;" title="Tag Name"></span> <span
+											title="Edit"
+											th:attr="onclick=|editServerDetails('${item.server_id}'+'-'+'${item.configuration_type}')|">
+											<i class="fa fa-pencil edit-button "
+											style="background-color: #14de9b; float: right; margin-right: 10px; color: #fff; padding: 2px 2px; border-radius: 5px"></i>
+										</span> <span
+											th:attr="onclick=|deleteServerDetails('${item.server_id}'+'-'+'${item.configuration_type}')|">
+											<i class="fa fa-trash delete-button"
+											style="background-color: #ef4009; float: right; margin-right: 10px; color: #fff; padding: 2px 2px; border-radius: 5px"
+											title="Delete"></i>
+										</span>
+
+
+
+										<div class="clearfix"></div>
+										<span th:text="${'Server Owner :- ' + item.server_owner_name}"></span>
+										<div class="clearfix"></div>
+										<span th:text="${'Local IP :- ' + item.server_ip}"></span>
+										<div class="clearfix"></div>
+										<span th:text="${'Public IP :- ' + item.public_ip}"></span>
+										<div class="clearfix"></div>
+										<span th:text="${'Host Name :- ' + item.host_name}"></span>
+										<div class="clearfix"></div>
+										<div class="clearfix"></div>
+									</div>
+									<!--  APP-->
+									<div class="media-body text-muted"
+										th:if="${item.configuration_type == 'ASC'}">
+
+										<input type="hidden" th:id="configuration_type1"
+											th:value="${item.configuration_type}">
+										<div class="tag-name"></div>
+										<span th:text="${'' + item.tag_name}"
+											style="font-weight: bold;" title="Tag Name"></span> <span
+											title="Edit"
+											th:attr="onclick=|editServerDetails('${item.server_id}'+'-'+'${item.configuration_type}')|">
+											<i class="fa fa-pencil edit-button "
+											style="background-color: #14de9b; float: right; margin-right: 10px; color: #fff; padding: 2px 2px; border-radius: 5px"></i>
+										</span> <span
+											th:attr="onclick=|deleteServerDetails('${item.server_id}'+'-'+'${item.configuration_type}')|">
+											<i class="fa fa-trash delete-button"
+											style="background-color: #ef4009; float: right; margin-right: 10px; color: #fff; padding: 2px 2px; border-radius: 5px"
+											title="Delete"></i>
+										</span>
+
+
+										<div class="clearfix"></div>
+										<span th:text="${'Link Server IP :- ' + item.server_ip }"></span>
+										<div class="clearfix"></div>
+										<span
+											th:text="${'App Server Type :- ' + item.app_server_name}"></span>
+										<img
+											th:if="${(item.configuration_type == 'ASC') && item.app_server_name=='WEB LOGIC' }"
+											th:src=" './static/images/weblogic.jpg' "
+											th:title="${'Application Server' }"
+											style="height: 25px; width: 25px"> <img
+											th:if="${(item.configuration_type == 'ASC') && item.app_server_name=='JBOSS' }"
+											th:src=" './static/images/Jboss.png' "
+											th:title="${'Application Server' }"
+											style="height: 25px; width: 25px"> <img
+											th:if="${(item.configuration_type == 'ASC') && item.app_server_name=='TOMCAT' }"
+											th:src=" './static/images/tomcat.png' "
+											th:title="${'Application Server' }"
+											style="height: 25px; width: 25px">
+										<div class="clearfix"></div>
+										<span th:text="${'App Server Ip :- ' + item.app_server_ip}"></span>
+										<div class="clearfix"></div>
+										<span
+											th:text="${'App Server port :- ' + item.app_server_port}"></span>
+										<div class="clearfix"></div>
+										<span
+											th:text="${'App Tag Name :- ' + item.app_server_tag_name}"></span>
+										<div class="clearfix"></div>
+										<div class="clearfix"></div>
+									</div>
+
+									<!-- WEB -->
+
+									<div class="media-body text-muted"
+										th:if="${item.configuration_type == 'WEBC'}">
+
+										<input type="hidden" th:id="configuration_type1"
+											th:value="${item.configuration_type}">
+										<div class="tag-name"></div>
+										<span th:text="${'' + item.tag_name}"
+											style="font-weight: bold;" title="Tag Name"></span> <span
+											title="Edit"
+											th:attr="onclick=|editServerDetails('${item.server_id}'+'-'+'${item.configuration_type}')|">
+											<i class="fa fa-pencil edit-button "
+											style="background-color: #14de9b; float: right; margin-right: 10px; color: #fff; padding: 2px 2px; border-radius: 5px"></i>
+										</span> <span
+											th:attr="onclick=|deleteServerDetails('${item.server_id}'+'-'+'${item.configuration_type}')|">
+											<i class="fa fa-trash delete-button"
+											style="background-color: #ef4009; float: right; margin-right: 10px; color: #fff; padding: 2px 2px; border-radius: 5px"
+											title="Delete"></i>
+										</span>
+
+
+										<div class="clearfix"></div>
+										<span th:text="${'link Server IP :- ' + item.server_ip}"></span>
+										<div class="clearfix"></div>
+										<span
+											th:text="${'Web Server Type :- ' + item.app_server_name}"></span>
+
+										<img
+											th:if="${(item.configuration_type == 'WEBC') && item.app_server_name=='WEB LOGIC' }"
+											th:src=" './static/images/weblogic.jpg' "
+											th:title="${'Application Server' }"
+											style="height: 25px; width: 25px"> <img
+											th:if="${(item.configuration_type == 'WEBC') && item.app_server_name=='JBOSS' }"
+											th:src=" './static/images/Jboss.png' "
+											th:title="${'Application Server' }"
+											style="height: 25px; width: 25px"> <img
+											th:if="${(item.configuration_type == 'WEBC') && item.app_server_name=='TOMCAT' }"
+											th:src=" './static/images/tomcat.png' "
+											th:title="${'Application Server' }"
+											style="height: 25px; width: 25px">
+										<div class="clearfix"></div>
+										<span th:text="${'Web Server Ip :- ' + item.app_server_ip}"></span>
+										<div class="clearfix"></div>
+										<span
+											th:text="${'Web Server port :- ' + item.app_server_port}"></span>
+										<div class="clearfix"></div>
+										<span
+											th:text="${'Web Tag Name :- ' + item.app_server_tag_name}"></span>
+										<div class="clearfix"></div>
+										<div class="clearfix"></div>
+									</div>
+
+									<!-- DB -->
+
+									<div class="media-body text-muted"
+										th:if="${item.configuration_type == 'DBC'}">
+
+										<input type="hidden" th:id="configuration_type1"
+											th:value="${item.configuration_type}">
+										<div class="tag-name"></div>
+										<span th:text="${'' + item.tag_name}"
+											style="font-weight: bold;" title="Tag Name"></span> <span
+											title="Edit"
+											th:attr="onclick=|editServerDetails('${item.server_id}'+'-'+'${item.configuration_type}')|">
+											<i class="fa fa-pencil edit-button "
+											style="background-color: #14de9b; float: right; margin-right: 10px; color: #fff; padding: 2px 2px; border-radius: 5px"></i>
+										</span> <span
+											th:attr="onclick=|deleteServerDetails('${item.server_id}'+'-'+'${item.configuration_type}')|">
+											<i class="fa fa-trash delete-button"
+											style="background-color: #ef4009; float: right; margin-right: 10px; color: #fff; padding: 2px 2px; border-radius: 5px"
+											title="Delete"></i>
+										</span>
+
+
+										<div class="clearfix"></div>
+										<span th:text="${'Server IP :- ' + item.server_ip}"></span>
+										<div class="clearfix"></div>
+										<span th:text="${'Database Server Ip :- ' + item.server_ip}"></span>
+										<div class="clearfix"></div>
+										<span
+											th:text="${'Installed Database :- ' + item.installed_db}"></span>
+										<div class="clearfix"></div>
+										<span
+											th:text="${'Installed Database Tool :- ' + item.installed_db_tool}"></span>
+										<div class="clearfix"></div>
+										<div class="clearfix"></div>
+									</div>
+
+
+									<div class="float-right">
+										<input type="hidden"
+											th:id="'server_type_code-'+${index_count.count}"
+											th:value="${item.configuration_type}"> <input
+											type="hidden" th:id="'server_id11-'+${index_count.count}"
+											th:value="${item.server_id}">
+
+										<div title="Expand to get app server(s) info."
+											class="server-detail" data-toggle="collapse" data-target=""
+											th:id="'server_id-'+${index_count.count}"
+											th:value="${item.server_id}" onclick="getServerData(this.id)"
+											th:if="${item.configuration_type == 'PSC'}">
+											<i class="fa fa-arrow-down"></i>
+										</div>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+
+								<!-- dropdown table  -->
+								<div class="card-footer collapse"
+									th:id="'displayAppServerDiv_'+${index_count.count}"
+									style="display: none;">
+									<div class="" th:id="'tableContent_'+${index_count.count}"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-12" style="margin-left: 650px;">
+									<div class="input-group">
+										<div
+											th:unless="${serverGrid != null && !serverGrid.isEmpty()}">
+											<!--   <span  class="text-center" >No Record Found</span> -->
+											<div
+												class="no-record-found-browse col-lg-12 offset-lg-3 my-3 text-center">
+												<img src="static/images/global/empty-box.png"> No
+												Records Found
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4"></div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- view box -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModal" aria-modal="true" data-backdrop="static"
+			data-keyboard="false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content ">
+					<div class="modal-header">
+						<h5 class="modal-title" id="">Details</h5>
+						<button type="button" title="close" class="close"
+							data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">X</span>
+						</button>
+					</div>
+					<div class="modal-body" id="serverModelTableBody">
+						<!-- getting table data from String builder -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript"
+		src="./static/js/server details/serverDetails.js"></script>
+
+	<script type="text/javascript"
+		src="./static/js/global/lhs/lhsGlobal.js"></script>
+
+	<script type="text/javascript">
+		loadDataUsingPaginator('serverForm');
+	</script>
+
+	<script>
+		onLoadRadioButton();
+	</script>
+</th:block>

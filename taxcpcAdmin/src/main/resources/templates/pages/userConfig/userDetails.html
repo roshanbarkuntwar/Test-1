@@ -1,0 +1,273 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<div class="right-section" >
+	
+	
+			<div class="text-center col-md-12" id=" notificationMsgDiv "
+				style="display: none">
+				<div class="d-inline-block">
+					<div class="form-validation form-validation--info p-1 my-1">
+						<i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
+						<h5 class="d-inline-block" id="notificationMsg">Please Fill
+							Mandatory Fields</h5>
+					</div>
+				</div>
+			</div>
+			<div class="tab-section col-md-12 mt-3">
+		        <ul class="nav nav-pills">
+					<li class="nav-item mr-5"><a class="nav-link active" data-toggle="pill" href="#"><p>User Dashboard</p> </a></li>
+		            <li onclick="window.location.href='./addNewUser'" class="nav-item"><a class="nav-link" data-toggle="pill" href="#"><p> Add User </p></a></li>
+				</ul>
+			 	<div class="clearfix"></div>
+			</div>
+		 	<div class="clearfix"></div>
+			<!-- <div class="col-md-12 my-1"> 
+				<h4 class="page-title mb-2">User Dashboard</h4>
+				<button type="button" class="btn btn-primary pull-right" onclick="window.location.href='./addNewUser'" title="Add">Add New User</button>
+			</div> -->
+			<div class="tab-content form-wrapper px-4 py-4">
+			<!-- <div class="button-section  my-1 pt-1"> 
+                <button type="button" class="form-btn" id="" title="Select filter for download" disabled="disabled"><i class="fa fa-file-excel-o" aria-hidden="true"></i>Capture Page Data in Excel</button>
+            </div> -->
+            <form id="userForm" th:object="${dataGridDTO}"> 
+            	
+            	<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}" name="filterFlag" id="filterFlag" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.totalRecords}" name="paginator.totalRecords" id="totalRecords" /> 
+				<input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}" name="paginator.recordsPerPage" id="recordsPerPage" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}" id="dataGridAction" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+            	
+                <div class="filter-section my-1 pt-1">
+                    <div class="row sec-bottom">
+                        <div class="col-lg-10 col-xl-11">
+                            <div class="row form-group">
+                                <div class="col-lg-3">
+                                    <input type="text" name="user_name" id="user_name" class="form-control" title="User Name" 
+                                    placeholder="User Name" th:value="${dataGridDTO.filter.user_name}"  onkeydown="return (event.keyCode!=13);">
+                                </div>
+                                <div class="col-lg-3">
+                                	<select class="form-control" id="user_type" name="user_type" title="User Type">
+			                        	<option value="">--Select User Type--</option>
+										<option value="LHS">LHS</option>
+										<option value="FGS">FGS</option>
+										<option value="ONSITE">ONSITE</option>
+		                        	</select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <select class="form-control" id="user_mode" name="user_mode" title="User Mode">
+			                        	<option value="">--Select User Mode--</option>
+										<option value="T">Team</option>
+										<option value="U">User</option>
+		                        	</select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <!-- <input type="text" name="" value="" id="" class="form-control" title="Role" placeholder="Role"> -->
+                                	<select class="form-control" id="role_code" name="role_code" title="Role" placeholder="Role">
+			                        	<option value="">--Select Role--</option>
+										 <option th:each="role : ${roleList.entrySet()}" th:value="${role.key}" th:text="${role.value}"
+										 th:selected="${dataGridDTO != null && dataGridDTO.filter != null && dataGridDTO.filter.role_code != null && dataGridDTO.filter.role_code.equalsIgnoreCase(role.key)}"></option>
+		                        	</select>
+                                </div>
+                                </div>
+                                <div class="collapse" id="remainingFilter" style="">
+                                <div class="row form-group">
+                               <!--     <div class="col-lg-3">
+                                    <input type="text" name="" value="" id="" class="form-control" title="Department" placeholder="Department">
+                                    <select class="form-control" id="" name="dept_str" title="Department" placeholder="Department">
+			                        	<option value="">--Select Department--</option>
+										<option th:each="dept : ${deptList.entrySet()}" th:value="${dept.key}" th:text="${dept.value}"
+										 th:selected="${userEntity != null && userEntity.dept_str != null && userEntity.dept_str.equalsIgnoreCase(dept.key)}"></option> 			                        
+			                        </select>
+                                </div> -->
+                                <div class="col-lg-3"> 
+                                    <select name="status" id="user_status" class="form-control" title="Status" placeholder="Status">
+										<option value="">--Select Status--</option>
+										<option value="A">Active</option>
+										<option value="I">Inactive</option>
+									</select>
+								</div>   
+
+                                </div>
+                            </div> 
+                            
+                        </div>
+                        <div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Search" onclick="searchUserFilter()"><i class="fa search"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Clear" onclick="resetUserFilter()"><i class="fa clear"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"  data-toggle="collapse" data-target="#remainingFilter"  title="Extra Filters" aria-expanded="false"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button> 
+                        </div> 
+                    </div>  
+                </div> 
+            </form>
+            
+            <div class="clearfix"></div>
+			<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+			<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+			<div class="clearfix"></div>
+			
+					<div class="table-responsive mt-2 w-60" id="dataSpan">
+				      	<table class="table table-bordered table-striped mb-1" id="table">
+					        <thead>
+					          <tr class="text-center">
+					          <th class="th-action check-action text-center"></th>
+					          	<th>Sr. No.</th>
+					          <!--   <th class="th-action">Action</th> -->
+					            <th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  User Name</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+					            <th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  User Type</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i></div>
+					              </div>
+					            </th>
+					             <th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  Login Id</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+					             <th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  Role</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+					             <!-- <th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  Department</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th> -->
+					            <th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  User Mode</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+					           
+					            <th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  Email</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+					            <th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  Phone No.</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+					             <th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  Status</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+					          </tr>
+					        </thead>
+					        	<tbody>
+				<!-- <tr th:if="${userMastGrid != null && !userMastGrid.isEmpty()}"
+					th:each="dataGrid,index_count : ${userMastGrid}"
+					th:id="${'tr-'+index_count.count}">
+					<td class="td-action text-center">
+						<div
+							class="custom-control custom-checkbox action-check checkbox-mt">
+							<input type="checkbox"
+								class="custom-control-input toggle-action-section"
+								name="actionCheckbox"
+								th:id="'action~'+${index_count.count}+'~'+${dataGrid.user_code}"
+								onclick="openActionDiv(this.id);"> <label
+								class="custom-control-label"
+								th:for="'action~'+${index_count.count}+'~'+${dataGrid.user_code}"></label>
+						</div>
+					</td>
+					<input type="hidden" id="totalrecordsgrid"
+						th:value="${dataGridDTO.paginator.totalRecords}">
+					<input type="hidden" id="totalPagesgrid"
+						th:value="${dataGridDTO.paginator.totalPages}">
+					<input type="hidden" id="pageNumbergrid"
+						th:value="${dataGridDTO.paginator.pageNumber}">
+					<input type="hidden" id="recordsPerPageSelectgrid"
+						th:value="${dataGridDTO.paginator.recordsPerPage}">
+					<td
+					
+						th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10"
+						class="text-center"></td>
+
+					<td th:text="${dataGrid.user_name}"></td>
+					<td th:text="${dataGrid.user_type}"></td>
+					<td th:text="${dataGrid.loginId}"></td>
+					<td><th:block
+							th:if="${roleList != null && dataGrid.role_code != null}"
+							th:each="role : ${roleList.entrySet()}">
+							<span
+								th:text="${dataGrid.role_code.equalsIgnoreCase(role.key) ? role.value : ''}"></span>
+						</th:block></td>
+					 <td>
+			            	<th:block th:if="${deptList != null && dataGrid.dept_str != null}" th:each="dept : ${deptList.entrySet()}" >
+								<span th:text="${dataGrid.dept_str.equals(dept.key) ? dept.value : ''}"></span>
+							</th:block>
+			            </td>
+					<td
+						th:text="${dataGrid.user_mode != null && dataGrid.user_mode == 'T'} ? 'Team' : 'User'"></td>
+
+					<td th:text="${dataGrid.email}"></td>
+					<td th:text="${dataGrid.phone_no}"></td>
+					<td><span
+						th:class="${dataGrid.user_status == 'A'} ? 'text-success' : 'text-danger'"
+						th:text="${dataGrid.user_status == 'A'} ? 'Active' : 'Inactive'"></span>
+					</td>
+					
+				</tr>
+				<tr th:unless="${userMastGrid != null && !userMastGrid.isEmpty()}">
+					<td colspan="11" class="text-center">No Record Found</td>
+				</tr> -->
+			</tbody>
+			      		</table>
+				    </div>
+			</div>
+		<!-- </div> -->
+		<div class="action-section bg-white text-center fixed-bottom" id="actiondiv">
+			<button type="button" class="action-btn action-btn--edit mr-2" id="editBtn" style="display: inline-block;" onclick="editUser();"> <i class="fa fa-pencil"></i>Edit</button>
+<!-- 			<button type="button" class="action-btn action-btn--delete mr-2" id="deleteBtn"  style="display: inline-block;" onclick="deleteUser('deleteUser');"> <i class="fa fa-trash"></i>Delete</button>  -->
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="./static/js/userConfig/userConfig.js"></script>
+	
+	<script type="text/javascript">loadDataUsingPaginator('userForm');
+	
+	
+	
+	document.addEventListener('keypress', function (e) {
+	    if (e.keyCode === 13 || e.which === 13) {
+	        e.preventDefault();
+	        return false;
+	    }
+	    
+	});
+	
+	</script>
+	<script type="text/javascript">
+	hideDownloadFunction();
+		</script>
+	
+		
+</th:block>

@@ -1,0 +1,254 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+	
+<div  th:fragment="ajaxEntityList">
+<div class="divScroll">
+<input type="hidden" id="viewText" name="viewText" th:value="${mode}" />
+ <input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}">
+				   <input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				  <input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				   <input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}">
+  <table class="table"  id="table">
+						<thead>
+					     <tr class="text-center">
+							<th class="th-action">Action</th>
+                                <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Sr. No</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+									
+                               <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Entity Code</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Entity Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Division</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+							
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">City Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">PIN Code</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+							
+							
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Phone No</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Email Id</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Website</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">War File Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+						 <!-- <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">DB_User</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>   -->
+								
+							</tr>
+
+						</thead>
+						
+						<tbody >
+						
+					
+						<tr   th:if="${entityGrid!= null && !entityGrid.isEmpty()}"
+								th:each="dataGrid,index_count : ${entityGrid}"
+								th:id="'tr-'+${index_count.count}+'-'+${dataGrid.entity_code}">
+								<td class="td-action text-center">
+									<div class="custom-control custom-checkbox action-check checkbox-mt">
+										<input  type="checkbox"
+												class="custom-control-input toggle-action-section"
+												name="actionCheckbox"
+												th:id="'action~'+${index_count.count}+'~'+${dataGrid.entity_code}+'~'+${mode}"
+												onclick="openActionDiv(this.id);"> 
+											
+										<label
+											class="custom-control-label"
+											th:for="'action~'+${index_count.count}+'~'+${dataGrid.entity_code}+'~'+${mode}">
+										</label>
+									</div>
+								</td>
+
+				<td th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10"  class="text-center"></td>
+								<td th:text="${dataGrid.entity_code} " class="text-center"></td>
+								<td th:text="${dataGrid.entity_name}" class="text-left"></td>
+							    <td class="text-left"><span th:each="user : ${divisionList.entrySet()}"
+										th:if="${user.key} == ${dataGrid.division}"
+										th:text="${user.value}"> </span></td>
+								<td th:text="${dataGrid.city}" class="text-left"></td>
+								<td th:text="${dataGrid.pin}" class="text-center"></td>
+								<td th:text="${dataGrid.phone}" class="text-center" ></td>
+								<td  class="text-left"  style="white-space: pre-line"; th:text="${dataGrid.email}"  ></td>
+  						    	<td class="text-left" style="white-space: pre-line";  th:text="${dataGrid.website}"></td>
+								<td  class="text-left pre-wrap" th:text="${dataGrid.add3}"></td> 
+ 								<!-- <td th:text="${dataGrid.db_user}"class="text-left" ></td> -->
+ 							</tr>
+ 
+
+                 <tr th:unless="${entityGrid != null && !entityGrid.isEmpty()}">
+				<td colspan="9" class="text-center">No Record Found</td>
+			</tr>
+ 
+
+						</tbody>
+						
+ 
+						
+					</table>
+					</div>
+			</div>
+			
+			
+			<form action="">
+			<div class="tab-content form-wrapper px-4 py-4" id="dataSpan" >
+ 
+					
+		<div class="row pt-3" th:fragment="ajaxEntityListCard">
+                
+					
+			<input type="hidden" id="viewCard" name="viewCard" th:value="${mode}" />
+
+			<div class="col-md-3"
+				th:if="${entityGrid!= null && !entityGrid.isEmpty()}"
+				th:each="item:${entityGrid}">
+
+
+				<div class="media header p-4 kpi bg-white">
+
+					<div title="Entity Code"
+						class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+						<h3 style="color:yellow;" title="Entity Code" th:text="${item.entity_code}" ></h3>
+					</div>
+
+					<input type="hidden"
+					
+						th:value="${#session.getAttribute('LOGIN_USER').edit_right}">
+           
+					<span th:each="user,index_count:${maplist}"
+						th:if="${user.key} == ${item.entity_code}"> <img
+						th:src="@{'data:image/jpeg;base64,'+${user.value}}" width="60" height="60" title="Bank Logo" />
+					</span>
+
+
+					<div class="media-body text-muted" id="entityList">
+
+						<h6   class="text-right" title="Entity Name" th:text="${item.entity_name}" ></h6>
+						
+<!-- 							<h6 title="Entity Name" th:text="${item.entity_name}" style="text-align: center;"></h6>
+ -->						
+						<div class="text-right">
+						
+						<span th:attr="onclick=|viewEntity('${item.entity_code}')|"><i
+							class="fa fa-eye view-button"
+							style="background-color: #4dd5e8; color: #fff; padding: 2px 2px; border-radius: 5px"
+							data-toggle="modal" data-target="#myModal" title="View"></i></span> <span
+							th:attr="onclick=|editEntity('${item.entity_code}')|"
+							title="Edit"><i class="fa fa-pencil edit-button "
+							style="background-color: #14de9b; color: #fff; padding: 2px 2px; border-radius: 5px"></i></span>
+
+					</div>
+					<input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}">
+				   <input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				  <input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				   <input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}">  
+</div>
+				</div>
+
+			</div>
+			<div class="row" >
+			     <div class="col-md-4"></div>
+				<div class="col-md-12" style="margin-left: 650px;">
+				<div class="input-group">
+				<div  th:unless="${entityGrid!= null && !entityGrid.isEmpty()}">
+				           <div class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"> 
+				<img  src="static/images/global/empty-box.png"> No Records Found</div>
+			     </div>	
+				</div></div>
+				<div class="col-md-4"></div>
+				</div>
+
+
+		</div>
+
+	</div>
+			
+	</form>	
+	
+
+
+</html>

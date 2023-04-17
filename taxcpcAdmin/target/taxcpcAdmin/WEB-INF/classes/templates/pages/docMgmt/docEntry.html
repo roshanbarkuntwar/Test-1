@@ -1,0 +1,223 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<style>
+.custom-file-label::after {
+	background-color: #4e8dff !important;
+	border-left: 1px solid #4e8dff !important;
+}
+</style>
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link"
+					data-toggle="pill" href="#"
+					onclick="window.location.href='./docDetail'"><p>Document
+							Details</p> </a></li>
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Document Entry</p> </a></li>
+
+				<!-- <li class="nav-item mr-5" onclick="window.location.href='./docEntry?mode=Q'"><a class="nav-link" data-toggle="pill" href="#"><p> Quick Document Entry </p></a></li>
+				<li class="nav-item" onclick="window.location.href='./quickDocDetail'"><a class="nav-link" data-toggle="pill" href="#"><p> Quick Doc Dashboard </p></a></li> -->
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="tab-content form-wrapper px-4 py-4">
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+			<form id="docEntryForm" autocomplete="off" enctype="multipart/form-data">
+
+				<input type="hidden" id="doc_mode" name="doc_mode" value="O" /> <input
+					type="hidden" name="doc_code" id="doc_code"
+					th:each="docTranEntity: ${docTranEntity}"
+					th:value="${docTranEntity.doc_code}" /> <input type="hidden"
+					name="user_code"
+					th:value="${#session.getAttribute('LOGIN_USER').user_code}" />
+				<div class="px-2 py-2">
+
+
+					<div class="row form-group pt-2" id="projectDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Document Type <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select class="form-control" id="doc_type_code"
+								name="doc_type_code">
+								<option value="">--Select Document Type --</option>
+								<option th:each="doc : ${docTypeList.entrySet()}"
+									th:value="${doc.key}" th:text="${doc.value}"
+									th:selected="${docTranEntity != null && docTranEntity.doc_type_code != null && docTranEntity.doc_type_code.contains(doc.key)}"></option>
+							</select>
+
+						</div>
+					</div>
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Document Name <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="doc_name"
+								name="doc_name"
+								th:value="${docTranEntity != null ? docTranEntity.doc_name : ''}"
+								placeholder="Doc Name" maxlength="100" />
+						</div>
+					</div>
+
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Application Name <span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+
+						<div class="col-lg-7 col-xl-4">
+							<select class="form-control" id="project_code"
+								name="project_code">
+								<option value="">--Select Application Name--</option>
+
+								<option th:each="project : ${projectList.entrySet()}"
+									th:value="${project.key}" th:text="${project.value}"
+									th:selected="${docTranEntity!= null && docTranEntity.project_code != null && docTranEntity.project_code.contains(project.key)}"></option>
+							</select>
+						</div>
+					</div>
+
+
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Select Document <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+
+						<div class="col-lg-7 col-xl-4">
+							<div class="file">
+								<input type="file" class="form-control" name="doc_file"
+									id="doc_file">
+								<th:block th:switch="T">
+									<div th:case="${docTranEntity.local_drive_flag}"
+										th:text="${file}"></div>
+									<div th:case="${docTranEntity.database_flag}"
+										th:text="${docfile}" th:value="${datafile}"></div>
+								</th:block>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Remark </label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<div class="input-group">
+								<textarea class="form-control" id="remark" name="remark"
+									rows="10"
+									th:text="${docTranEntity != null ? docTranEntity.remark : ''}"
+									placeholder="Remark"></textarea>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Refer/Online Link </label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="url" class="form-control" id="refer_link"
+								th:value="${docTranEntity  != null ?docTranEntity.refer_link : ''}"
+								name="refer_link" placeholder="www.google.com" />
+						</div>
+					</div>
+
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Upload To<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+
+							<div class="form-check form-check-inline">
+
+								<input type="checkbox" class="form-check-input ml-2" value="F"
+									th:checked="${docTranEntity != null && 'T'.equals(docTranEntity.local_drive_flag)}"
+									name="local_drive_flag" id="doc_location1"
+									onclick="$(this).attr('value', this.checked ? 'T' : 'F')" />
+								<label class="form-check-label" for="doc_location1">Physical
+									Drive</label>
+							</div>
+
+							<div class="form-check form-check-inline">
+								<input type="checkbox" class="form-check-input ml-2"
+									name="google_drive_flag" id="doc_location2" value="F"
+									th:checked="${docTranEntity != null && 'T'.equals(docTranEntity.google_drive_flag)}"
+									onclick="$(this).attr('value', this.checked ? 'T' : 'F')" /> <label
+									class="form-check-label" for="doc_location2">Google
+									Drive</label>
+							</div>
+
+							<div class="form-check form-check-inline">
+
+								<input type="checkbox" class="form-check-input ml-2" value="F"
+									name="database_flag" id="doc_location3"
+									th:checked="${docTranEntity != null && 'T'.equals(docTranEntity.database_flag)}"
+									onclick="$(this).attr('value', this.checked ? 'T' : 'F')" />
+								<label class="form-check-label" for="doc_location3">Database</label>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-4 offset-md-4">
+							<div class="form-group  text-center">
+
+								<button type="button" class="form-btn"
+									th:if="${action != null && action == 'save'}"
+									onclick="saveDocument();">
+									<i class="fa fa-floppy-o" aria-hidden="true"></i> <span>Save
+										& Exit</span>
+								</button>
+
+								<button type="button" class="form-btn"
+									th:if="${action != null && action == 'edit'}"
+									onclick="saveDocument();">
+									<i class="fa fa-floppy-o" aria-hidden="true"></i><span>Update
+										& Exit</span>
+								</button>
+
+								<button type="button" class="form-btn"
+									th:if="${action != null && action == 'save'}"
+									onclick="window.location.href='./docEntry'">
+									Reset <i class="fa fa-undo" aria-hidden="true"></i>
+								</button>
+
+								<button type="button" class="form-btn"
+									onclick="window.location.href='./docDetail'";>
+									<i class="fa cancel" aria-hidden="true"></i>Cancel
+								</button>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" src="./static/js/docMgmt/docMgmt.js"></script>
+</th:block>
+</html>

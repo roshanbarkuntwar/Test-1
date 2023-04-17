@@ -1,0 +1,363 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+<link href="./static/stylesheets/requisition/requisition.css"
+		rel="stylesheet">
+		<link href="./static/stylesheets/importantUrl/importantUrl.css"
+                rel="stylesheet" />
+                <link href="./static/stylesheets/dashboard/dashboard-new.css"
+		rel="stylesheet" />
+	<div class="right-section">
+	
+
+
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active" data-toggle="pill" href="#"><p>Onsite  Requisition Dashboard</p> </a></li>
+				<li  th:if="${#session.getAttribute('LOGIN_USER').add_right.equalsIgnoreCase('1')}" onclick="window.location.href='./onsiteReqEntry'"class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p>Onsite Requisition Entry</p></a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+	
+	<div class="tab-content form-wrapper px-4 py-4">
+					<form id="onsiteReqForm" th:object="${dataGridDTO}" class="px-2 py-2">
+					    <input type="hidden"  th:value="${dataGridDTO.paginator.totalRecords}"name="paginator.totalRecords" id="totalRecords" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"name="paginator.recordsPerPage" id="recordsPerPage" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"	id="dataGridAction" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+				    	 <input type="hidden" th:value="${req_code}" id="req_code" />
+
+
+
+				<div class="filter-section my-1 pt-1">
+					<div class="row sec-bottom">
+						<div class="col-lg-10 col-xl-11">
+							<div class="row form-group">
+
+
+								<div class="col-lg-3">
+									<input type="text" class="form-control" id="req_code1"
+										name="req_code1" placeholder="Requisition No."
+										onkeydown="return (event.keyCode!=13);">
+								</div>
+
+								<div class="col-lg-3">
+									<select class="form-control" id="req_type" name="req_type">
+										<option value="">--Select Issue Type--</option>
+										<option th:each="project : ${viewList.entrySet()}"
+											th:value="${project.key}" th:text="${project.value}"></option>
+									</select>
+								</div>
+
+
+                                <div class="col-lg-3">
+									<div class="input-group">
+										<input type="hidden" id="from_date1" name="from_date1">
+										<input type="text" class="form-control"
+											placeholder="From Date Target" id="from_date" name="from_date"
+											title="From Date" readonly="readonly"
+											style="background-color: #ffffff;">
+										<div class="input-group-append">
+											<button type="button" class="btn btn-primary addon-btn"
+												id="completionDateBtn"
+												onmouseover="openCalendar('from_date', 'completionDateCal');"
+												oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');">
+												<i class="fa fa-calendar" id="completionDateCal"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="input-group">
+										<input type="hidden" id="to_date1" name="to_date1"> <input
+											type="text" class="form-control" placeholder="To Date Target"
+											id="to_date" name="to_date" title="To Date"
+											readonly="readonly" style="background-color: #ffffff;">
+										<div class="input-group-append">
+											<button type="button" class="btn btn-primary addon-btn"
+												id="completionDateBtn"
+												onmouseover="openCalendar('to_date', 'completionDateCal1');"
+												oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');">
+												<i class="fa fa-calendar" id="completionDateCal1"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								
+							
+							</div>
+							<div class="row form-group collapse" id="extra-filter">
+							
+						 <div class="col-lg-3">
+									<div class="input-group">
+										<input type="hidden" id="from_date2" name="from_date2">
+										<input type="text" class="form-control"
+											placeholder="From Date Reported" id="from_date_new" name="from_date_new"
+											title="From Date" readonly="readonly"
+											style="background-color: #ffffff;">
+										<div class="input-group-append">
+											<button type="button" class="btn btn-primary addon-btn"
+												id="completionDateBtn"
+												onmouseover="openCalendar('from_date_new', 'completionDateCal2');"
+												oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');">
+												<i class="fa fa-calendar" id="completionDateCal2"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="input-group">
+										<input type="hidden" id="to_date2" name="to_date2"> <input
+											type="text" class="form-control" placeholder="To Date Reported"
+											id="to_date_new" name="to_date_new" title="To Date"
+											readonly="readonly" style="background-color: #ffffff;">
+										<div class="input-group-append">
+											<button type="button" class="btn btn-primary addon-btn"
+												id="completionDateBtn"
+												onmouseover="openCalendar('to_date_new', 'completionDateCal3');"
+												oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');">
+												<i class="fa fa-calendar" id="completionDateCal3"></i>
+											</button>
+										</div>
+									</div>
+								</div> 
+								
+                               
+							
+								<div class="col-lg-3">
+									<select class="form-control" id="current_req_status"
+										name="current_req_status">
+										<option value="">--Select Current Status--</option>
+										<option th:each="project : ${statusList.entrySet()}"
+											th:value="${project.key}" th:text="${project.value}"></option>
+									</select>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn"
+								title="Search" onclick="searchOnsiteDetailFilter()">
+								<i class="fa search"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn" title="Clear"
+								onclick="resetOnsiteDetailFilter()">
+								<i class="fa clear"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+								data-toggle="collapse" data-target="#extra-filter"
+								title="Extra Filters" aria-expanded="false">
+								<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+							</button>
+
+						</div>
+					</div>
+				</div>
+			</form>
+					
+					
+					<div class="clearfix"></div>
+					<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+					<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+					<div class="clearfix"></div>
+					
+					
+					
+					<div class="table-responsive mt-2 w-60" id="dataSpan">
+					<table class="table table-bordered table-striped mb-1" id="table">
+						<thead>
+						<tr>
+							<th class="th-action">Action</th>
+							                <th>Sr. No</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Document Type</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Document Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Application Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Prepared By</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Download</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Link</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+							</tr>
+
+						</thead>
+						 <tbody>
+						
+                            </tbody>
+                  	</table>
+				</div>
+				
+				</div>
+						
+					</div>
+				</div>
+			</div>
+			
+		<!--  <div class="action-section bg-white text-center fixed-bottom"
+				id="actiondiv">
+				<button type="button" class="action-btn action-btn--start mr-2" 
+				id="viewBtn" onclick="StartOnsite();" style="display: inline-block;color: darkgreen; border:1px solid darkgreen;">
+				<i class="fa fa-circle" aria-hidden="true"></i>Start
+			   </button>
+			   
+			<button type="button" class="action-btn action-btn--view mr-2"
+				id="viewBtn" onclick="viewOnsite();" style="display: inline-block;"
+				data-toggle="modal" data-target="#detail-modal">
+				<i class="fa fa-eye view-button"></i>View
+			</button>
+			
+			<button type="button" class="action-btn action-btn--edit mr-2" id="Btnmark"  
+			onclick="markDoneOnsite()"> 
+			<i class="fa fa-check"></i>Mark As Done</button>
+			</div>  -->
+            
+
+
+	<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog"
+		aria-labelledby="detail-modal" aria-modal="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalCenterTitle">Details</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
+				</div>
+				
+				<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table details-table">
+									<tbody id="workModelTableBody">
+
+									
+								</tbody>
+								</table>
+
+							</div>
+						</div>
+				</div>
+				
+				<!-- <h5 class="text-bold">Attachment :</h5>
+								<input type="hidden" id="filetype" name="filetype"
+									th:value="${filetype1}" />
+
+								<div class="attachment d-flex">
+									<div class="attachment-view ">
+										<div class="attachment-img">
+											<img src="./static/images/file_icon.png" class="img-fluid" width="70" height="70">
+											<div class="download-attachment d-none">
+												<button th:type="button" class="fa fa-download align-self-center justify-content-center align-items-center"
+						                              onclick="downloadSingleFile();"></button>
+											</div>
+										</div>
+										
+									</div>
+								</div> -->
+			</div>
+		</div>
+								
+							</div>
+		
+	</div>
+	
+	
+	
+	 
+	 <div id="description_data" class="modal fade" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<h4 class="modal-title">Add Closed Remark</h4>
+					<button type="button" title="Close" class="close"data-dismiss="modal" aria-hidden="true" onclick="CloseErrorData();">&times; </button>
+				</div>
+				<div class="modal-body error-Group-Description" >
+					<form id="description">
+						<div class="row">
+							<div  class="col-md">
+							 <textarea class="form-control" rows="15" id="closure_remark" name="closure_remark"   
+						      placeholder="" maxlength="4000"  style="height: 200px; padding: 0px 7px"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<div class="form-group row">
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-green-btn"
+								onclick="submitDescription();">
+								<i class="fa fa-save" aria-hidden="true"></i> Submit
+							</button>
+
+						</div>
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-red-btn"
+								onclick="resetDescription();">
+								<i class="fa fa-undo" aria-hidden="true"></i> Reset
+							</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+	<script type="text/javascript"
+		src="./static/js/requisition/requisition.js"></script>
+	<script type="text/javascript">
+		loadDataUsingPaginator('onsiteReqForm');
+	</script>
+	
+	
+</th:block>

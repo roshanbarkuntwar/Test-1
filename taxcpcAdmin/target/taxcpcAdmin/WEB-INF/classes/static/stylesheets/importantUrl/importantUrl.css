@@ -1,0 +1,126 @@
+/* line 2, ../../sass/importantUrl/importantUrl.scss */
+/* line 2, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .w-15 {
+  width: 15% !important;
+}
+
+/* line 3, ../../sass/importantUrl/importantUrl.scss */
+/* line 6, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .w-80 {
+  width: 80% !important;
+}
+
+/* line 4, ../../sass/importantUrl/importantUrl.scss */
+/* line 10, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .w-5 {
+  width: 5% !important;
+}
+
+/* line 5, ../../sass/importantUrl/importantUrl.scss */
+/* line 14, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper td {
+  border: 1px solid #e3e9f5 !important;
+  position: relative;
+  background: #f0f3f9;
+}
+
+/* line 10, ../../sass/importantUrl/importantUrl.scss */
+/* line 20, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .grey-td {
+  background: #4b86e3;
+  text-align: center;
+  padding: 3px;
+  border: 1px solid #d6dbe2 !important;
+}
+
+/* line 16, ../../sass/importantUrl/importantUrl.scss */
+/* line 27, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .url-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 4px 10px;
+  margin-bottom: 0;
+}
+
+/* line 27, ../../sass/importantUrl/importantUrl.scss */
+/* line 39, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .edit-button {
+  background: linear-gradient(to bottom, #3fecb2, #14de9b);
+  color: #fff;
+  padding: 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* line 34, ../../sass/importantUrl/importantUrl.scss */
+/* line 47, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .delete-button {
+  background: linear-gradient(to bottom, #ef4009, #ef4009);
+  color: #fff;
+  padding: 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* line 41, ../../sass/importantUrl/importantUrl.scss */
+/* line 55, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .view-button {
+  background: linear-gradient(to bottom, #4dd5e8, #00BCD4);
+  color: #fff;
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* line 48, ../../sass/importantUrl/importantUrl.scss */
+/* line 63, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .collapsible {
+  padding: 15px 4px;
+}
+
+/* line 50, ../../sass/importantUrl/importantUrl.scss */
+/* line 67, ../../sass/importantUrl/importantUrl.scss */
+.url-details-wrapper .collapsible i {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* line 56, ../../sass/importantUrl/importantUrl.scss */
+/* line 73, ../../sass/importantUrl/importantUrl.scss */
+.kpi {
+  display: flex;
+  align-items: center;
+}
+
+/* line 58, ../../sass/importantUrl/importantUrl.scss */
+/* line 78, ../../sass/importantUrl/importantUrl.scss */
+.kpi span {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* line 60, ../../sass/importantUrl/importantUrl.scss */
+/* line 84, ../../sass/importantUrl/importantUrl.scss */
+.dashboard-icon-wrap {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 8px;
+}
+
+/* line 64, ../../sass/importantUrl/importantUrl.scss */
+/* line 92, ../../sass/importantUrl/importantUrl.scss */
+.details-table td.pre-wrap {
+  white-space: pre-wrap;
+}
+
+/* line 67, ../../sass/importantUrl/importantUrl.scss */
+/* line 96, ../../sass/importantUrl/importantUrl.scss */
+.details-table td.text-bold {
+  font-weight: 700;
+}

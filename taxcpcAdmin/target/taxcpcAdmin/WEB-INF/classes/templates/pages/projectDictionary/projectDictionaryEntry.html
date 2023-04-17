@@ -1,0 +1,151 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<link href="./static/css/global/textEditor/editor.css" type="text/css" rel="stylesheet" />
+	<link href="./static/stylesheets/main/multiple-file-upload.css" rel="stylesheet">
+	<link href="./static/stylesheets/projectDictionary/projectDictionary.css" type="text/css" rel="stylesheet" />
+
+	<div class="right-section">
+		
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"
+					onclick="window.location.href='./projectDictionary'"><a
+					class="nav-link" data-toggle="pill" href="#"><p>Project
+							Dictionary Dashboard</p> </a></li>
+				<li class="nav-item"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Project Dictionary Entry</p></a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4">
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+			
+			<form id="projectDictionaryForm" class="pt-2"
+				th:object="${projectDictGrid}" autocomplete="off"
+				enctype="multipart/form-data">
+				<input type="hidden" name="entry_type"
+					th:value="${entry_type != null ? entry_type : 'PD'}"> <input
+					type="hidden" name="user_code"
+					th:value="${#session.getAttribute('LOGIN_USER').user_code}" /> 
+					<input type="hidden" id="seq_id" name="seq_id"
+					th:value="${projectDictGrid != null ? projectDictGrid.seq_id : ''}" />
+				<!-- <div class="tab-content form-wrapper p-2"> -->
+				<div class="row form-group pt-2">
+					<div class="col-lg-2 col-xl-2 text-right">
+						<label class="control-label"> Project name<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-4 col-xl-4">
+						<select class="form-control" id="project_code" name="project_code">
+							<option value="">--Select--</option>
+							<!--   <option value="New" th:selected="${projectDictGrid != null && projectDictGrid.project_code != null && projectDictGrid.project_code.equals('New')}">New project</option> -->
+							<option th:each="project : ${projectList.entrySet()}"
+								th:value="${project.key}" th:text="${project.value}"
+								th:selected="${projectDictGrid != null && projectDictGrid.project_code != null && projectDictGrid.project_code.equals(project.key)}"></option>
+
+						</select>
+					</div>
+					<!--   </div> 
+	                <div class="row form-group"> -->
+					<div class="col-lg-2 col-xl-2 text-right">
+						<label class="control-label"> Project Keyword / Dictionary
+							Title <span class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-4 col-xl-4">
+						<input type="text" class="form-control"
+							id="keyword_title_question" name="keyword_title_question"
+							th:value="${projectDictGrid != null && projectDictGrid.keyword_title_question != null ? projectDictGrid.keyword_title_question : ''}" />
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-2 col-xl-2 text-right">
+						<label class="control-label"> Attachment </label>
+					</div>
+					<div class="col-lg-4 col-xl-4">
+						
+   						<div class="file">
+								<input type="file" class="form-control" name="doc_file"
+									id="doc_file" th:text="${docfile}" />
+							</div>
+					</div>
+
+					<div class="col-lg-2 col-xl-2 text-right">
+						<label class="control-label"> External Link </label>
+					</div>
+					<div class="col-lg-4 col-xl-4">
+						<input type="text" class="form-control" id="link" name="link"
+							th:value="${projectDictGrid != null && projectDictGrid.link != null ? projectDictGrid.link : ''}" />
+
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-2 col-xl-2 text-right">
+						<label class="control-label"> Description<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-10 col-xl-10">
+						<div class="input-group">
+							<textarea id="description" name="description" th:text="${projectDictGrid.description}"
+								th:value="${projectDictGrid != null && projectDictGrid.description != null ? projectDictGrid.description : ''}"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-4 offset-md-4">
+						<div class="form-group  text-center">
+						
+						<button type="button" class="form-btn"
+									th:if="${action != null && action == 'save'}"
+									onclick="saveDictionary();">
+									<i class="fa save" aria-hidden="true"></i>Save & Exit
+								</button>
+								<button type="button" class="form-btn"
+									th:if="${action != null && action == 'edit'}"
+									onclick="saveDictionary();">
+									<i class="fa fa-floppy-o" aria-hidden="true"></i><span>Update & Exit</span>
+								</button>
+								
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'save'}"
+								onclick="window.location.href='./projectDictionaryEntry'">
+								<i class="fa fa-undo" aria-hidden="true"></i>Reset
+							</button>
+							<button type="button" class="form-btn"
+								onclick="window.location.href='./projectDictionary'">
+								<i class="fa cancel" aria-hidden="true"></i>Cancel
+							</button>
+						</div>
+					</div>
+				</div>
+				<!--  </div> -->
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript"
+		src="./static/js/global/textEditor/editor.js"></script>
+	<script type="text/javascript"
+		src="./static/js/global/multipleFileSelect/multifile.js"></script>
+	<script type="text/javascript"
+		src="./static/js/projectDictionary/projectDictionary.js"></script>
+
+	<script type="text/javascript">
+		$("#description").Editor();
+		showFieldsOnType();
+		onEditAction();
+
+	</script>
+
+	<script>
+myFunction();
+</script>
+
+</th:block>

@@ -1,0 +1,1081 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<link href="./static/stylesheets/dashboard/dashboard.css"
+		rel="stylesheet" />
+	<link href="./static/stylesheets/dashboard/dashboard-new.css"
+		rel="stylesheet" />
+
+	<div class="right-section">
+		<div class="assessment-section-header heading-marquee"
+			style="background: #e2ecff;">
+			<div class="col-md-12 text-center p-0">
+				<marquee scrollamount="4">
+					<p class="mb-0">
+						<span class="text-primary"><i class="fa fa-star"></i>
+							Welcome To TaxCPC Admin Portal ! <i class="fa fa-star"></i><span
+							th:text="${message}"></span></span>
+					</p>
+				</marquee>
+
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="pb-4 dashboard-container2">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-8" th:if="${KPI_list != null && KPI_list.size()>0}">
+					<div class="row">
+					<div class="col-md-6">
+                     
+                     
+                     	<div class="new-card-kpi mb-4" style="height:80px;border:0.5px #D5DBDB solid;">
+                     	<div class="media header p-4 row mt-8" style="padding: 0.5rem!important;margin-left:10px;">
+                     	
+                     	<div class="col-md-3 pr-0 mt-2" style="margin-right:-30px;">
+                     	<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center ml-4">
+						<h3 style="color:white;"><i class="fa fa-bank"></i></h3>
+						</div>
+						</div>
+						
+						<div class="col-md-3 pl-0" th:each="list : ${KPI_list.get(3)}">
+						<h2 style="font-family: 'Poppins', sans-serif;color:#5DADE2;text-align: center;margin-right: 10px;" th:text="${list.PORTLET_VALUE}"></h2>
+						<h4 style="font-family: 'Poppins', sans-serif;color:black;text-align: center;margin-right: 10px;" th:text="${list.PORTLET_HEADER}"></h4>
+						<span style="content:'';width:1px;height:64px;background:#4E8DFF;position:absolute;top: 0px;right:1px;"></span>
+						</div>
+						<div class="col-md-3 pr-0 mt-2" style="margin-right:-30px;">
+					<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center mr-4">
+						<h3 style="color:white;"><i class="fa fa-users"></i></h3>
+					</div>
+					</div>
+					<div class="col-md-3  pl-0" th:each="list : ${KPI_list.get(1)}">
+					<h2 style="font-family: 'Poppins', sans-serif;color:#5DADE2;text-align: center;margin-right: 15px;" th:text="${list.PORTLET_VALUE}"></h2>
+					<h4 style="font-family: 'Poppins', sans-serif;color:black;text-align: center;margin-right: 15px;" th:text="${list.PORTLET_HEADER}"></h4>
+					</div>
+					</div>
+                     	</div>
+            
+                      
+                                        <div class="new-card-kpi-2" style="height:275px;border:0.5px #D5DBDB solid;">
+                                         <!-- <div class="card-header" style="font-weight: 1000;font-size:16px;">Banks</div>  -->
+                                         <h6 class="text-left ml-4 mt-2" style="color:#4E8DFF;font-size:1.2rem;">Banks</h6> <hr style="margin-top:4px">
+                      
+                      <!-- 
+                                              <div class="row mt-2">
+                                              <div class="col-md-6 col-sm-6" th:if="${KPI_list != null && KPI_list.size()>6}">
+                                                <div class="counter1" th:each="list : ${KPI_list.get(6)}">
+													<span class="counter1-value" th:text="${list.PORTLET_VALUE}"></span>
+													<h3 th:text="${list.PORTLET_HEADER}"></h3>
+												</div>
+											</div>
+											<div class="col-md-6 col-sm-6"  th:if="${KPI_list != null && KPI_list.size()>7}">
+												<div class="counter1 red" th:each="list : ${KPI_list.get(7)}">
+													<span class="counter1-value" th:text="${list.PORTLET_VALUE}"></span>
+													<h3 th:text="${list.PORTLET_HEADER}"></h3>
+												</div>
+											</div>
+											</div>
+											<div class="row mt-4">
+											<div class="col-md-6 col-sm-6" th:if="${KPI_list != null && KPI_list.size()>2}">
+												<div class="counter1 pink" th:each="list : ${KPI_list.get(2)}">
+													<span class="counter1-value" th:text="${list.PORTLET_VALUE}"></span>
+													<h3 th:text="${list.PORTLET_HEADER}"></h3>
+												</div>
+											</div>
+											<div class="col-md-6 col-sm-6" th:if="${KPI_list != null && KPI_list.size()>5}">
+												<div class="counter1 blue" th:each="list : ${KPI_list.get(5)}">
+													<span class="counter1-value" th:text="${list.PORTLET_VALUE}"></span>
+													<h3 th:text="${list.PORTLET_HEADER}"></h3>
+												</div>
+											</div>
+											</div> -->
+											<!-- <h6 class="text-left ml-4" style="margin-top:-10px;font-size:16px; color: #4E8DFF;">
+                        Banks
+                      </h6> -->
+                      
+                   <ul class="favorite-menu-list">
+                    <li style="height:30px;width:500px;background-color:#FCF3CF;margin-left:13px;padding: 4px 8px;"  th:each="list : ${KPI_list.get(6)}">
+                     <span style="float:left;" th:text="${list.PORTLET_HEADER}"></span>
+                     <span style="float:right;" th:text="${list.PORTLET_VALUE}"></span>
+                    </li>
+                    
+                     
+                     <li style="height:30px;width:500px;background-color:#D4EFDF;margin-left:13px;padding: 4px 8px;" th:each="list : ${KPI_list.get(2)}">
+                      <span style="float:left;" th:text="${list.PORTLET_HEADER}"></span>
+                     <span style="float:right;" th:text="${list.PORTLET_VALUE}"></span>
+                   </li>
+                   
+                    <li style="height:30px;width:500px;background-color:#F2D7D5;margin-left:13px;padding: 4px 8px;" th:each="list : ${KPI_list.get(5)}">
+                      <span style="float:left;" th:text="${list.PORTLET_HEADER}"></span>
+                     <span style="float:right;" th:text="${list.PORTLET_VALUE}"></span>
+                      </li>
+                   
+                   
+                   <li style="height:30px;width:500px;background-color:#D6EAF8;margin-left:13px;padding: 4px 8px;" th:each="list : ${KPI_list.get(7)}">
+                     <span style="float:left;" th:text="${list.PORTLET_HEADER}"></span>
+                     <span style="float:right;" th:text="${list.PORTLET_VALUE}"></span>
+                    </li> 
+                    <li style="height:30px;width:500px;background-color:#EBDEF0;margin-left:13px;padding: 4px 8px;" th:each="list : ${KPI_list.get(11)}">
+                     <span style="float:left;" th:text="${list.PORTLET_HEADER}"></span>
+                     <span style="float:right;" th:text="${list.PORTLET_VALUE}"></span>
+                   </li>  
+                   </ul>
+                      </div>
+                     </div>
+                     <div class="col-md-6">
+                       
+                        <div class="new-card-kpi-2 mb-4" style="border:0.5px #D5DBDB solid;">
+                        <h6 class="text-left ml-4 mt-2" style="color:#4E8DFF;font-size:1.2rem;">Project And Application Deployment</h6><hr style="margin-top: 4px;">
+                                           <!--  <div class="card-header" style="font-weight: 1000;font-size:16px;">Deployment</div>  -->
+                                              <div class="row mt-2">
+                                              <div class="col-md-6 col-sm-6" th:if="${KPI_list != null && KPI_list.size()>8}">
+												<div class="counter1" th:each="list : ${KPI_list.get(8)}">
+													<span class="counter1-value" th:text="${list.PORTLET_VALUE}"></span>
+													<h3 th:text="${list.PORTLET_HEADER}"></h3>
+												</div>
+											</div>
+											<div class="col-md-6 col-sm-6" th:if="${KPI_list != null && KPI_list.size()>9}">
+												<div class="counter1 red" th:each="list : ${KPI_list.get(9)}">
+													<span class="counter1-value" th:text="${list.PORTLET_VALUE}"></span>
+													<h3 th:text="${list.PORTLET_HEADER}"></h3>
+												</div>
+											</div>
+											</div>
+											<div class="row mt-4">
+											<div class="col-md-6 col-sm-6" th:if="${KPI_list != null && KPI_list.size()>10}">
+												<div class="counter1 pink" th:each="list : ${KPI_list.get(10)}">
+													<span class="counter1-value" th:text="${list.PORTLET_VALUE}"></span>
+													<h3 th:text="${list.PORTLET_HEADER}"></h3>
+												</div>
+											</div>
+											<div class="col-md-6 col-sm-6" th:if="${KPI_list != null && KPI_list.size()>4}">
+												<div class="counter1 blue" th:each="list : ${KPI_list.get(4)}">
+													<span class="counter1-value" th:text="${list.PORTLET_VALUE}"></span>
+													<h3 th:text="${list.PORTLET_HEADER}"></h3>
+												</div>
+											</div>
+											</div>
+											 
+                      </div>
+                      <div class="new-card-kpi mb-4" style="text-align: center;border:0.5px #D5DBDB solid;" th:each="list : ${KPI_list.get(0)}">
+                     	
+                     	<h1 class="mt-4" style="font-family: 'Poppins', sans-serif;color:#5DADE2;" th:text="${list.PORTLET_VALUE}"></h1>
+                     	<h4 style="font-family: 'Poppins', sans-serif;color:black;" th:text="${list.PORTLET_HEADER}"></h4>
+                     	</div>
+                      </div>
+					</div>
+
+						<!-- <div class="kpi-wrapper">
+				<div class="row">
+        <div class="col-md-4 col-sm-6">
+            <div class="counter blue">  
+                <div class="counter-icon"><i class="fa fa-globe"></i></div>  
+                <h3>Total Entity</h3>
+                <span class="counter-value">641</span>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="counter blue">
+                <div class="counter-icon"><i class="fa fa-rocket"></i></div>
+                <h3>Total Client</h3>
+                <span class="counter-value">606</span>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="counter blue">
+                <div class="counter-icon"><i class="fa fa-rocket"></i></div>
+                <h3>Total Running Projects</h3>
+                <span class="counter-value">606</span>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="counter blue">
+                <div class="counter-icon"><i class="fa fa-rocket"></i></div>
+                <h3>Total Transaction Processes</h3>
+                <span class="counter-value">606</span>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="counter blue">
+                <div class="counter-icon"><i class="fa fa-rocket"></i></div>
+                <h3>Total Branch Served</h3>
+                <span class="counter-value">606</span>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="counter blue">
+                <div class="counter-icon"><i class="fa fa-rocket"></i></div>
+                <h3>Total PSU Banks</h3>
+                <span class="counter-value">606</span>
+            </div>
+        </div>
+    </div>
+				</div> -->
+						<!-- <div class="row">
+							<div class="col-md-4" 
+								th:if="${KPI_list != null && KPI_list.size()>0}">
+								<div class="media p-3 kpi bg-white kpi-success" th:each="list : ${KPI_list.get(0)}">
+
+									<div class="media-body text-muted" title="Last Refresh">
+										<h5 class="mt-2 text-success" th:text="${list.PORTLET_VALUE}"></h5>
+										<span th:text="${list.PORTLET_HEADER}"></span>
+
+
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4" 
+								th:if="${KPI_list != null && KPI_list.size()>1}">
+								
+								<div class="media p-3 kpi bg-white kpi-info" th:each="list : ${KPI_list.get(1)}">
+
+									<div class="media-body text-muted" title="Last Refresh">
+										<h5 class="mt-2 text-info" th:text="${list.PORTLET_VALUE}"></h5>
+										<span th:text="${list.PORTLET_HEADER}"></span>
+
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4" 
+								th:if="${KPI_list != null && KPI_list.size()>2}"
+								>
+								<div class="media p-3 kpi bg-white kpi-warning" th:each="list : ${KPI_list.get(2)}">
+
+									<div class="media-body text-muted" title="Last Refresh">
+										<h5 class="mt-2 text-warning" th:text="${list.PORTLET_VALUE}"></h5>
+										<span th:text="${list.PORTLET_HEADER}"></span>
+
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4" 
+								th:if="${KPI_list != null && KPI_list.size()>3}"
+								>
+								<div class="media p-3 kpi bg-white kpi-pink" th:each="list : ${KPI_list.get(3)}">
+
+									<div class="media-body text-muted" title="Last Refresh">
+										<h5 class="mt-2 text-pink" th:text="${list.PORTLET_VALUE}"></h5>
+										<span th:text="${list.PORTLET_HEADER}"></span>
+
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4" 
+								th:if="${KPI_list != null && KPI_list.size()>4}">
+								
+								<div class="media p-3 kpi bg-white kpi-primary" th:each="list : ${KPI_list.get(4)}">
+
+									<div class="media-body text-muted" title="Last Refresh">
+										<h5 class="mt-2 text-primary" th:text="${list.PORTLET_VALUE}"></h5>
+										<span th:text="${list.PORTLET_HEADER}"></span>
+
+									</div>
+								</div>
+							</div>
+							 <div class="col-md-4" 
+								th:if="${KPI_list != null && KPI_list.size()>5}">
+							
+								<div class="media p-3 kpi bg-white kpi-purple" 	th:each="list : ${KPI_list.get(5)}">
+
+									<div class="media-body text-muted" title="Last Refresh">
+										<h5 class="mt-2" th:text="${list.PORTLET_VALUE}"></h5>
+										<span>Total PSU Banks</span>
+
+									</div>
+								</div>
+							</div>
+						</div> -->
+                     
+                      
+
+					</div>
+
+					<div class="col-md-4">
+						<div class="card notification-section">
+							<div class="card-header position-relative">
+								<i class="fa fa-bell notification-card-icon" aria-hidden="true"></i>
+								Notifications
+							</div>
+							<div class="card-body pt-4">
+								<div style="display: flex; flex-direction: column" class="mt-3">
+									<div class="notification-item text-justify"
+										th:if="${NTFC_list != null && !NTFC_list.isEmpty()}"
+										th:each="list ,index: ${NTFC_list}">
+										<!-- <h6>Notification</h6>
+								<p>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</p> -->
+										<div th:if="${index.count}<4">
+											<h6 th:text="${list.PORTLET_HEADER}"></h6>
+											<p th:text="${list.PORTLET_VALUE}"></p>
+
+										</div>
+									</div>
+									<!-- <div class="notification-item text-justify">
+							<h6>Notification</h6>
+								<p>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</p>
+							</div>
+							<div class="notification-item text-justify">
+							<h6>Notification</h6>
+								<p>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</p>
+							</div> -->
+								</div>
+
+								<!-- <div class="notification-item text-justify">
+								<a>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</a>
+							</div>
+							<div class="notification-item text-justify">
+								<a>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</a>
+							</div> -->
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="col-md-3">
+
+						<div class="card notification-section my-2">
+							<div class="card-header position-relative"
+								onclick="getOpenMenuList();" style="cursor: pointer;"
+								title="Favorite Menu">
+								<i class="fa fa-star notification-card-icon" aria-hidden="true"></i>
+								Favorite Menu
+
+							</div>
+
+							<input type="hidden" id="Test_code" th:value="${Menu_code}">
+							<div class="card-body  pt-4">
+								<ul class="favorite-menu-list">
+									<li th:if="${favmenuList!= null && !favmenuList.isEmpty()}"
+										th:each="favmenu,index : ${favmenuList}"><i
+										class="fa fa-star" th:title="${favmenu.menu_name}"
+										th:id="${'menuCode-'+index.count}"
+										th:href="${favmenu.menu_url}" onclick="getLoadbyUrl(this.id)"></i><a
+										th:href="${favmenu.menu_url}" th:text="${favmenu.menu_name}"
+										th:title="${favmenu.menu_name}"> </a></li>
+
+								</ul>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="col-md-2">
+						<div class="card transaction-section my-2">
+							<div class="card-header position-relative">
+								<i class="fa fa-th-large notification-card-icon"
+									aria-hidden="true"></i>Application WebLinks
+							</div>
+							<div class="card-body pt-4">
+								<div class="row no-gutters">
+									<div class="col-md-6"
+										th:if="${WebLink_list != null && !WebLink_list.isEmpty()}"
+										th:each="list : ${WebLink_list}">
+										<div class="app-menu text-center">
+
+											<img th:if="${(list.PORTLET_HEADER == 'Lighthouse website')}"
+												src="./static/images/App-icon/lhs.png" width="60" alt="">
+											<img th:if="${(list.PORTLET_HEADER != 'Lighthouse website')}"
+												src="./static/images/App-icon/taxcpc.png" width="60" alt="">
+
+											<h6 class="mb-0 mt-1">
+												<a href="#" th:id="${(list.PORTLET_VALUE)}"
+													onclick="OpenLink(this.id)"
+													th:text="${(list.PORTLET_HEADER)}"></a>
+											</h6>
+										</div>
+									</div>
+									<!-- <div class="col-md-6">
+							<div class="app-menu text-center">
+								
+									<img src="./static/images/App-icon/taxcpc.png" width="60" alt="">
+									<h6 class="mb-0 mt-1"><a href="#">LHS</a></h6>
+							</div>
+							</div>
+							<div class="col-md-6">
+							<div class="app-menu text-center">
+								
+									<img src="./static/images/App-icon/taxcpc.png" width="60" alt="">
+									<h6 class="mb-0 mt-1"><a href="#">Taxcpc</a></h6>
+							</div>
+							</div>
+							<div class="col-md-6">
+							<div class="app-menu text-center">
+								
+									<img src="./static/images/App-icon/lhs.png" width="60" alt="">
+									<h6 class="mb-0 mt-1"><a href="#">LHS</a></h6>
+							</div>
+							</div> -->
+
+								</div>
+								<!-- <ul class="list-group custom-list-group mb-n3">
+                                        <li class="list-group-item align-items-center d-flex justify-content-between">
+                                            <div class="media">
+                                                <img src="./static/images/App-icon/taxcpc.png" height="30" class="mr-3 align-self-center" alt="...">
+                                                <div class="media-body align-self-center"> 
+                                                    <h6 class="m-0">Taxcpc</h6>
+                                                    <p class="mb-0 text-muted">index.html</p>                                                                                           
+                                                </div>end media body
+                                            </div>
+                                            <div class="align-self-center">
+                                                <a href="" class="btn btn-sm btn-soft-primary">  <i class="fa fa-external-link "></i></a>  
+                                            </div>                                            
+                                        </li>
+                                        <li class="list-group-item align-items-center d-flex justify-content-between">
+                                            <div class="media">
+                                                <img src="./static/images/App-icon/taxcpc.png" height="30" class="mr-3 align-self-center" alt="...">
+                                                <div class="media-body align-self-center"> 
+                                                    <h6 class="m-0">Taxcpc</h6>
+                                                    <p class="mb-0 text-muted">index.html</p>                                                                                           
+                                                </div>end media body
+                                            </div>
+                                            <div class="align-self-center">
+                                                <a href="" class="btn btn-sm btn-soft-primary">  <i class="fa fa-external-link "></i></a>  
+                                            </div>                                            
+                                        </li>
+                                        <li class="list-group-item align-items-center d-flex justify-content-between">
+                                            <div class="media">
+                                                <img src="./static/images/App-icon/taxcpc.png" height="30" class="mr-3 align-self-center" alt="...">
+                                                <div class="media-body align-self-center"> 
+                                                    <h6 class="m-0">Taxcpc</h6>
+                                                    <p class="mb-0 text-muted">index.html</p>                                                                                           
+                                                </div>end media body
+                                            </div>
+                                            <div class="align-self-center">
+                                                <a href="" class="btn btn-sm btn-soft-primary">  <i class="fa fa-external-link "></i></a>  
+                                            </div>                                            
+                                        </li>
+                                        <li class="list-group-item align-items-center d-flex justify-content-between">
+                                            <div class="media">
+                                                <img src="./static/images/App-icon/lhs.png" height="30" class="mr-3 align-self-center" alt="...">
+                                                <div class="media-body align-self-center"> 
+                                                    <h6 class="m-0">Lighthouse India</h6>
+                                                    <p class="mb-0 text-muted">index.html</p>                                                                                           
+                                                </div>end media body
+                                            </div>
+                                            <div class="align-self-center">
+                                                <a href="" class="btn btn-sm btn-soft-primary">  <i class="fa fa-external-link "></i></a>  
+                                            </div>                                            
+                                        </li>
+                                        <li class="list-group-item align-items-center d-flex justify-content-between">
+                                            <div class="media">
+                                                <img src="./static/images/App-icon/lhs.png" height="30" class="mr-3 align-self-center" alt="...">
+                                                <div class="media-body align-self-center"> 
+                                                    <h6 class="m-0">Lighthouse India</h6>
+                                                    <p class="mb-0 text-muted">index.html</p>                                                                                           
+                                                </div>end media body
+                                            </div>
+                                            <div class="align-self-center">
+                                                <a href="" class="btn btn-sm btn-soft-primary">  <i class="fa fa-external-link "></i></a>  
+                                            </div>                                            
+                                        </li>
+                                        <li class="list-group-item align-items-center d-flex justify-content-between">
+                                            <div class="media">
+                                                <img src="./static/images/App-icon/lhs.png" height="30" class="mr-3 align-self-center" alt="...">
+                                                <div class="media-body align-self-center"> 
+                                                    <h6 class="m-0">Lighthouse India</h6>
+                                                    <p class="mb-0 text-muted">index.html</p>                                                                                           
+                                                </div>end media body
+                                            </div>
+                                            <div class="align-self-center">
+                                                <a href="" class="btn btn-sm btn-soft-primary">  <i class="fa fa-external-link "></i></a>  
+                                            </div>                                            
+                                        </li>
+                                    </ul> -->
+							</div>
+						</div>
+					</div>
+					<div class="col-md-7">
+						<div class="card transaction-section my-2">
+							<div class="card-header position-relative">
+								<i class="fa fa-users notification-card-icon" aria-hidden="true"></i>
+								Our Top Clients
+							</div>
+							<div class="card-body">
+								<div id="demo" class="carousel slide" data-ride="carousel">
+									<!-- Indicators -->
+									<ul class="carousel-indicators">
+										<li data-target="#demo" data-slide-to="0" class="active"></li>
+										<li data-target="#demo" data-slide-to="1"></li>
+										<li data-target="#demo" data-slide-to="2"></li>
+									</ul>
+
+									<!-- Wrapper for slides -->
+									<div class="carousel-inner">
+
+
+										<div class="carousel-item active">
+											<div class="row each-row-clients">
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/SBI-logo_1.jpg" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/pnb_logo_2.jpg" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/boi-3.png" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/LIC.jpg" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/ubi_5.png" alt="image"></a>
+												</div>
+
+											</div>
+											<div class="row each-row-clients">
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/IOB-6.jpg" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/IDBI-Bank_7.png"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/DhanLaxmiBank_8.jpg"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/Indian-Bank-Allahabad-Bank_9.jpg"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/cosmos-bank-10.png"
+														alt="image"></a>
+												</div>
+											</div>
+										</div>
+
+
+										<div class="carousel-item">
+											<div class="row each-row-clients">
+
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/Punjab-and-Sind-Bank-6.png"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/dbgb-logo.png" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/maharashtra-gramin-bank.jpg"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/utkal-gramin-bank.png"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/karnataka-gramin-bank.png"
+														alt="image"></a>
+												</div>
+											</div>
+											<div class="row each-row-clients">
+
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/odisha-gramin-logo.jfif"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/punjab-gramin-logo.jfif"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/corporation-bank-logo.jfif"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/CSB_Bank_Logo-new.png"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/basic-bank-logo.png"
+														alt="image"></a>
+												</div>
+
+											</div>
+										</div>
+										<div class="carousel-item">
+											<div class="row each-row-clients">
+
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/bupgb.png" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/brkgb_logo.png" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/merge-UBI-Andh.jpg"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/corporation-bank-logo.jfif"
+														alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/power-grid.jpg" alt="image"></a>
+												</div>
+											</div>
+											<div class="row each-row-clients">
+
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/moil.jpg" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/rmgb.png" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/wcl.jpg" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/upgb.png" alt="image"></a>
+												</div>
+												<div class="col text-center">
+													<a href="#"><img class="client-img"
+														src="./static/images/bank-logo/shgb.jpg" alt="image"></a>
+												</div>
+											</div>
+										</div>
+
+
+									</div>
+
+									<!-- Left and right controls -->
+									<!-- <a class="carousel-control-prev" href="#demo" data-slide="prev">
+										<span class="carousel-control-prev-icon"></span>
+									</a> <a class="carousel-control-next" href="#demo"
+										data-slide="next"> <span
+										class="carousel-control-next-icon"></span>
+									</a> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+		<!-- <div class="container-fluid mt-3">
+
+			<div class="row">
+				<div class="col-md-8">
+					<div class="row">
+						<div class="col-md-8">
+							<div class="card transaction-section mb-2">
+								<div class="card-header position-relative">
+									<i class="fa fa-file-text notification-card-icon"
+										aria-hidden="true"></i> Transaction Details
+								</div>
+								<div class="card-body">
+									<div class="dashboard-box status-kpi  bg-white mb-2">
+										<h5>Transaction Details</h5>
+										<div class="row">
+											<div class="col-md-6">
+												<h6 class="text-muted mt-2">Profit</h6>
+												<h5 class="mt-2">
+													Rs.12,10,000 <span class="increasing ml-2"><i
+														class="fa fa-arrow-circle-up mr-1" aria-hidden="true"></i>12%</span>
+												</h5>
+											</div>
+											<div class="col-md-6">
+												<h6 class="text-muted mt-2">Loss</h6>
+												<h5 class="mt-2">
+													Rs.12,10,000 <span class="decreasing ml-2"><i
+														class="fa fa-arrow-circle-down mr-1" aria-hidden="true"></i>12%</span>
+												</h5>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-md-4">
+							<div class="card transaction-section mb-2">
+								<div class="card-header position-relative">
+									<i class="fa fa-file-text notification-card-icon"
+										aria-hidden="true"></i> Challan Processed
+								</div>
+								<div class="card-body">
+									<div class="dashboard-box   bg-white ">
+											<h5>Challan Processed</h5>
+										<div class="c100 p90 blue">
+											<span>90%</span>
+											<div class="slice">
+												<div class="bar"></div>
+												<div class="fill"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-md-4">
+							<div class="media p-3 kpi bg-white">
+								<div
+									class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+									<img src="./static/images/dashboard/receipt.png">
+								</div>
+								<div class="media-body text-muted">
+
+									<span th:text="${session.USER_ROLE.role_name !=null ? session.USER_ROLE.role_name :''}"></span>
+									<h5 class="mt-2 mb-0"></h5>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="media p-3 kpi bg-white">
+								<div
+									class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+									<img src="./static/images/dashboard/user.png">
+								</div>
+								<div class="media-body text-muted">
+
+									Deductee
+									<h6 class="mt-2 mb-0">400</h6>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="media p-3 kpi bg-white">
+								<div
+									class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+									<img src="./static/images/dashboard/transaction.png">
+								</div>
+								<div class="media-body text-muted">
+
+									Transation
+									<h6 class="mt-2 mb-0">400</h6>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 my-2">
+							<div class="card transaction-section">
+								<div class="card-header position-relative">
+									<i class="fa fa-file-text notification-card-icon"
+										aria-hidden="true"></i> Transaction Details
+								</div>
+								<div class="card-body">
+									<div class="dashboard-box table-box  bg-white">
+										<h5>Transaction Details</h5>
+										<div class="table-responsive mt-2">
+											<table class="table  dashboard-table">
+												<thead class="thead-light">
+													<tr>
+														<th scope="col">#</th>
+														<th scope="col">First</th>
+														<th scope="col">Status</th>
+														<th scope="col">Handle</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>1</td>
+														<td>Mark</td>
+														<td><span class="badge badge-pill badge-primary">Paid</span></td>
+														<td>@mdo</td>
+													</tr>
+													<tr>
+														<td>1</td>
+														<td>Jacob</td>
+														<td><span class="badge badge-pill badge-warning">Refund</span></td>
+														<td>@fat</td>
+													</tr>
+													<tr>
+														<td>1</td>
+														<td>Larry</td>
+														<td><span class="badge badge-pill badge-danger">Fail</span></td>
+														<td>@twitter</td>
+													</tr>
+													<tr>
+														<td>1</td>
+														<td>Mark</td>
+														<td><span class="badge badge-pill badge-primary">Paid</span></td>
+														<td>@mdo</td>
+													</tr>
+													<tr>
+														<td>1</td>
+														<td>Jacob</td>
+														<td><span class="badge badge-pill badge-warning">Refund</span></td>
+														<td>@fat</td>
+													</tr>
+													<tr>
+														<td>1</td>
+														<td>Larry</td>
+														<td><span class="badge badge-pill badge-danger">Fail</span></td>
+														<td>@twitter</td>
+													</tr>
+													<tr>
+														<td>1</td>
+														<td>Mark</td>
+														<td><span class="badge badge-pill badge-primary">Paid</span></td>
+														<td>@mdo</td>
+													</tr>
+													<tr>
+														<td>1</td>
+														<td>Jacob</td>
+														<td><span class="badge badge-pill badge-warning">Refund</span></td>
+														<td>@fat</td>
+													</tr>
+
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+				<div class="col-md-4">
+
+					<div class="card notification-section">
+						<div class="card-header position-relative">
+							<i class="fa fa-bell notification-card-icon" aria-hidden="true"></i>
+							Notifications
+						</div>
+						<div class="card-body">
+							<div class="notification-item text-justify">
+								<a>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</a>
+							</div>
+							<div class="notification-item text-justify">
+								<a>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</a>
+							</div>
+							<div class="notification-item text-justify">
+								<a>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</a>
+							</div>
+							<div class="notification-item text-justify">
+								<a>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</a>
+							</div>
+							<div class="notification-item text-justify">
+								<a>Further clarification on provisions of the Direct Tax
+									Vivad se Vishwas Act, 2020</a>
+							</div>
+
+						</div>
+					</div>
+					<div class="card transaction-section my-2">
+						<div class="card-header position-relative">
+							<i class="fa fa-file-text notification-card-icon"
+								aria-hidden="true"></i> Transaction Details
+						</div>
+						<div class="card-body">
+							<div class="piechart" id="piechart" style=""></div>
+						</div>
+					</div>
+				</div>
+		
+			</div>
+			
+			<div class="card transaction-section my-2">
+						<div class="card-header position-relative" >
+							<i class="fa  fa-star" aria-hidden="true"></i>Favorite MenuList
+						</div>
+						<div class="card-body"  >
+                    <span  th:each="project : ${dash_link.entrySet()}" th:title="${project.key}"	 
+					th:id="${project.value}" th:href="${project.value}"  onclick="getLoadbyUrl(this.id)">
+					<h4 style="cursor: pointer" th:text="${project.key}"></h4>
+					</span>
+ 
+                 </div>
+	     	</div>
+						
+			<div class="row dashboard-card-row ">
+				<div class="col-md-3">
+					<div class="dashboard-card">
+						<div class="dashboard-card-header text-center">
+							<div class="dashboard-icon-wrap">
+								<img src="./static/images/dashboard-new/invoice.png">
+							</div>
+						</div>
+						<h3 class="dashboard-card-title text-center">
+							<a href=""> All Transaction </a>
+						</h3>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="dashboard-card">
+						<div class="dashboard-card-header text-center">
+							<div class="dashboard-icon-wrap">
+								<img src="./static/images/dashboard-new/invoice.png">
+							</div>
+						</div>
+						<h3 class="dashboard-card-title text-center">
+							<a href=""> Client Branch Generation </a>
+						</h3>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="dashboard-card">
+						<div class="dashboard-card-header text-center">
+							<div class="dashboard-icon-wrap">
+								<img src="./static/images/dashboard-new/invoice.png">
+							</div>
+						</div>
+						<h3 class="dashboard-card-title text-center">
+							<a href=""> Delete Process ID </a>
+						</h3>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="dashboard-card">
+						<div class="dashboard-card-header text-center">
+							<div class="dashboard-icon-wrap">
+								<img src="./static/images/dashboard-new/invoice.png">
+							</div>
+						</div>
+						<h3 class="dashboard-card-title text-center">
+							<a href=""> Lower Deduction Cert. Allocation </a>
+						</h3>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+		<div class="dashboard-footer">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xl-8 col-sm-6">
+						<div class="quotes-card d-flex align-items-center">
+							<div class="quote-head d-flex align-items-center">
+								<p class="mb-0">Today's Quote :</p>
+							</div>
+							<div class="quote-text">
+								<marquee width="100%" direction="left" scrollamount="4">
+									<p id="random_quote"></p>
+								</marquee>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-4 col-sm-6">
+						<p class="text-right mb-0 mt-2">
+							| <span>v1.2</span> | <span>&copy; 2021 <a href="">Lighthouse
+									Info Systems</a> All Rights Reserved
+							</span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript"
+		src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="./static/js/global/graph.js"></script>
+
+	<script id="rendered-js">
+		function randomQuote() {
+			$.ajax({
+				url : "https://api.forismatic.com/api/1.0/?",
+				dataType : "jsonp",
+				data : "method=getQuote&format=jsonp&lang=en&jsonp=?",
+				success : function(response) {
+					$("#random_quote").html(
+							"<blockquote id='random_quote' class='lead text-center'>"
+									+ response.quoteText + "&dash; "
+									+ response.quoteAuthor
+									+ " &dash;</blockquote>");
+					$("#tweet").attr(
+							"href",
+							"https://twitter.com/home/?status="
+									+ response.quoteText + " ("
+									+ response.quoteAuthor + ")");
+				},
+			});
+		}
+
+		$(function() {
+			randomQuote();
+		});
+
+		$("button").click(function() {
+			randomQuote();
+		});
+	</script>
+	<script type="text/javascript">
+		// Load google charts
+		google.charts.load('current', {
+			'packages' : [ 'corechart' ]
+		});
+		google.charts.setOnLoadCallback(drawChart);
+
+		// Draw the chart and set the chart values
+		function drawChart() {
+			var data = google.visualization.arrayToDataTable([
+					[ 'Task', 'Hours per Day' ], [ 'Work', 8 ], [ 'Eat', 2 ],
+					[ 'TV', 4 ], [ 'Gym', 2 ], [ 'Sleep', 8 ] ]);
+
+			// Optional; add a title and set the width and height of the chart
+			var options = {
+				chartArea : {
+					left : 10,
+					top : 10,
+					bottom : 20,
+					right : 10
+				},
+				legend : {
+					position : 'bottom',
+					alignment : 'start'
+				},
+				colors : [ '#425abe', '#f1b44c', '#33c08e', '#50a5f1',
+						'#e83e8c' ]
+			//'title' : 'My Average Day',
+
+			};
+
+			// Display the chart inside the <div> element with id="piechart"
+			var chart = new google.visualization.PieChart(document
+					.getElementById('piechart'));
+			chart.draw(data, options);
+		}
+	</script>
+	<script type="text/javascript" src="./static/js/userProfile.js"></script>
+
+</th:block>
+</html>

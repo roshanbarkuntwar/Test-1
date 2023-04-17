@@ -1,0 +1,174 @@
+
+
+.alert
+{
+	z-index:2000; 
+    .modal-header
+    {
+        border-bottom-width:0px;
+        height: 115px;
+        box-shadow:none;
+        border-radius: 0;
+        i
+        {
+
+            background: #FFF;
+            width: 80px;
+            height: 80px;
+            font-size:5rem;
+            border-radius: 50%;
+            padding-top: 6px;
+            margin-top: 30px;
+            text-align: center;
+        }
+    }
+    button.close {
+
+        border-radius: 0px 0px 0px 35px;
+        background:#fff;
+    }
+    .modal-dialog {
+        max-width: 315px;
+
+    }
+    .btn
+    {
+        padding: 0.3rem 4rem;
+        font-weight: bold;
+        border-radius: 20px;
+        margin-top: 2rem;
+    }
+
+}
+
+.success-alert
+{
+    .modal-header
+    {
+        background: linear-gradient(to bottom ,#2ecc71,#fff);
+
+
+    }
+    i,h4
+    {
+        color: #2ecc71;
+    }
+    .btn-success {
+
+        background-color: #2ecc71;
+        border-color: #2ecc71;
+
+    }
+}
+.danger-alert
+{
+    .modal-header
+    {
+        background: linear-gradient(to bottom, #F44336, #fff);
+
+
+    }
+    i
+    {
+        font-size: 4rem !important;
+    }
+    i,h4
+    {
+        color: #F44336;
+    }
+    .btn-danger {
+
+        background-color:#F44336;
+        border-color: #F44336;
+
+    }
+}
+.conformation-alert
+{
+    .modal-header
+    {
+        background: linear-gradient(to bottom, #4E8DFF, #fff);
+
+
+    }
+    i
+    {
+        color: #4E8DFF;
+    }
+    .btn-info {
+
+        background-color:#00BCD4;
+        border-color: #00BCD4;
+
+    }
+}
+.form-validation
+{
+    background: #FFF;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(204, 204, 204, 0.4196078431372549);
+    i
+    {
+
+        padding: 0.2rem 0.3rem;
+        font-size: 1.2rem;
+        color: #FFF;
+        border-radius: 3px;
+    }
+    h5
+    {
+        margin-bottom:0px;
+    }
+
+}
+.form-validation--success
+{
+
+    border: 1px solid #2ecc71;
+
+    i
+    {
+        background: linear-gradient(to right, #2ecc71, #0fe86b);
+
+    }
+    h5
+    {
+        color: #0bad50;
+    }
+}
+.form-validation--error
+{
+
+    border: 1px solid #F44336;
+
+    i
+    {
+        background: linear-gradient(to right, #ef2c1e, #f1685e);
+
+    }
+    h5
+    {
+        color: #F44336;
+    }
+}
+.form-validation--info
+{
+
+    border: 1px solid #FF9800;
+
+    i
+    {
+        background: linear-gradient(to right, #FF9800, #FFC107);
+
+    }
+    h5
+    {
+        color: #FF9800;
+    }
+}
+.ui-widget {
+top: 30%;
+    left: 650px !important;
+    z-index: 101 !important;
+    
+    }

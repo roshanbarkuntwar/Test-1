@@ -1,0 +1,289 @@
+/* line 1, ../../sass/requisition/requisition.scss */
+.req-w-20 {
+  width: 20% !important;
+}
+
+/* line 2, ../../sass/requisition/requisition.scss */
+.req-w-65 {
+  width: 65% !important;
+}
+
+/* line 3, ../../sass/requisition/requisition.scss */
+.req-w-15 {
+  width: 15% !important;
+}
+
+/* line 4, ../../sass/requisition/requisition.scss */
+.input-group-append .btn:first-child {
+  border-right: 2px solid #a5abb1 !important;
+}
+
+/* line 5, ../../sass/requisition/requisition.scss */
+.ui-widget-content {
+  border: 1px solid #ddd;
+  background: #eee url(images/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x;
+  color: #333;
+}
+
+/* line 11, ../../sass/requisition/requisition.scss */
+.ui-autocomplete {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-left: 18px;
+}
+
+/* line 16, ../../sass/requisition/requisition.scss */
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+  border: 0;
+  background: #d0dff9 url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+}
+
+/* line 21, ../../sass/requisition/requisition.scss */
+.ui-menu-item-wrapper {
+  padding: 4px 10px;
+}
+
+/* line 22, ../../sass/requisition/requisition.scss */
+.ui-menu .ui-menu-item {
+  padding: 0;
+}
+
+/* line 23, ../../sass/requisition/requisition.scss */
+.error-Group-Description h5 {
+  color: #fff;
+  background: #007bff;
+  padding: 4px 10px;
+}
+
+/* line 28, ../../sass/requisition/requisition.scss */
+.error-Group-Description .form-control {
+  height: 30px;
+  padding: 0px 7px;
+}
+
+/* line 32, ../../sass/requisition/requisition.scss */
+.error-Group-Description .sample-code {
+  margin-left: 5px;
+}
+
+/* line 35, ../../sass/requisition/requisition.scss */
+.error-Group-Description p:last-of-type {
+  margin-bottom: 0;
+}
+
+/* line 38, ../../sass/requisition/requisition.scss */
+.legends-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+/* line 43, ../../sass/requisition/requisition.scss */
+.legend {
+  height: 18px;
+  width: 18px;
+  display: inline-block;
+}
+
+/* line 48, ../../sass/requisition/requisition.scss */
+.approve-legend {
+  background-color: #9edbae;
+}
+
+/* line 49, ../../sass/requisition/requisition.scss */
+.devstart-legend {
+  background-color: #9edbae;
+}
+
+/* line 50, ../../sass/requisition/requisition.scss */
+.reject-legend {
+  background-color: #ffaeb6;
+}
+
+/* line 51, ../../sass/requisition/requisition.scss */
+.devclose-legend {
+  background-color: #f77d62;
+}
+
+/* line 53, ../../sass/requisition/requisition.scss */
+.custom-file-label:after {
+  background-color: #4e8dff;
+  border-color: #4e8dff;
+}
+
+/* line 56, ../../sass/requisition/requisition.scss */
+.btn.btn-primary.btn-addon {
+  background-color: #4e8dff;
+  border-color: #4e8dff;
+}
+
+/* line 59, ../../sass/requisition/requisition.scss */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+/* line 65, ../../sass/requisition/requisition.scss */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* line 82, ../../sass/requisition/requisition.scss */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* line 93, ../../sass/requisition/requisition.scss */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* line 98, ../../sass/requisition/requisition.scss */
+.text-bold {
+  font-weight: 700;
+}
+
+/* line 102, ../../sass/requisition/requisition.scss */
+.details-table td.text-bold {
+  font-weight: 700;
+}
+
+.collapseExampletwo .card-link[aria-expanded="true"] {
+	color:#4B0150; 
+	text-decoration: underline;
+}
+
+.counter{
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.counter .counter-value{
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 110px;
+    height: 120px;
+    width: 130px;
+    margin: 0 auto 10px;
+    border: 15px solid #4e8dff;
+    border-bottom: none;
+    box-shadow: 0 -5px rgba(0,0,0,0.2) inset,0 -10px rgba(0,0,0,0.1) inset,0 -15px rgba(0,0,0,0.05) inset;
+    border-radius: 50%;
+    display: block;
+}
+.counter h3{
+    font-size: 15px;
+    font-weight: 400;
+    text-transform: camelcase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+.counter.purple .counter-value{ border-color: #8E4882; }
+.counter.red .counter-value{ border-color: #F9605D; }
+.counter.gray .counter-value{ border-color: #64868c; }
+@media screen and (max-width:990px){
+    .counter{ margin-bottom: 40px; }
+}   
+
+
+
+
+
+/* Create three equal columns that floats next to each other */
+.column {
+  display: none; /* Hide all elements by default */
+}
+
+/* The "show" class is added to the filtered elements */
+.show1 {
+  display: block;
+}
+
+
+
+
+.some_facts span {
+    font-weight: 700;
+    font-size: 3.26em;
+    color: #4e8dff;
+}
+.some_facts span:before {
+    content: '';
+    width: 32px;
+    height: 5px;
+    background: #ffda01;
+    top: 0;
+    left: 43px;
+}
+.some_facts p {
+    display: block;
+    /* font-family: 'Raleway', sans-serif; */
+    font-weight: 600;
+    font-size: 0.975em;
+    color: #212529;
+    text-transform: capitalize;
+   /*  padding-left: 27px;
+    padding-top: 80px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    position: relative; */
+}
+.counter-1 .counter-div {
+	border-right: 2px solid #0c8695;
+	text-align:center;
+	width:100%
+  /*   background: #0c8695;
+    position: absolute;
+    top: -55px;
+    right: 0px; */
+}
+/* .some_facts p:not(.case):after {
+    content: '';
+    width: 1px;
+    height: 100px;
+    background: #0c8695;
+    position: absolute;
+    top: -55px;
+    right: 0px;
+} */
+
+
+#req_sts_tlt{
+	background: #f6f6f6;
+    color: #4e8dff;
+    margin-left: -20px;
+    border-radius: 0px;
+    position: relative;
+    font-size: 18px;
+    padding: 3px 34px 3px;
+    position: relative;
+    font-weight: 500;
+   
+}
+.graphs{
+	
+	margin-bottom:20px;
+	width:100%;
+}

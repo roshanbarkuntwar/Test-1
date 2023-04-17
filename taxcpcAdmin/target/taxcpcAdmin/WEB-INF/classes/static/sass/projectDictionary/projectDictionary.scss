@@ -1,0 +1,121 @@
+.project-details{
+	border: 1px solid #d9d9d9;
+	.project-name {
+		background: #fffe03;
+	    display: inline-block;
+	    position: relative;
+	    top: -14px;
+	    left: 18px;
+	    padding: 5px 15px;
+	    h5 {
+		margin-bottom:0;
+	}
+	}
+	.project-info {
+		padding: 0 20px;
+    	position: relative;
+    	top: -7px;
+    	.float-left {
+		width:90%;
+		.project-title {
+			font-size: 16px;
+    		font-weight: 600;
+    		margin-right: 60px;
+    		white-space: nowrap;
+  			overflow: hidden;
+  			text-overflow: ellipsis;
+  			margin-bottom: 0;
+		}
+	}
+   	.collapsible {
+	text-align: center;
+    width: 30px;
+    height: 30px;
+    background: #4e8dff;
+    border-radius: 15%;
+    padding-top: 3px;
+    font-size: 15px;
+    color: #fff;
+}
+	}
+	
+.edit-button {
+	background: linear-gradient(to bottom, #3fecb2, #14de9b);
+    color: #fff;
+    padding: 4px 6px;
+    border-radius: 5px;
+    cursor:pointer;
+	}
+	.delete-button {
+	background: linear-gradient(to bottom, #ef4009, #ef4009);
+    color: #fff;
+    padding: 4px 6px;
+    border-radius: 5px;
+    cursor:pointer;
+	}
+	.view-button {
+	background: linear-gradient(to bottom, #4dd5e8, #00BCD4);
+    color: #fff;
+    padding: 4px 6px;
+    cursor:pointer;
+    border-radius: 5px;
+	}
+	
+}
+
+.attachment-view {
+	border: 1px solid #ccc;display: block; float: left; margin: 0 0 16px 16px;height: 160px;width: 180px;position: relative; overflow: hidden; padding: 10px 6px;
+	.attachment-img {
+		height:120px;overflow:hidden;margin-bottom:3px;cursor: pointer;
+		
+	}
+	.attachment-img:hover {
+		img {
+				opacity:0.2;
+			}
+			.download-attachment {
+				display: block !important;
+				position: absolute;
+    			top: 40%;
+    			left: 40%;
+    			i {
+				background: rgba(0,0,0,0.6);
+			    border-color: rgba(0,0,0,0.8);
+			    color:#fff;
+			    border-radius: 5px;
+			    font-size:18px;
+			    padding:7px 10px;
+			    cursor:pointer;
+}
+			}
+	}
+	.attachment-title {
+		p {
+			font-size: 14px;
+    font-weight: 700;
+    color: #9f9f9f;
+    i {
+	font-size: 18px;
+    color: white;
+    background: red;
+    padding: 2px 4px;
+    border-radius: 5px;
+}
+		}
+	}
+}
+.details-table {
+	td.pre-wrap {
+		white-space: pre-wrap;
+	}
+	td.text-bold {
+		font-weight: 700;
+	}
+}
+.custom-file-input:lang(en)~.custom-file-label::after {
+    content: "Choose File";
+}
+.custom-file-label::after {
+    background-color: #4e8dff;
+    border-left: 1px solid #4e8dff; 
+}

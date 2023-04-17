@@ -1,0 +1,224 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+	<div class="right-section">
+			<div class="text-center col-md-12" id="notificationMsgDiv"
+				style="display: none">
+				<div class="d-inline-block">
+					<div class="form-validation form-validation--info p-1 my-1">
+						<i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
+						<h5 class="d-inline-block" id="notificationMsg">Please Fill
+							Mandatory Fields</h5>
+					</div>
+				</div>
+			</div>
+			<div class="tab-section col-md-12 mt-3">
+		        <ul class="nav nav-pills">
+					<li class="nav-item mr-5"><a class="nav-link active" data-toggle="pill" href="#"><p>Role Dashboard</p> </a></li>
+		            <li onclick="window.location.href='./addNewRole'" class="nav-item"><a class="nav-link" data-toggle="pill" href="#"><p> Add New Role </p></a></li>
+				</ul>
+			 	<div class="clearfix"></div>
+			</div>
+		 	<div class="clearfix"></div>
+		<!-- 	<div class="col-md-12 my-1"> 
+				<h4 class="page-title mb-2">Role Dashboard</h4>
+				<button type="button" class="btn btn-primary pull-right" onclick="window.location.href='./addNewRole'" title="Add">Add New Role</button>
+			</div> -->
+			<div class="tab-content px-4 py-4">
+			<div class="tab-pane form-wrapper show in active">
+			
+			<!-- <div class="button-section  my-1 pt-1"> 
+                <button type="button" class="form-btn" id="" title="Select filter for download" disabled="disabled"><i class="fa fa-file-excel-o" aria-hidden="true"></i>Capture Page Data in Excel</button>
+            </div> -->
+            <form id="userRoleForm" th:object="${dataGridDTO}"> 
+            	
+            	<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}" name="filterFlag" id="filterFlag" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.totalRecords}" name="paginator.totalRecords" id="totalRecords" /> 
+				<input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}" name="paginator.recordsPerPage" id="recordsPerPage" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}" id="dataGridAction" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+				
+                <div class="filter-section my-1 pt-1">
+                    <div class="row sec-bottom">
+                        <div class="col-lg-10 col-xl-11">
+                            <div class="row form-group">
+                                <div class="col-lg-3">
+                                    <input type="text" name="role_name"  id="role_name" class="form-control" title="Role" placeholder="Role Name" onkeydown="return (event.keyCode!=13);">
+                                </div>
+                                <div class="col-lg-3"> 
+                                    <select name="status" class="form-control" title="Status" id="role_status" placeholder="Status">
+										<option value="">--Status--</option>
+										<option value="A">Active</option>
+										<option value="I">Inactive</option>
+									</select>
+								</div>    
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Search" onclick="searchRoleFilter()"><i class="fa search"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Clear" onclick="resetRoleFilter()"><i class="fa clear"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"  title="No Extra Filters"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button> 
+                        </div> 
+                    </div>  
+                </div> 
+            </form>
+            <div class="clearfix"></div>
+			<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+			<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+			<div class="clearfix"></div>
+			<div class="table-responsive mt-2 w-60" id="dataSpan">
+			      	<table class="table table-bordered table-striped mb-1" id="table">
+				        <thead>
+				          <tr class="text-center">
+				          
+				           <th class="th-action check-action text-center">Action</th>
+				          	<th>Sr. No.</th>
+				          	 <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+				          	
+				            <th class="header">
+				              <div class="table-head-inner">
+				                <div class="table-heading">
+				                  Role Name</div>
+				                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+				              </div>
+				            </th>
+				            
+				             <th class="header">
+				              <div class="table-head-inner">
+				                <div class="table-heading">
+				                  Status</div>
+				                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+				              </div>
+				            </th>
+				          </tr>
+				        </thead>
+				        <tbody>
+			          	
+				        </tbody>
+		      		</table>
+			    </div>
+			</div>
+				
+			</div>
+		<!-- </div> -->
+		<div class="action-section bg-white text-center fixed-bottom" id="actiondiv">
+			<button type="button" class="action-btn action-btn--edit mr-2" id="editBtn"  style="display: inline-block;" onclick="editRecord('editRole');"> <i class="fa fa-pencil"></i>Edit</button>
+
+		    <button type="button" class="action-btn action-btn--view mr-2" id="viewBtn"  onclick="viewUser();" style="display: inline-block;" data-toggle="modal" data-target="#detail-modal"> <i class="fa fa-eye"></i>View</button>
+			
+
+
+		</div>
+
+		
+		<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="detail-modal" aria-modal="true"  data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Details</h5>
+                        <button type="button" title="close"class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                   		<div class="">
+                   			<div class="row">
+                   				<div class="col-md-12">
+                   					<table class="table details-table">
+									<tbody id="workModelTableBody">
+										<tr>
+											<td class="text-bold">Assigned Menu </td>
+											<td class="text-wrap">
+											</td>
+										</tr>
+									
+									</tbody>
+								</table>
+                   				
+                   				</div>
+                   			</div>
+                   		</div>
+                    </div>
+                </div>
+            </div>  </div>
+
+		
+<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="detail-modal" aria-modal="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                   		<div class="">
+                   			<div class="row">
+                   				<div class="col-md-12">
+                   					<table class="table details-table">
+									<tbody id="workModelTableBody">
+										<tr>
+											<td class="text-bold">Assigned Menu :</td>
+											<td class="text-wrap">
+											</td>
+										</tr>
+										<!-- <tr>
+											<td class="text-bold">Priority :</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Application Name:</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Tentative Completion Date :</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td class="text-bold">To Be Done By :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Detailed Work Description :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Remark :</td>
+											<td class="pre-wrap"></td>
+										</tr> -->
+									</tbody>
+								</table>
+                   				
+                   				</div>
+                   			</div>
+                   		</div>
+                    </div>
+                </div>
+            </div>  
+            </div>		
+
+	</div>
+	<script type="text/javascript" src="./static/js/userConfig/userConfig.js"></script>
+	
+	<script type="text/javascript">
+		loadDataUsingPaginator('userRoleForm');
+	</script>
+	<script>
+	document.addEventListener('keypress', function (e) {
+        if (e.keyCode === 13 || e.which === 13) {
+            e.preventDefault();
+            return false;
+        }
+        
+    });
+	</script>
+	<script>
+	LoadData();
+	</script>
+</th:block>

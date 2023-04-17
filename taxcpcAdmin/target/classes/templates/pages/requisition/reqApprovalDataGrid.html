@@ -1,0 +1,127 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+<div th:fragment="ajaxReqApprovalList">
+	<!-- <div class="table-responsive mt-2 w-60" id="dataSpan"> -->
+	<table class="table table-bordered table-striped mb-1" id="table">
+		<thead>
+			<tr class="text-center">
+				<th>Sr. No.</th>
+				<th class="th-action">Action</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Req. No.</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Current Status</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Reported By</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Reported Date</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Priority</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Req. Type</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Issue type</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Application Name</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${reqApprovalGrid != null && !reqApprovalGrid.isEmpty()}"
+				th:each="dataGrid,index_count : ${reqApprovalGrid}"
+				th:id="'tr-'+${index_count.count}+'-'+${dataGrid.req_code}+'-'+${dataGrid.req_type}"
+				ondblclick="openViewBox(this.id);">
+				<td
+					th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10"
+					class="text-center"></td>
+				<td class="text-center"><span title="Approve"
+					th:id="'approve~'+${index_count.count}+'~'+${dataGrid.req_code}"
+					th:class="approve-icon"
+					th:style="${dataGrid.approved_by_status != null && dataGrid.approved_by_status =='A' ? 'background:#bbbdbb;pointer-events: none' : ''}"
+					th:onclick="'approveReq(this.id);'">A</span> <span title="Reject"
+					th:id="'reject~'+${index_count.count}+'~'+${dataGrid.req_code}"
+					th:onclick="'rejectReq(this.id);'" class="reject-icon">R</span> 
+					<!--  <i class="fa edit text-primary cursor-pointer mr-1" th:id="'approve~'+${index_count.count}+'~'+${dataGrid.req_code}"  th:onclick="'approveReq(this.id);'" title="Approve"></i>
+				          <i class="fa delete text-danger cursor-pointer" th:id="'reject~'+${index_count.count}+'~'+${dataGrid.req_code}"  th:onclick="'rejectReq(this.id);'" title="Reject"></i> -->
+				</td>
+				<td th:text="${dataGrid.req_code}" class="text-center"></td>
+				<td th:text="${dataGrid.current_req_status}"></td>
+				<td th:text="${dataGrid.reported_by}"></td>
+				<td
+					th:text="${(dataGrid.reported_date != null) ? #dates.format(dataGrid.reported_date, 'dd-MM-yyyy hh:mm') : ''}" class="text-center"></td>
+				<td th:text="${dataGrid.req_priority}"></td>
+				<td th:id="'req_type~'+${index_count.count}"
+					th:text="${dataGrid.req_type}"></td>
+				<td th:text="${dataGrid.issue_type}"></td>
+
+				<td th:id="'project_name~'+${index_count.count}"
+					th:text="${dataGrid.project_name}"></td>
+						
+				<input type="hidden" th:id="'approved_by~'+${index_count.count}"
+					th:value="${dataGrid.issue_type}" />
+				<input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}">
+				<input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				<input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				<input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}">
+				
+			</tr>
+			<tr
+				th:unless="${reqApprovalGrid != null && !reqApprovalGrid.isEmpty()}">
+				<td colspan="13" class="text-center">No Record Found</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</html>

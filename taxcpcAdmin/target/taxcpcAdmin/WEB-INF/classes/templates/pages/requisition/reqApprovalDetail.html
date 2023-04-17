@@ -1,0 +1,355 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/requisition/requisition.css"
+		rel="stylesheet">
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+		<link href="./static/stylesheets/dashboard/dashboard-new.css"
+		rel="stylesheet" />
+	<div class="right-section">
+		
+		<!-- <div class="container-fluid mt-3"> -->
+			<div class="tab-section col-md-12 mt-3">
+				<ul class="nav nav-pills">
+					<li class="nav-item mr-5"><a class="nav-link active"
+						data-toggle="pill" href="#">
+							<p>Requisition Approval</p>
+					</a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="tab-content form-wrapper pt-4 p-2">
+
+				<form id="reqAprovalForm" th:object="${dataGridDTO}">
+
+					<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}"
+						name="filterFlag" id="filterFlag" /> <input type="hidden"
+						th:value="${dataGridDTO.paginator.totalRecords}"
+						name="paginator.totalRecords" id="totalRecords" /> <input
+						type="hidden" th:value="${dataGridDTO.paginator.totalPages}"
+						name="paginator.totalPages" id="totalPages" /> <input
+						type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"
+						name="paginator.recordsPerPage" id="recordsPerPage" /> <input
+						type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"
+						id="dataGridAction" /> <input type="hidden"
+						th:value="${dataGridDTO.paginator.pageNumber}"
+						name="paginator.pageNumber" id="pageNumber" />
+
+					<div class="filter-section my-1 pt-1">
+						<div class="row sec-bottom">
+							<div class="col-lg-10 col-xl-11">
+								<div class="row form-group">
+									<div class="col-lg-3">
+										<input type="text" placeholder="Requisition No."
+											class="form-control" id="req_code" name="req_code">
+									</div>
+									<div class="col-lg-3">
+								<div th:if="${appNameList != null && !appNameList.isEmpty()}" > 
+									<select class="form-control" id="project_name"
+										name="project_name">
+										<option value="">-- Application Name --</option>
+										<option th:each="role : ${appNameList.entrySet()}"
+											th:value="${role.key}" th:text="${role.value}"
+											th:selected="${dataGridDTO != null && dataGridDTO.filter != null && 
+											dataGridDTO.filter.project_name != null && dataGridDTO.filter.project_name.equalsIgnoreCase(role.key)}"></option>
+									</select>
+									</div>
+									<div th:unless="${appNameList != null && !appNameList.isEmpty()}" > 
+										<select class="form-control" id="project_name"
+										name="project_name">
+										<option value="">-- Application Name --</option>
+										</select>
+									</div>
+								</div>
+									<div class="col-lg-3">
+										<select class="form-control" id="req_type" name="req_type">
+											<option value="">-- Requisition Type --</option>
+											<option value="Application">Application</option>
+											<option value="Deployment">Deployment</option>
+										</select>
+									</div>
+									<div class="col-lg-3">
+										<select class="form-control" id="issue_type" name="issue_type">
+											<option value="">-- Issue Type --</option>
+											<option value="JAVA">Java</option>
+											<option value="Oracle">Oracle</option>
+											<option value="Other">Other</option>
+										</select>
+									</div>
+
+								</div>
+
+								<div class="row form-group collapse" id="extra-filter">
+									<div class="col-lg-3">
+										<div class="input-group">
+										<input type="hidden" id="from_date1" name="from_date1" >
+											<input type="text" class="form-control"
+												placeholder="From Date" id="from_date" name="from_date"
+												title="From Date" readonly="readonly" style="background-color: #ffffff;">
+											<div class="input-group-append">
+												<button type="button" class="btn btn-primary addon-btn"
+													id="completionDateBtn"
+													onmouseover="openCalendar('from_date', 'completionDateCal');"
+													oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');">
+													<i class="fa fa-calendar" id="completionDateCal"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-3">
+										<div class="input-group">
+										<input type="hidden" id="to_date1" name="to_date1" >
+											<input type="text" class="form-control" placeholder="To Date"
+												id="to_date" name="to_date" title="To Date"
+												readonly="readonly" style="background-color: #ffffff;">
+											<div class="input-group-append">
+												<button type="button" class="btn btn-primary addon-btn"
+													id="completionDateBtn"
+													onmouseover="openCalendar('to_date', 'completionDateCal1');"
+													oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');">
+													<i class="fa fa-calendar" id="completionDateCal1"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-3">
+										<select class="form-control" id="req_priority"
+											name="req_priority">
+											<option value="">-- Requisition Priority --</option>
+											<option value="High">High</option>
+											<option value="Medium">Medium</option>
+											<option value="Low">Low</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div
+								class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+								<button type="button"
+									class="btn btn-primary addon-btn filter-inner-btn"
+									title="Search" onclick="getReqApprovalFilter()">
+									<i class="fa search"></i>
+								</button>
+								<button type="reset"
+									class="btn btn-primary addon-btn filter-inner-btn"
+									title="Clear" onclick="resetReqAprovalFilter()">
+									<i class="fa clear"></i>
+								</button>
+								<button type="button"
+									class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+									data-toggle="collapse" data-target="#extra-filter"
+									title="Extra Filters">
+									<i class="fa fa-ellipsis-h"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<div class="clearfix"></div>
+				<div
+					th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+				<div
+					th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+				<div class="clearfix"></div>
+
+
+				<div class="row text-right px-2"></div>
+
+				<div class="table-responsive mt-2 w-60" id="dataSpan">
+					<table class="table table-bordered table-striped mb-1" id="table">
+						<thead>
+
+						</thead>
+					</table>
+				</div>
+
+				<div class="text-left" style="padding-left: 5.6rem;">
+					<br> 
+					<span title="Approve" class="approve-icon">A</span> <span>  Approve  </span> 
+					<span title="Reject" class="reject-icon">R</span> <span>   Reject  </span>
+					
+				</div>
+
+			</div>
+		<!-- </div> -->
+
+		<!-- The Modal -->
+		<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModal" aria-modal="true" data-backdrop="static"
+			data-keyboard="false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="">Details</h5>
+						<button type="button" title="close" class="close"
+							data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">X</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="">
+							<div class="row">
+								<div class="col-md-12">
+									<table class="table details-table">
+										<tbody id="workModelTableBody">
+
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+						</div>
+						<div id="download_btn" style="display: none">
+							<h5 style="font-weight: bold">Attachment :</h5>
+							<button th:type="button" style="width: 15%; padding: 20px"
+								class="btn form-btn" title="Download"
+								onclick="downloadSingleFile();">
+								<i class="fa download" style="left: 45px"></i>
+							</button>
+
+							<div class="clearfix"></div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModal" aria-modal="true" data-backdrop="static"
+			data-keyboard="false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content ">
+					<div class="modal-header">
+						<h5 class="modal-title" id="">Details</h5>
+						<button type="button" title="close" class="close"
+							data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">X</span>
+						</button>
+					</div>
+					<div class="modal-body" id="workModelTableBody">
+						<!-- getting table data from String builder -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" id="approveModel" tabindex="-1"
+			data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">Approval and Assignment</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">
+						<div class="container-fluid">
+							<input type="hidden" id="assignedReq" />
+							<div class="form-group row">
+								<div class="col-md-2 offset-md-1">
+									<label>Assigned To<span
+										class="text-danger font-weight-bold ml-1">*</span></label>
+								</div>
+								<div class="col-md-8">
+									<select class="form-control" id="assigned_to"
+										name="assigned_to">
+										<option value="">--Select--</option>
+										<option th:each="user : ${assignToList.entrySet()}"
+											th:value="${user.key}" th:text="${user.value}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-2 offset-md-1">
+									<label>Remark <!-- <span class="text-danger font-weight-bold ml-1">*</span> -->
+									</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text" id="approved_by_remark"
+										name="approved_by_remark" class="form-control"> <input
+										type="hidden" id="approved_by1" class="form-control">
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer justify-content-center">
+						<button type="button" class="btn btn-primary"
+							onclick="assignedRequisition()">Approve</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- reject model -->
+		<div class="modal" id="rejectModel" tabindex="-1"
+			data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">Reject</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">
+						<div class="container-fluid">
+							<div class="form-group row">
+								<input type="hidden" id="assignedReq1" />
+								<div class="col-md-2 offset-md-1">
+									<label>Project Name</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text" id="errorProject1" class="form-control"
+										readonly="readonly">
+								</div>
+							</div>
+							<!-- <div class="form-group row">
+								<div class="col-md-2 offset-md-1">
+									<label>Module Name</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text" id="errorModule1" class="form-control"
+										readonly="readonly">
+								</div>
+							</div> -->
+							<div class="form-group row">
+								<div class="col-md-2 offset-md-1">
+									<label>Remark <span
+										class="text-danger font-weight-bold ml-1">*</span>
+									</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text" id="rejectRemark" name="rejectRemark"
+										class="form-control"> <input type="hidden"
+										id="approved_by1" class="form-control">
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer justify-content-center">
+						<button type="button" class="btn btn-primary"
+							onclick="rejectRequisition()">Reject</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript"
+		src="./static/js/requisition/requisition.js"></script>
+	<script type="text/javascript">
+		loadDataUsingPaginator('reqAprovalForm');
+	</script>
+</th:block>
+</html>

@@ -1,0 +1,97 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/docMgmt/docMgmt.css" rel="stylesheet" />
+	<link href="./static/css/global/textEditor/editor.css" rel="stylesheet" />
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Quick Doc Dashboard</p></a></li>
+				<li class="nav-item"
+					onclick="window.location.href='./docEntry?mode=Q'"><a
+					class="nav-link" data-toggle="pill" href="#"><p>Quick Doc
+							Entry</p></a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4">
+			<form id="QuickdocDetails" th:object="${dataGridDTO}"
+				class="px-2 py-2">
+				<input type="hidden"
+					th:value="${dataGridDTO.paginator.totalRecords}"
+					name="paginator.totalRecords" id="totalRecords" /> <input
+					type="hidden" th:value="${dataGridDTO.paginator.totalPages}"
+					name="paginator.totalPages" id="totalPages" /> <input
+					type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"
+					name="paginator.recordsPerPage" id="recordsPerPage" /> <input
+					type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"
+					id="dataGridAction" /> <input type="hidden"
+					th:value="${dataGridDTO.paginator.pageNumber}"
+					name="paginator.pageNumber" id="pageNumber" />
+
+
+
+				<div class="filter-section my-1 pt-1">
+
+					<div class="row sec-bottom">
+						<div class="col-lg-12 ">
+							<div class="form-group row text-right">
+								<div class="col-md-3" align="right">
+									<input type="text" class="form-control" id="doc_name"
+										name="doc_name" placeholder="Document Name"
+										onkeyup="searchQuickFilter()">
+								</div>
+								<div class="col-lg-9 col-md-9 d-flex justify-content-end ">
+
+									<button type="button" class="form-btn"
+										title="Go To Previous Page" onclick="getPreviousPage();"
+										style="padding-left: 6px">
+										<i
+											style="position: relative; float: right; margin-right: 3px;"
+											class="fa fa-angle-left" aria-hidden="true"></i>
+									</button>
+									<button type="button" class="form-btn" title="Go To Next Page"
+										onclick="getNextPage();" style="padding-left: 6px">
+										<i
+											style="position: relative; float: right; margin-right: 3px;"
+											class="fa fa-angle-right" aria-hidden="true"></i>
+									</button>
+
+									<div
+										th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+									<div
+										th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+
+
+			</form>
+
+
+
+			<div class="table" id="dataSpan">
+				<table class="table" id="table">
+				</table>
+			</div>
+
+			<div class="clearfix"></div>
+			<div class="clearfix"></div>
+
+
+		</div>
+		<script type="text/javascript" src="./static/js/docMgmt/docMgmt.js"></script>
+
+		<script>
+			loadDataUsingPaginator('QuickdocDetails');
+			onload();
+		</script>
+</th:block>

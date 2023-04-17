@@ -1,0 +1,230 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<div class="right-section">
+	
+		<input type="hidden" id="action" name="action" th:value="${action}"/>
+		
+		<!-- <div class="container-fluid mt-3"> -->
+			<div class="tab-section col-md-12 mt-3">
+		        <ul class="nav nav-pills">
+					<li onclick="refreshUser();" class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p>User Dashboard</p> </a></li>
+		            <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#"><p> <th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add</th:block> User </p></a></li>
+				</ul>
+			 	<div class="clearfix"></div>
+			</div>
+		 	<div class="clearfix"></div>
+		 			
+			<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"></h4></div> -->
+			  			
+			<form id="userConfigForm" th:object="${userEntity}" autocomplete="off">            
+            	
+	            <input type="hidden" id="user_code" name="user_code" th:value="${userEntity != null ? userEntity.user_code : ''}"/>
+	            <input type="hidden" id="usertype" name="usertype" th:value="${usertype}"/>
+	            
+	           
+	            <div class="tab-content px-4 py-4">
+	            <div class="tab-pane form-wrapper show in active">
+	            <div class="container-fluid pt-2">
+	                <div class="row form-group pt-2">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            User Name<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        <input type="text" class="form-control" id="user_name" name="user_name" th:value="${userEntity != null ? userEntity.user_name : ''}" placeholder="User Name"/>
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            User Type<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        
+	                        <select class="form-control" id="user_type" name="user_type" th:value="${userEntity != null ? userEntity.user_type : ''}" onchange="showFieldsOnUserType()">
+	                        	<option value="">--Select--</option>
+								<option value="LHS" th:selected="${userEntity != null && 'LHS'.equals(userEntity.user_type)}">LHS</option>
+								<option value="FGS" th:selected="${userEntity != null && 'FGS'.equals(userEntity.user_type)}">FGS</option>
+								<option value="ONSITE" th:selected="${userEntity != null && 'ONSITE'.equals(userEntity.user_type)}">OnSite</option>
+								
+                        	</select>
+	                    </div>
+	                </div>
+	                <div class="userDiv row form-group pt-2" id="user_Div">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Entity Name<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+<!-- 	                        <input type="text" class="form-control" id="entity_code" name="entity_code" th:value="${userEntity != null ? userEntity.entity_code : ''}"   onchange="getentityName()"/>
+ -->	                         <select class="form-control" id="entity_code" name="entity_code">
+	                        	<option value="">--Select--</option>
+								<option th:each="role : ${entityList.entrySet()}" th:value="${role.key}" th:text="${role.value}" 
+								th:selected="${userEntity != null && userEntity.entity_code != null && userEntity.entity_code.equalsIgnoreCase(role.key)}"></option>
+                        	</select>
+	                    </div>
+	                </div>
+	                
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Login Id<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        <input type="text" class="form-control" id="loginId" name="loginId" th:value="${userEntity != null ? userEntity.loginId : ''}" placeholder="Login Id"/>
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Password<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                         <div class="input-group">
+
+	                           <!--  <input type="password" class="form-control" id="loginPwd" name="loginPwd" placeholder="Enter New Password" th:value="${userEntity != null ? userEntity.loginPwd : ''}" th:readonly="${userEntity != null}" onkeypress="return AvoidSpace(event);"> -->
+
+	                          <input type="password" class="form-control" id="loginPwd" name="loginPwd" placeholder="Enter New Password" th:value="${userEntity != null ? userEntity.loginPwd : ''}" th:readonly="${userEntity != null && userEntity.loginPwd != null}" onkeypress="return AvoidSpace(event);">
+
+	                            <div class="input-group-append">
+	                                <button type="button" class="btn btn-primary btn-sm addon-btn" onclick="togglePasswordFields('loginPwd', 'passwordIcon')"><i id="passwordIcon" class="fa fa-eye"></i></button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Role<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        <select class="form-control" id="role_code" name="role_code">
+	                        	<option value="">--Select--</option>
+								<option th:each="role : ${roleList.entrySet()}" th:value="${role.key}" th:text="${role.value}" th:selected="${userEntity != null && userEntity.role_code != null && userEntity.role_code.equalsIgnoreCase(role.key)}"></option>
+                        	</select>
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Department<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        <select class="form-control" id="dept_str" name="dept_str" h:value="${userEntity != null && userEntity.dept_str != null && userEntity.dept_str != null ? userEntity.dept_str : ''}">
+	                        	<option value="">--Select--</option>
+								 <option th:each="dept : ${deptList.entrySet()}" th:value="${dept.key}" th:text="${dept.value}" th:selected="${userEntity != null && userEntity.dept_str != null && userEntity.dept_str.equalsIgnoreCase(dept.key)}"></option> 
+	                        
+	                        </select>
+	                    </div>
+	                </div> 
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            User Mode
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        <select class="form-control" id="user_mode" name="user_mode">
+	                        	<option value="">--Select--</option>
+								<option value="T" th:selected="${userEntity != null && 'T'.equals(userEntity.user_mode)}">Team</option>
+								<option value="U" th:selected="${userEntity != null && 'U'.equals(userEntity.user_mode)}">User</option>
+                        	</select>
+	                    </div>
+	                </div>  
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Email
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        <input type="email" name="email" class="form-control" id="email" th:value="${userEntity != null && userEntity.email != null ? userEntity.email : ''}" placeholder="Email"/>
+	                    </div>
+	                </div>
+	                 <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Phone No.
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        <input type="text" maxlength="10"
+								oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');" name="phone_no" class="form-control" id="phone_no" th:value="${userEntity != null && userEntity.phone_no != null ? userEntity.phone_no : ''}" placeholder="Phone No."/>
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            User Rights
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                       <!--  <input type="number" name="phone_no" class="form-control" id="phone_no" th:value="${userEntity != null && userEntity.phone_no != null ? userEntity.phone_no : ''}" placeholder="Phone No."/> -->
+	                    <div class="form-check form-check-inline">
+	                    <input type="hidden" name="edit_right" value="0" />
+	                    <input type="checkbox" class="form-check-input ml-2" id="edit_right" name="edit_right" th:checked="${userEntity != null && '1'.equals(userEntity.edit_right)}" checked
+									onclick="$(this).attr('value', this.checked ? '1' : '0')"> <label class="form-check-label" for="newscheck2">Edit</label>
+	                     </div>
+	                     <div class="form-check form-check-inline">
+	                      <input type="hidden" name="delete_right" value="0" />
+	                      <input type="checkbox" class="form-check-input ml-2" id="delete_right" name="delete_right" th:checked="${userEntity != null && '1'.equals(userEntity.delete_right)}"
+									onclick="$(this).attr('value', this.checked ? '1' : '0')"> <label class="form-check-label" for="newscheck2">Delete</label>
+	                     </div>
+	                     <div class="form-check form-check-inline">
+	                      <input type="hidden" name="add_right" value="0" />
+	                     <input type="checkbox" class="form-check-input ml-2" id="add_right" name="add_right" th:checked="${userEntity != null && '1'.equals(userEntity.add_right)}"
+									onclick="$(this).attr('value', this.checked ? '1' : '0')"> <label class="form-check-label" for="newscheck2">Add</label>
+	                    </div>
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Status<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+		                        <div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input ml-2" name="user_status" id="user_status" th:value="A" th:checked="${userEntity != null && 'A'.equals(userEntity.user_status) ? 'checked' : ''}"/> <label class="form-check-label" for="newscheck1">Active</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input ml-2" name="user_status" id="user_status" th:value="I" th:checked="${userEntity != null && 'I'.equals(userEntity.user_status)}"/> <label class="form-check-label" for="newscheck2">Inactive</label>
+								</div>
+	                    </div>
+	                </div>
+	                <div class="row">
+	                    <div class="col-md-4 offset-md-4">
+	                        <div class="form-group  text-center">
+	                            <button type="button" class="form-btn" onclick="saveUser();" ><i class="fa fa-floppy-o" aria-hidden="true"></i><span th:text="${action != null && action == 'edit' ? 'Update & Exit' : 'Save & Exit'}">Save & Exit</span></button>
+	                            <button type="button" class="form-btn" th:if="${action != null && action == 'save'}" onclick="window.location.href='./addNewUser'"><i class="fa fa-undo" aria-hidden="true"></i>Reset</button>
+	                           	<button type="button" class="form-btn" onclick="refreshUser();"><i class="fa cancel" aria-hidden="true"></i>Cancel</button>
+	                        </div>               
+	                    </div>
+	                </div>
+	            </div>
+	            </div>
+	            </div>
+        </form>
+		<!-- </div> -->
+		<div>
+		
+	   </div>
+	
+	<script type="text/javascript" src="./static/js/userConfig/userConfig.js"></script>
+	<script type="text/javascript">
+	onLoadUserType()
+	</script>
+	
+	
+	</div>
+</th:block>

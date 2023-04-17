@@ -1,0 +1,40 @@
+
+.modal-header
+{
+    background: linear-gradient(60deg, #2358b7, #689eff);
+    box-shadow: 1px 3px 14px 0px rgba(56, 107, 196, 0.53);
+    border: 0;
+    color: #FFF;
+    overflow:hidden;
+    .close
+    {
+        position:relative;
+        color:#fff;
+        text-shadow:none;
+        &:before
+            {
+            @extend %before-after;
+            bottom: -42px;
+            width: 63px;
+            height: 75px;
+            background: linear-gradient(-360deg, rgb(243, 243, 243), rgb(39, 92, 187));
+            border-radius: 10px;
+            transform: rotate(45deg);
+            right: -1px;
+            z-index: -1;
+        }
+        &:after
+            {
+            @extend %before-after;
+            bottom: -20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(-360deg, rgb(255, 255, 255), rgb(12, 62, 152));
+            border-radius: 10px;
+            transform: rotate(47deg);
+            right: 44px;
+            z-index: -2;
+
+        }
+    }
+}

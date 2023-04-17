@@ -1,0 +1,197 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+
+	<link href="./static/stylesheets/requisition/requisition.css"
+		rel="stylesheet">
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+	<div class="right-section">
+
+		<div class="tab-section col-md-12 mt-3" id="client_graphical_dashboard">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"
+					onclick="window.location.href='./clientReqEntryDetail'"><a
+					class="nav-link" data-toggle="pill" href="#"><p>Requisition
+							Dashboard</p></a></li>
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Graphical & Statistical View Of Requisition
+							</p></a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+
+		<div class="tab-content form-wrapper px-4 py-4">
+            <div class="row">
+            <div class="col-md-2 text-center">
+           <p id="req_sts_tlt" > Statistical View</p>
+            </div>
+            </div>
+
+
+			<div class="some_facts">
+				<div class="container" style="max-width: 1585px;">
+
+					<div class=" counter-1 d-flex justify-content-between">
+						<div class="counter-div" th:each="list : ${total_req_list}">
+							<span class="timer" data-speed="2500" data-refresh-interval="50"
+								th:text="${total_req_list}"></span>
+
+							<p>Total Requisitions</p>
+						</div>
+						<div class="counter-div"
+							th:each="list : ${waiting_for_approval_list}">
+							<span class="timer" data-speed="2500" data-refresh-interval="50"
+								th:text="${waiting_for_approval_list}"></span>
+							<p>
+								Waiting For <br>Approval
+							</p>
+						</div>
+						<div class="counter-div" th:each="list : ${work_in_progress_list}">
+							<span class="timer" data-speed="2500" data-refresh-interval="50"
+								th:text="${work_in_progress_list}"></span>
+							<p>
+								Work in <br>Progress
+							</p>
+						</div>
+						<div class="counter-div" th:each="list : ${closed_by_lhs_list}">
+							<span class="timer" data-speed="2500" data-refresh-interval="50"
+								th:text="${closed_by_lhs_list}"></span>
+							<p>
+								Closed By <br>LHS Team
+							</p>
+						</div>
+						<div class="counter-div" th:each="list : ${closed_by_fgs_list}">
+							<span class="timer" data-speed="2500" data-refresh-interval="50"
+								th:text="${closed_by_fgs_list}"></span>
+							<p>
+								Closed By <br>FGS Team
+
+							</p>
+						</div>
+						<div class="counter-div" th:each="list : ${reinitiated_list}">
+							<span class="timer" data-speed="2500" data-refresh-interval="50"
+								th:text="${reinitiated_list}"></span>
+							<p>Re-Initiated</p>
+						</div>
+						<div class="counter-div" th:each="list : ${rejected_list}">
+							<span class="timer" data-speed="2500" data-refresh-interval="50"
+								th:text="${rejected_list}"></span>
+							<p>Rejected</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<br> <br>
+		<div class="clearfix"></div>
+		<div class="clearfix"></div>
+
+		<div class="" id="myBtnContainer">
+		
+			<div class="tab-content form-wrapper px-4 py-4" style="height: 600px">
+				<div class="row">
+            <div class="col-md-2 text-center">
+           <p id="req_sts_tlt" > Graphical View</p>
+            </div>
+            </div>
+				<div class="row">
+                    <div class="col-md-4 "></div>
+					<div class="col-md-4 ">
+					
+                        <div class="input-group">
+						<input type="radio" style="float: left" name="btn" class="btn btn-outline-primary" title="All View" onclick="filterSelection('all')" checked="checked">
+						<label style="margin-right: 40px; margin-left: 6px;">All</label>
+							
+						
+						<input type="radio" style="float: left" name="btn" class="btn btn-outline-primary " title="Pie Chart View"
+							onclick="filterSelection('pie')">
+							<label style="margin-right: 40px; margin-left: 6px;">Pie Chart</label>
+							
+						
+						<input type="radio" style="float: left" name="btn"
+							class="btn btn-outline-primary " title="Bar Chart View"
+							onclick="filterSelection('bar')">
+							<label style="margin-right: 40px; margin-left: 6px;">Bar Chart</label>
+							</div>
+							</div>
+							<div class="col-md-4 "></div>
+						
+					
+					<br>
+					<div class="col-md-12 " style="margin-top: 15px;">
+					
+						<div class="container-fluid row">
+							<div class="col-md-6 card column pie" style="margin: 0px; padding: 0px;">
+								<div class="" >
+									<input type="hidden" id="waiting_for_approval_list" th:value="${waiting_for_approval_list}"> 
+									<input type="hidden" id="work_in_progress_list" th:value="${work_in_progress_list}"> 
+									<input type="hidden" id="closed_by_lhs_list" th:value="${closed_by_lhs_list}"> 
+									<input type="hidden" id="closed_by_fgs_list" th:value="${closed_by_fgs_list}">
+									<input type="hidden" id="reinitiated_list"th:value="${reinitiated_list}"> 
+									<input type="hidden" id="rejected_list" th:value="${rejected_list}">
+                                      <div class="graphs">
+									 <canvas id="myPieChart" ></canvas> 
+									 </div>
+								</div>
+							</div>
+							<div class="col-md-6 card column bar" >
+								<div class="" >
+									<input type="hidden" id="waiting_for_approval_list" th:value="${waiting_for_approval_list}"> 
+									<input type="hidden" id="work_in_progress_list" th:value="${work_in_progress_list}"> 
+									<input type="hidden" id="closed_by_lhs_list" th:value="${closed_by_lhs_list}"> 
+									<input type="hidden" id="closed_by_fgs_list" th:value="${closed_by_fgs_list}">
+									<input type="hidden" id="reinitiated_list"th:value="${reinitiated_list}"> 
+									<input type="hidden" id="rejected_list" th:value="${rejected_list}">
+                                   <div class="graphs">
+									<canvas id="myBarChart" ></canvas>
+									</div>
+								</div>
+							</div>
+						
+							
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript"
+		src="./static/js/requisition/requisition.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			$('.timer').each(function() {
+				$(this).prop('timer', 0).animate({
+					Counter : $(this).text()
+				}, {
+					duration : 3500,
+					easing : 'swing',
+					step : function(now) {
+						$(this).text(Math.ceil(now));
+					}
+				});
+			});
+		});
+	</script>
+
+	<script>
+		filterSelection("all");
+		getPieChartData();
+		getBarChartData();
+	</script>
+
+
+
+
+</th:block>

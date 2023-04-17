@@ -1,0 +1,259 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/docMgmt/docDetails.css"
+		rel="stylesheet" />
+		<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+		<link href="./static/stylesheets/wishlistWork/wishlistWork.css" rel="stylesheet" />
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+			
+			<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Application Detail Dashboard</p> </a></li>
+				<li  onclick="window.location.href='./appDetailEntry'" class="nav-item"><a
+
+					class="nav-item mr-5" data-toggle="pill" href="#"><p>Application Detail Entry</p></a></li>
+					
+				
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4">
+					<form id="appDetails" th:object="${dataGridDTO}" class="px-2 py-2">
+					    <input type="hidden"  th:value="${dataGridDTO.paginator.totalRecords}"name="paginator.totalRecords" id="totalRecords" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"name="paginator.recordsPerPage" id="recordsPerPage" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"	id="dataGridAction" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+					    <input type="hidden" id="fltrformId" value="appDetails">
+				       	<input type="hidden" id="mode"  name="mode" th:value="${mode}">
+				       <div class="text-center">
+												<label class="control-label">View Mode<span
+													class="text-danger font-weight-bold ml-1"></span>
+												</label>
+											
+                                                 <input type="radio" th:id="Text"   name="modeType"    onclick="applicationMode(this.id);" th:value="Text"   ><label class="form-check-label" for="newscheck1">Text View</label>
+												 <input type="radio" th:id="Card"   name="modeType"     onclick="applicationMode(this.id);"   th:value="Card"  ><label class="form-check-label" for="newscheck2">Card View</label>
+											</div>
+			                 <br>
+					   
+						<div class="filter-section my-1 pt-1">
+							<div class="row sec-bottom">
+								<div class="col-lg-10 col-xl-11">
+									<div class="row form-group">
+										<div class="col-lg-3">
+											<select class="form-control" id="entity_code" name="entity_code">
+										<option value="">-- Select Entity Name --</option>
+										<option th:each="entity : ${entityNameList.entrySet()}"
+											th:value="${entity.key}" th:text="${entity.value}"
+											th:selected="${serverDetailModel!= null && serverDetailModel.entity_code != null && serverDetailModel.entity_code.contains(entity.key)}"></option>
+								     	</select>
+										</div>
+										
+										<div class="col-lg-3">
+											<select class="form-control" id="project_code" name="project_code">
+										<option value="">-- Select Application Name --</option>
+										<option th:each="entity : ${projectList.entrySet()}"
+											th:value="${entity.key}" th:text="${entity.value}"
+											th:selected="${serverDetailModel!= null && serverDetailModel.project_code != null && serverDetailModel.project_code.contains(entity.key)}"></option>
+								     	</select>
+										</div>
+										
+										<div class="col-lg-3">
+											<select class="form-control" id="application_type" name="application_type">
+										<option value="">-- Select Application Type --</option>
+										<option th:each="entity : ${applicationList.entrySet()}"
+											th:value="${entity.key}" th:text="${entity.value}"
+											th:selected="${serverDetailModel!= null && serverDetailModel.application_type != null && serverDetailModel.application_type.contains(entity.key)}"></option>
+								     	</select>
+										</div>
+										
+										
+										<div class="col-lg-3">
+										<input type="text" class="form-control" id="search_entity"  name="search_entity" placeholder="Search here" style="display: inline-block;"  onkeydown="(event.keyCode!=13);">
+										</div>
+										
+										
+									<!-- 	<div class="col-lg-3 text-right">
+									<label class="control-label">View Mode<span
+										class="text-danger font-weight-bold ml-1">*</span></label>
+								</div>
+								<div class="col-lg-3 col-xl-3">
+									<div class="form-check form-check-inline">
+										<input type="radio" class="form-check-input ml-2"
+											name="page_mode" th:id="Text"
+											onclick="applicationMode(this.id);" th:value="Text" /> <label
+											class="form-check-label" for="newscheck1">Text View</label>
+
+									</div>
+									<div class="form-check form-check-inline">
+										<input type="radio" class="form-check-input ml-2"
+											name="page_mode" th:id="Card"
+											onclick="applicationMode(this.id);" th:value="Card" /> <label
+											class="form-check-label" for="newscheck2">Card View</label>
+
+									</div>
+								</div>  -->
+								
+	                              </div>
+                             </div>
+
+								<div class="col-lg-5 col-xl-1 pl-0 d-flex justify-content-between">
+									<button type="button"
+										class="btn btn-primary addon-btn filter-inner-btn"
+										title="Search" onclick="searchAppFilter();">
+										<i class="fa search"></i>
+									</button>
+									<button type="reset"
+										class="btn btn-primary addon-btn filter-inner-btn"
+										title="Clear" onclick="refreshApp();">
+										<i class="fa clear"></i>
+									</button>
+									<button type="button"
+										class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+										title="No Extra Filters" aria-expanded="false">
+										<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					
+					
+					<div class="clearfix"></div>
+					<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+					<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+					<div class="clearfix"></div>
+					
+					  <div th:fragment="ajaxAppList" >
+					  
+					<div class="table" id="dataSpan">
+					<table class="table table-bordered table-striped mb-1"  id="table">
+						 <thead>
+				 	<tr>
+							<th class="th-action">Action</th>
+							                <th>Sr. No</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Document Type</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Document Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Application Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Prepared By</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Download</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Link</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+							</tr> 
+
+						</thead> 
+						 <tbody>
+						
+                            </tbody>
+                  	</table>
+				</div>
+				</div>
+				</div>
+						
+					</div>
+			<div class="action-section bg-white text-center fixed-bottom"
+				id="actiondiv">
+				<button type="button" class="action-btn action-btn--edit mr-2"
+					id="editBtn" style="display: inline-block;"  
+					onclick="editAppRecord('editDocCode');" >
+					<i class="fa fa-pencil"></i>Edit
+				</button>
+				<button type="button" class="action-btn action-btn--view mr-2" id="viewBtn" style="display: inline-block;" data-toggle="modal" data-target="#detailss-modal" onclick="viewAppDetail();" ><i class="fa fa-eye" ></i>View</button>
+ 				<button type="button" class="action-btn action-btn--delete mr-2"id="deleteBtn" style="display: inline-block;" onclick="deleteRecord('deleteDocdetails');">
+					<i class="fa fa-trash"></i>Delete
+				</button>
+
+			</div>
+
+
+
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-modal="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalCenterTitle">Details</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table details-table">
+									<tbody id="ModelTableBody">
+
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript"
+		src="./static/js/server details/serverDetails.js"></script>
+	
+	<script type="text/javascript">
+		loadDataUsingPaginator('appDetails');
+	</script>
+	<script type="text/javascript">
+	loadData();
+	</script>
+	
+	
+</th:block>

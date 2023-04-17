@@ -1,0 +1,84 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout" 
+th:with="title='Hello, template'">
+	
+<div th:fragment="ajaxUserLoginList">
+
+	      	<table class="table table-bordered table-striped mb-1" id="table">
+		        <thead>
+			          <tr class="text-center">
+					<!--  <th class="th-action check-action text-center"></th> -->
+			          	<th>Sr. No.</th>
+			            <!-- <th class="th-action">Action</th> -->
+			           	<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  Login Id</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>		 
+							<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  User Code</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>	 
+					<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                  User Name</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+					
+					<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                 Last Login</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+				
+					<th class="header">
+					              <div class="table-head-inner">
+					                <div class="table-heading">
+					                 Login Count</div>
+					                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+					              </div>
+					            </th>
+				
+								
+			          </tr>
+			        </thead>
+			  
+			        <tbody>
+			     
+			         <tr th:if="${loginGrid != null && !loginGrid.isEmpty()}" th:each="dataGrid,index_count : ${loginGrid}" th:id="${'tr-'+index_count.count}">
+										
+ 					 <td th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10" class="text-center"></td> 
+ 				     <td th:text="${dataGrid.login_id}"></td>
+ 				     <td class="text-center" th:text="${dataGrid.user_code}"></td>
+					<td th:text="${dataGrid.user_name}"></td>
+			       <td class="text-center" th:text="${dataGrid.login_time!= null ? #dates.format(dataGrid.login_time, 'dd-MMM-yyyy HH:mm:ss') : ''}"></td>
+			       <td class="text-center" th:text="${dataGrid.login_count}"></td>
+		          		
+		          		<input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}">
+				<input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				<input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				<input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}">
+					</tr>
+					
+					<tr th:unless="${loginGrid!= null && !loginGrid.isEmpty()}">
+					<td colspan="9"
+						class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"><img
+						src="static/images/global/empty-box.png">No Record Found</td>
+				   </tr>
+					
+					</tbody>
+	      		</table>
+	</div>

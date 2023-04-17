@@ -1,0 +1,339 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+<link href="./static/stylesheets/dashboard/dashboard.css" rel="stylesheet" />
+	<link href="./static/stylesheets/importantUrl/importantUrl.css" rel="stylesheet" />
+	
+	<div class="right-section">	
+	
+       
+		    <div class="container-fluid mt-3">
+		 	<div class="tab-section col-md-12 mt-3">
+	        <ul class="nav nav-pills">
+	         <li class="nav-item mr-5" onclick="window.location.href='./OtherEntry'"><a class="nav-link" data-toggle="pill" href="#"><p>Other Entry </p></a></li>
+			</ul>
+			
+			</div>
+					
+					 	<div class="clearfix"></div>
+					 	<div class="clearfix"></div>
+					 	<div class="tab-content form-wrapper px-4 py-4">
+		 	<input type="hidden" id="action" name="action" th:value="${action}" />
+           <form id="OtherEntryForm" autocomplete="off" th:object="${AppList}" enctype="multipart/form-data">
+           
+	
+					 	
+					 	
+					 	<div class="row form-group">
+					   <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Category<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="other_categaory" name="other_categaory" placeholder="Enter Category" th:value="${appList.other_categaory}" th:text="${other_categaory != null ? appList.other_categaory: ''}" />	
+						</div>
+						</div>
+
+					 <div class="row form-group">
+                        <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Application Name<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<div th:if="${projectList!= null && !projectList.isEmpty()}" >
+							<select class="form-control" id="audit_applied_app_name" name="audit_applied_app_name">
+								<option value="">--Select Application Name--</option>
+								<option th:each="project : ${projectList.entrySet()}"
+									th:value="${project.key}" th:text="${project.value}"
+									th:selected="${appList!= null && appList.audit_applied_app_name!= null && appList.audit_applied_app_name.contains(project.key)}"></option>
+							</select>
+						</div>
+						<div th:unless="${projectList!= null && !projectList.isEmpty()}">
+						<select class="form-control" id="audit_applied_app_name" name="audit_applied_app_name">
+						<option value="">--Select Application Name--</option>
+						</select>
+						</div>
+						</div>
+						</div>
+						
+
+					 	
+						<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Bank / Entity Type<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="entity_code" name="entity_code">
+							<option value="">--Select Bank / Entity Type--</option>
+							<option th:each="project : ${entityList.entrySet()}"
+									th:value="${project.key}" th:text="${project.value}"
+									th:selected="${appList!= null && appList.entity_code != null && appList.entity_code.contains(project.key)}"></option>
+							</select>
+						</div>
+							</div>	
+							
+						
+					
+						<div class="row form-group">
+					   <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Header<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="audit_name" name="audit_name"  placeholder="Enter Header" th:value="${appList.audit_name}" th:text="${audit_name != null ? appList.audit_name: ''}" />	
+						</div>
+						</div>
+						
+						
+						<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Description<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="input-group col-lg-7 col-xl-4">
+							<input class="form-control"  id="audit_description"
+								name="audit_description" placeholder="Enter Description"
+								th:value="${appList != null && appList.seq_id != null && appList.audit_description != null ? appList.audit_description : ''}" 
+								 >
+								 
+								 <div class="input-group-append req-w-15">
+								 <button type="button" class="btn btn-primary btn-addon"
+									onclick="viewDescription();" title="Enter Description">
+									<i class="fa fa-ellipsis-h"></i>
+								</button>
+                           </div>
+						</div>
+
+						</div>
+						
+						<div class="row form-group">
+
+                        <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">No Of  Occurrences<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control"  id="no_of_occurences" name="no_of_occurences"  
+						 th:value="${appList.no_of_occurences}"  placeholder="No Of  Occurrences"
+						  />	
+						</div>
+						</div>
+						
+						
+						
+						<div class="row form-group">
+
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="file">Attachment<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						 <div class="custom-file" >
+							<input type="file" class="form-control" id="doc_file"   name="doc_file" th:text="${docfile}">
+							
+						 </div>
+						</div>
+						</div>
+						
+						
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">External Link<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+
+						<div class="col-lg-7 col-xl-4">
+								<div class="link">
+									<input type="link" class="form-control"  id="audit_ext_link" name="audit_ext_link"   placeholder="Enter External Link" th:value="${appList.audit_ext_link}" th:text="${audit_ext_link != null ? appList.audit_ext_link: ''}"> 
+								</div>
+						</div>
+						</div>
+										
+												
+				    	
+						<div class="row form-group">
+	                 <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Applied Region <span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="audit_applied_region" name="audit_applied_region" placeholder="Enter Applied Region" th:value="${appList.audit_applied_region}" th:text="${audit_applied_region!= null ? appList.audit_applied_region: ''}"/>	
+						</div>
+						</div>
+						
+					
+						
+						
+					  <div class="row form-group">
+                       <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Server IP<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control"  id="audit_applied_server_ip" placeholder="Enter Server IP" name="audit_applied_server_ip" onblur="ValidateIP(this);" th:value="${appList.audit_applied_server_ip}" th:text="${audit_applied_server_ip!= null ? appList.audit_applied_server_ip: ''}"/>
+						
+						</div>
+						</div>
+						
+
+				
+						
+
+					 <div class="row form-group">
+                      <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Other <span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="other_info" name="other_info"  placeholder="Enter Other " th:value="${appList.other_info}" th:text="${other_info!= null ? appList.other_info: ''}" />	
+						</div>
+						</div>
+						
+						 <div class="row form-group">
+                      <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Other  1<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="other_info1" name="other_info1" placeholder="Enter Other  1" th:value="${appList.other_info1}" th:text="${other_info1!= null ? appList.other_info1: ''}" />	
+						</div>
+						</div>
+						 <div class="row form-group">
+                      <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Other  2<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="other_info2" name="other_info2" placeholder="Enter Other  2" th:value="${appList.other_info2}" th:text="${other_info2!= null ? appList.other_info2: ''}" />	
+						</div>
+						</div>
+						
+						<div id="resolve">
+						<div class="row form-group" >
+                      <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Resolve Remark<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="audit_resolve_remark" name="audit_resolve_remark" placeholder="Enter Resolve Remark" th:text="${audit_resolve_remark!= null ? appList.audit_resolve_remark: ''}" th:value="${appList.audit_resolve_remark}"/>	
+						</div>
+						</div>
+						<div class="row form-group" >
+                      <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Resolve Reference<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="audit_resolve_reference" name="audit_resolve_reference" placeholder="Enter Resolve Reference" th:text="${audit_resolve_reference!= null ? appList.audit_resolve_reference: ''}" th:value="${appList.audit_resolve_reference}"/>	
+						</div>
+						</div>
+						<div class="row form-group" >
+                      <div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Resolve Attachment<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="file" class="form-control"  id="file_attach" name="file_attach" th:text="${fileattach}"/>	
+						</div>
+						</div>
+						</div>
+						
+						<div class="row">
+	                    <div class="col-md-4 offset-md-4">
+	                        <div class="form-group  text-center">
+								<button type="button" class="form-btn"
+									onclick="saveOtherWork();" th:if="${action != null && action == 'save'}">
+									<i class="fa fa-floppy-o" aria-hidden="true"></i><span
+										th:if="${action != null && action == 'save'}">Save
+										& Exit</span>
+								</button>
+								
+									<button type="button" class="form-btn"
+									onclick="UpdateotherWork();" th:if="${action != null && action == 'edit'}">
+									<i class="fa fa-floppy-o" aria-hidden="true"></i><span
+										>Update & Exit</span>
+								   </button>
+								
+								<button type="button" class="form-btn" th:if="${action != null && action == 'save'}">
+							Reset <i class="fa fa-undo" aria-hidden="true"></i>
+						</button>
+						<button type="button" class="form-btn"  onclick="backToDashboard();">
+							<i class="fa cancel" aria-hidden="true"></i>Cancel
+						</button>
+
+					</div>               
+	                    </div>
+	                     </div>
+	                      </form>	
+	                      	               	<div id="description_data" class="modal fade" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<h4 class="modal-title">Description</h4>
+					<button type="button" title="Close" class="close"data-dismiss="modal" aria-hidden="true" onclick="CloseErrorData();">&times; </button>
+				</div>
+				<div class="modal-body error-Group-Description">
+					<form id="description">
+						<div class="row">
+							<div  class="col-md-12">
+							 <textarea class="form-control" rows="10" id="audit_description_view" name="audit_description_view"   
+						 th:text="${appList != null ? appList.audit_description : ''}"  placeholder=" Enter Description" maxlength="4000" ></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<div class="form-group row">
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-green-btn"
+								onclick="submitDescription();">
+								<i class="fa fa-save" aria-hidden="true"></i> Submit
+							</button>
+
+						</div>
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-red-btn"
+								onclick="resetDescription();">
+								<i class="fa fa-undo" aria-hidden="true"></i> Reset
+							</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	               
+	                </div>	
+	              			
+					</div>	
+							
+</div>
+<script type="text/javascript" src="./static/js/appAudit/appAudit.js"></script>
+
+<script>
+onLoadData();
+</script>
+</th:block>
+</html>

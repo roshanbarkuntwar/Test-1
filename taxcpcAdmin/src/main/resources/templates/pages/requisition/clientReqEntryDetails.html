@@ -1,0 +1,256 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+<link href="./static/stylesheets/requisition/requisition.css"
+		rel="stylesheet">
+		<link href="./static/stylesheets/importantUrl/importantUrl.css"
+                rel="stylesheet" />
+                <link href="./static/stylesheets/dashboard/dashboard-new.css"
+		rel="stylesheet" />
+                	
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3" id="req_dashboard">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Requisition Dashboard</p></a></li>
+					<li class="nav-item mr-5" onclick="window.location.href='./clientStatisticalDashboard'"><a class="nav-link"
+					data-toggle="pill" href="#"><p>Graphical & Statistical View Of Requisition</p></a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4">
+			<form id="reqEntryForm" th:object="${dataGridDTO}">
+
+				<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}"
+					name="filterFlag" id="filterFlag" /> <input type="hidden"
+					th:value="${dataGridDTO.paginator.totalRecords}"
+					name="paginator.totalRecords" id="totalRecords" /> <input
+					type="hidden" th:value="${dataGridDTO.paginator.totalPages}"
+					name="paginator.totalPages" id="totalPages" /> <input
+					type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"
+					name="paginator.recordsPerPage" id="recordsPerPage" /> <input
+					type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"
+					id="dataGridAction" /> <input type="hidden"
+					th:value="${dataGridDTO.paginator.pageNumber}"
+					name="paginator.pageNumber" id="pageNumber" />
+
+				<div class="filter-section my-1 pt-1">
+					<div class="row sec-bottom">
+						<div class="col-lg-10 col-xl-11">
+							<div class="row form-group">
+								<div class="col-lg-3">
+									<input type="text" placeholder="Requisition No."
+										class="form-control" id="req_code" name="req_code">
+								</div>
+								<div class="col-lg-3">
+								<div th:if="${appNameList != null && !appNameList.isEmpty()}" > 
+									<select class="form-control" id="project_name"
+										name="project_name">
+										<option value="">-- Application Name --</option>
+										<option th:each="role : ${appNameList.entrySet()}"
+											th:value="${role.key}" th:text="${role.value}"
+											th:selected="${dataGridDTO != null && dataGridDTO.filter != null && 
+											dataGridDTO.filter.project_name != null && dataGridDTO.filter.project_name.equalsIgnoreCase(role.key)}"></option>
+									</select>
+									</div>
+									<div th:unless="${appNameList != null && !appNameList.isEmpty()}" > 
+										<select class="form-control" id="project_name"
+										name="project_name">
+										<option value="">-- Application Name --</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control" id="req_type" name="req_type">
+										<option value="">-- Requisition Type --</option>
+										<option value="Application">Application</option>
+										<option value="Deployment">Deployment</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control" id="issue_type" name="issue_type">
+										<option value="">-- Issue Type --</option>
+										<option value="JAVA">Java</option>
+										<option value="Oracle">Oracle</option>
+										<option value="Other">Other</option>
+									</select>
+								</div>
+
+							</div>
+
+							<div class="row form-group collapse" id="extra-filter">
+								<div class="col-lg-3">
+									<select class="form-control" id="req_priority"
+										name="req_priority">
+										<option value="">-- Requisition Priority --</option>
+										<option value="High">High</option>
+										<option value="Medium">Medium</option>
+										<option value="Low">Low</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+									<div class="input-group">
+									<input type="hidden" id="from_date1" name="from_date1" >
+										<input type="text" class="form-control"
+											placeholder="From Date" id="from_date" name="from_date"
+											title="From Date" readonly="readonly" style="background-color: #ffffff;">
+										<div class="input-group-append">
+											<button type="button" class="btn btn-primary addon-btn"
+												id="completionDateBtn"
+												onmouseover="openCalendar('from_date', 'completionDateCal');"
+												oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');">
+												<i class="fa fa-calendar" id="completionDateCal"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="input-group">
+									<input type="hidden" id="to_date1" name="to_date1" >
+										<input type="text" class="form-control" placeholder="To Date"
+											id="to_date" name="to_date" title="To Date" readonly="readonly" style="background-color: #ffffff;">
+										<div class="input-group-append">
+											<button type="button" class="btn btn-primary addon-btn"
+												id="completionDateBtn"
+												onmouseover="openCalendar('to_date', 'completionDateCal1');"
+												oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');">
+												<i class="fa fa-calendar" id="completionDateCal1"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-3">
+									<select class="form-control" id="current_req_status"
+										name="current_req_status">
+										<option value="">-- Current Status --</option>
+										<option value="CRS_015">Waiting For approval</option>
+										<option value="CRS_010">Work Started By Developer</option>
+										<option value="CRS_002">Work Closed By Developer</option>
+										<option value="CRS_017">Work Started By QC</option>
+										<option value="CRS_014">Work Closed By QC</option>
+										<option value="CRS_003">Closed By LHS Team</option>
+										<option value="CRS_006">Closed By FGS Team</option>
+										<option value="CRS_004">Rejected</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<!-- </div> -->
+						<div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn"
+								title="Search" onclick="getClientReqEntrySearchFilter()">
+								<i class="fa search"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn" title="Clear"
+								onclick="resetClientReqEntrySearchFilter()">
+								<i class="fa clear"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+								data-toggle="collapse" data-target="#extra-filter"
+								title="Extra Filters">
+								<i class="fa fa-ellipsis-h"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<div class="clearfix"></div>
+			<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+			<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+			<div class="clearfix"></div>
+
+
+			<div class="table-responsive mt-2 w-60" id="dataSpan">
+				<table class="table table-bordered table-striped mb-1" id="table">
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+		<!-- view box -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModal" aria-modal="true" data-backdrop="static"
+			data-keyboard="false">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="">Details</h5>
+						<button type="button" title="close" class="close"
+							data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">X</span>
+						</button>
+					</div>
+					<div class="modal-body" id="workModelTableBody" >
+						<!-- getting table data from String builder -->
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal" id="closeReqModel" tabindex="-1" data-backdrop="static"
+		data-keyboard="false">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">Close Requisition</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">
+						<div class="container-fluid">
+							<input type="hidden" id="Reqcode" />
+							<input type="hidden" id="role_code" th:value="${#session.getAttribute('LOGIN_USER').role_code}"/>
+							
+							<div class="form-group row">
+							<div class="col-lg-7 col-xl-4" >
+								<div class="form-check-inline" id="CloseDiv">
+									 <input type="radio" id="ReqStatusT" name="ReqStatus" value="S" checked >
+    									<label>Req Completed</label>
+
+   								 	 <input type="radio" id="ReqStatusF" name="ReqStatus" value="F">
+    									<label>Req Not Completed</label>
+    							</div>
+							</div>
+							</div>
+							
+							<div class="form-group row">
+								<div class="col-md-2 offset-md-1">
+									<label>Remark</label>
+								</div>
+								<div class="col-md-8">
+									<textarea class="form-control" id="client_closed_remark"
+										name="reopen_remark" rows="3"></textarea>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer justify-content-center">
+						<button type="button" id="closeButton" class="btn btn-primary" onclick="ReqClosedByClient()">Close Requisition</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					</div>
+
+				</div>
+			</div>
+		</div> 
+		
+
+	</div>
+	<script type="text/javascript"
+		src="./static/js/requisition/requisition.js"></script>
+	
+	<script type="text/javascript">
+		loadDataUsingPaginator('reqEntryForm');
+	</script>
+</th:block>

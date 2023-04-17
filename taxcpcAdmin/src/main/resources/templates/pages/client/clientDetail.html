@@ -1,0 +1,232 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					style="cursor: not-allowed; pointer-events: all" data-toggle="pill"
+					href="#">Client Details</a></li>
+				<li class="nav-item"><a class="nav-link" data-toggle=""
+					style="cursor: not-allowed; pointer-events: all" href="#">Application
+						Detail</a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<input type="hidden" id="action" name="action" th:value="${action}" />
+		<input type="hidden" id="clientname" name="clientname" th:value="${clientname}" />
+		<input type="hidden" class="form-control" id="client_code"
+			name="client_code"
+			th:value="${clientDetail != null ? clientDetail.client_code : ''}">
+
+		<div class="tab-content form-wrapper px-4 py-4">
+
+			<div class="clearfix"></div>
+
+			<form name="client_Form" autocomplete="on" id="client_Form"
+				th:action="@{/SaveclientDetail}" method="post"
+				th:object="${clientDetail}">
+
+				<div class="row  pt-2" style="display: none" id="notification">
+					<div class="col-md-12 text-center">
+						<div class="d-inline-block">
+							<div class="form-validation form-validation--info p-1 my-1">
+								<i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
+								<h5 class="d-inline-block" id="notificationMsg"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row form-group  pt-2">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Entity Name<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="entity_code1" name="entity_code"
+							onchange="return showClientForm();">
+							<option value="">--Select--</option>
+							<option th:each="entity : ${entityNameList.entrySet()}"
+								th:value="${entity.key}" th:text="${entity.value}"></option>
+						</select>
+					</div>
+					<div class="col-lg-7 col-xl-4" style="display: none;">
+						<select class="form-control" id="entity_code2" name="entity_name">
+							<option value="">--Select--</option>
+							<option th:each="entity : ${entityNameList.entrySet()}"
+								th:value="${entity.value}" th:text="${entity.key}"></option>
+						</select>
+					</div>
+
+
+				</div>
+				<div style="display: none;" id="clientForm">
+					<div class="row form-group pt-2">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Team name<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select class="form-control" id="team_name" name="team_name"
+								onchange="">
+								<option value="">--Select--</option>
+								<option value="FGS"
+									th:selected="${clientDetail != null && 'FGS'.equals(clientDetail.team_name)}">FGS</option>
+								<option value="LHS"
+									th:selected="${clientDetail != null && 'LHS'.equals(clientDetail.team_name)}">LHS</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="applicationDiv row form-group" id="moduleDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Responsible Person Name<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="resp_person_name"
+								oninput="this.value = this.value.replace(/[^a-zA-Z\- ]+/g, ' ').replace(/(\..*)\./g, '$1');"
+								name="resp_person_name" />
+						</div>
+					</div>
+
+					<div class="applicationDiv row form-group" id="moduleDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Role/Designation <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="resp_person_desig"
+								oninput="this.value = this.value.replace(/[^a-zA-Z\- ]+/g, ' ').replace(/(\..*)\./g, '$1');"
+								name="resp_person_desig" />
+						</div>
+					</div>
+
+					<div class="applicationDiv row form-group" id="moduleDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Mobile Number<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="resp_person_mobileno"
+								maxlength="16"
+								oninput="this.value = this.value.replace(/[^0-9\-\+]+/g, '').replace(/(\..*)\./g, '$1');"
+								name="resp_person_mobileno" />
+						</div>
+					</div>
+
+					<div class="applicationDiv row form-group" id="moduleDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Email ID<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="resp_person_email_id"
+								name="resp_person_email_id" />
+						</div>
+					</div>
+
+					<div class="applicationDiv row form-group" id="moduleDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Address<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="resp_person_address"
+								name="resp_person_address" />
+						</div>
+					</div>
+
+
+					<div class="applicationDiv row form-group" id="moduleDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Branch Address<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="branch_address"
+								name="branch_address" />
+						</div>
+					</div>
+
+
+
+					<div class="applicationDiv row form-group" id="moduleDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Branch PIN<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="branch_pin"
+								name="branch_pin" maxlength="6"
+								oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');" />
+						</div>
+					</div>
+
+					<div class="applicationDiv row form-group" id="moduleDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Branch City<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="branch_city"
+								name="branch_city"
+								oninput="this.value = this.value.replace(/[^a-zA-Z\- ]+/g, ' ').replace(/(\..*)\./g, '$1');" />
+
+						</div>
+					</div>
+
+					<div class="applicationDiv row form-group" id="moduleDiv">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Branch State<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select class="form-control" id="branch_state_code"
+								name="branch_state_code">
+								<option value="">--Select--</option>
+								<option th:each="entity : ${states.entrySet()}"
+									th:value="${entity.key}" th:text="${entity.value}"
+									th:selected="${entity.value== null }"></option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-4 offset-md-4">
+							<div class="form-group  text-center">
+								<button type="button" class="form-btn" onclick="savedBox();">
+									<i class="fa save" aria-hidden="true"></i> Save &amp; Next
+								</button>
+								<button type="reset" class="form-btn" th:id="${client_mode}"
+								onclick="backtodashborad(this.id)">
+									<i class="fa cancel" aria-hidden="true"></i> Cancel
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="./static/js/client/client.js"></script>
+	<script type="text/javascript"
+		src="./static/js/global/lhs/lhsGlobal.js"></script>
+
+</th:block>

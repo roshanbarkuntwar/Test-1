@@ -1,0 +1,234 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+	
+<div  th:fragment="ajaxDeFaultEntityList">
+<link href="./static/stylesheets/wishlistWork/wishlistWork.css" rel="stylesheet" />
+
+ <input type="hidden" id="viewText" name="viewText" th:value="${mode}" />
+ <input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}">
+				   <input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				  <input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				   <input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}">
+                <table class="table"  id="table">
+						<thead>
+					     <tr class="text-center">
+							<th class="th-action">Action</th>
+                                <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Sr. No</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+									
+                               <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Entity Code</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Client Code</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+							
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Client Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Parent code</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+							
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Initiate Date</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								
+								<!--  <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Closed Date</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Closed Remark</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">LastUpdate from FGS</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th> -->
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">No Of Transaction</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">LastUpdate</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								
+								
+								
+							</tr>
+
+						</thead>
+						
+						<tbody>
+						
+					
+						<tr   th:if="${defaultGrid!= null && !defaultGrid.isEmpty()}"
+								th:each="dataGrid,index_count : ${defaultGrid}"
+								th:id="'tr-'+${index_count.count}+'-'+${dataGrid.client_code}">
+								<td class="td-action text-center">
+									<div class="custom-control custom-checkbox action-check checkbox-mt">
+										<input  type="checkbox"
+												class="custom-control-input toggle-action-section"
+												name="actionCheckbox"
+												th:id="'action~'+${index_count.count}+'~'+${dataGrid.client_code}+'~'+${mode}"
+												onclick="openActionDiv(this.id);"> 
+											
+										<label
+											class="custom-control-label"
+											th:for="'action~'+${index_count.count}+'~'+${dataGrid.client_code}+'~'+${mode}">
+										</label>
+									</div>
+								</td>
+
+				<td th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10"  class="text-center"></td>
+								<td th:text="${dataGrid.entity_code} " class="text-center"></td>
+								<td th:text="${dataGrid.client_code}" class="text-center"></td>
+								<td th:text="${dataGrid.client_name}" class="text-left"></td>
+								<td th:text="${dataGrid.parent_code}" class="text-center"></td>
+ 								<td th:text="${dataGrid.initiate_date!= null?#dates.format(dataGrid.initiate_date, 'dd-MMM-yyyy HH:mm:ss') : ''}" class="text-center" ></td>
+ 								<!-- <td th:text="${dataGrid.closed_date}" class="text-left"></td>
+ 								<td th:text="${dataGrid.closed_remark}" class="text-left"></td>
+ 							    <td th:text="${dataGrid.lastupdate_from_fgs}" class="text-left"></td> -->
+								<td th:text="${dataGrid.no_of_transaction}" class="text-center"></td>
+								<td th:text="${dataGrid.lastupdate!= null ?#dates.format(dataGrid.lastupdate, 'dd-MMM-yyyy HH:mm:ss ') : ''}" class="text-center"></td>
+                      
+                       <tr th:unless="${defaultGrid  != null && !defaultGrid.isEmpty()}">
+				       <td colspan="9" class="text-center">No Record Found</td>
+			           </tr>
+						</tbody>
+					</table>
+					</div>
+			
+			
+			<form action="">
+			<div class="tab-content form-wrapper px-4 py-4" id="dataSpan" >
+		    <div class="row pt-3" th:fragment="ajaxDeFaultEntityListCard">
+			<input type="hidden" id="viewCard" name="viewCard" th:value="${mode}" />
+			<div class="col-md-3"  th:if="${defaultGrid!= null && !defaultGrid.isEmpty()}"
+				th:each="item:${defaultGrid}">
+
+				<div class="media header p-4 kpi bg-white">
+                   <div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+						<h3 th:text="B0" style="color:yellow;" title="Default Entity" ></h3>
+				</div>					
+					
+
+					<input type="hidden"	th:value="${#session.getAttribute('LOGIN_USER').edit_right}">
+				
+				 <div class="media-body text-muted" id="example3" >
+					<h6 th:text="${'' + item.client_code}" title="Client Code" class="text-center"   style="background:#006a93;color:#fffe03;width:70px;height:60px;padding-top:20px;"></h6>	
+				</div> 
+						
+					
+						<div class = "text-right">
+						<h6 th:text="${'' + item.client_name}" title="Client Name" class = "text-center"></h6>
+								<span class="mr-3"
+								th:attr="onclick=|DefaultEditEntity('${item.client_code}')|"
+								style="background: linear-gradient(to bottom, #3fecb2, #14de9b); color: #fff; padding: 3px 5px; border-radius: 5px; cursor: pointer;  align-items: right;">
+								<i class="fa fa-pencil edit-button" title="Edit"></i></span>
+							   <span class="mr-3"
+								th:attr="onclick=|DefaultViewEntity('${item.client_code}')|"
+								style="background: linear-gradient(to bottom, #4dd5e8, #00BCD4); color: #fff; padding: 3px 5px; cursor: pointer; border-radius: 5px;   
+								align-items: right;">
+								<i class="fa fa-eye view-button" title="View" data-toggle="modal"
+								data-target="#detail-modal"></i></span>
+						</div>
+						
+					<input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}"> 
+				    <input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				    <input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				    <input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}">  
+                  </div>
+				</div>
+
+			
+			<div class="row" >
+			     <div class="col-md-4"></div>
+				<div class="col-md-12" style="margin-left: 650px;">
+				<div class="input-group">
+				<div  th:unless="${defaultGrid != null && !defaultGrid.isEmpty()}">
+             <div class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"> 
+				<img  src="static/images/global/empty-box.png"> No Records Found</div>
+ 		     </div>	
+				</div></div>
+				<div class="col-md-4"></div>
+				</div>
+</div>
+
+		</div>
+
+	</form>	
+	
+
+
+</html>

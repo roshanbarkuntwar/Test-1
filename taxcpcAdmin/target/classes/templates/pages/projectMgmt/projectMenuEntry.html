@@ -1,0 +1,258 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link rel="stylesheet"
+		href="./static/css/global/bootstrap-multiselect.css">
+	<link rel="stylesheet" href="./static/css/global/bootstrap-select.css">
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"
+					onclick="window.location.href='./projectMenuDetails'"><a
+					class="nav-link " data-toggle="pill" href="#"><p>Project
+							Menu Detail</p> </a></li>
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>
+							<th:block
+								th:text="${action != null && action == 'edit' ? 'Edit Menu' : 'Menu Entry'}"></th:block>
+						</p></a></li>
+				<!--  <li onclick="OpenProjectMenu();"  class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p> Project Menu Detail </p></a></li> -->
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+
+		<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'edit' ? 'Edit' : 'Add'}">Add </th:block> Menu</h4></div>  -->
+		<input type="hidden" id="action" name="action" th:value="${action}" />
+		<form id="reqMenuEntryForm" th:object="${projectMenuDetail}"
+			autocomplete="off">
+
+			<input type="hidden" class="form-control" id="menu_code"
+				name="menu_code"
+				th:value="${projectMenuDetail != null ? projectMenuDetail.menu_code : ''}">
+			<div class="tab-content form-wrapper px-4 py-4">
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Project Name <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<div th:if="${projectList != null && !projectList.isEmpty()}">
+							<select class="form-control" id="project_code"
+								name="project_code" onchange="getProjectModules();">
+								<option>-- Select Project Name--</option>
+								<option th:each="project : ${projectList.entrySet()}"
+									th:value="${project.key}" th:text="${project.value}"
+									th:selected="${projectMenuDetail != null && projectMenuDetail.project_code !=null && projectMenuDetail.project_code.equals(project.key)}"></option>
+							</select>
+						</div>
+						<div th:unless="${projectList!= null && !projectList.isEmpty()}">
+							<select class="form-control" id="project_code"
+								name="project_code">
+								<option>--Select Project Name--</option>
+								<!-- <option th:each="project : ${projectList.entrySet()}"
+									th:value="${project.key}" th:text="${project.value}"
+									th:selected="${projectMenuDetail != null && projectMenuDetail.project_code !=null && projectMenuDetail.project_code.equals(project.key)}"></option>
+							 -->
+							</select>
+
+						</div>
+
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Module Name <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<div
+							th:if="${projectmoduleList!= null && !projectmoduleList.isEmpty()}">
+							<select name="module_code" id="module_code" class="form-control"
+								disabled="disabled" title="module_code"
+								th:value="${projectMenuDetail != null  && projectMenuDetail.menu_code != null && projectMenuDetail.module_code != null ? projectMenuDetail.module_code : ''}">
+								<option value="">-- Select Module Name--</option>
+								<option th:each="module_code : ${projectmoduleList.entrySet()}"
+									th:value="${module_code.key}" th:text="${module_code.value}"
+									th:selected="${projectMenuDetail != null && projectMenuDetail.module_code != null && projectMenuDetail.module_code.equals(module_code.key)}"></option>
+							</select>
+						</div>
+						<!-- <div
+							th:unless="${projectmoduleList!= null && !projectmoduleList.isEmpty()}">
+							<select name="module_code" id="module_code" class="form-control"
+								disabled="disabled" title="module_code"
+								th:value="${projectMenuDetail != null  && projectMenuDetail.menu_code != null && projectMenuDetail.module_code != null ? projectMenuDetail.module_code : ''}">
+								<option value="">-- Select Module Name--</option>
+								<option th:each="module_code : ${projectmoduleList.entrySet()}"
+									th:value="${module_code.key}" th:text="${module_code.value}"
+									th:selected="${projectMenuDetail != null && projectMenuDetail.module_code != null && projectMenuDetail.module_code.equals(module_code.key)}"></option>
+							
+							</select>
+
+						</div> -->
+					</div>
+
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Menu Name <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="menu_name"
+							name="menu_name"
+							th:value="${projectMenuDetail != null ? projectMenuDetail.menu_name : ''}" />
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Menu Description <span
+							class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="menu_description"
+							name="menu_description"
+							th:value="${projectMenuDetail != null ? projectMenuDetail.menu_description : ''}" />
+					</div>
+				</div>
+
+
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Parent Menu Name <span
+							class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+					 	<div
+							th:if="${projectMenuDetail!= null && projectMenuDetail.parent_menu_code!= null}"> 
+							<select class="form-control" name="parent_menu_code"
+								id="parent_menu_code" title=""
+								th:value="${projectMenuDetail != null && projectMenuDetail.parent_menu_code != null && projectMenuDetail.menu_code != null ? projectMenuDetail.parent_menu_code : ''}">
+								<option value="">--Select Parent Menu Name--</option>
+								<option
+									th:each="parent_menu_code : ${projectParentMenu.entrySet()}"
+									th:value="${parent_menu_code.key}"
+									th:text="${parent_menu_code.value}"
+									th:selected="${projectMenuDetail != null && projectMenuDetail.menu_code !=null && projectMenuDetail.parent_menu_code.equals(parent_menu_code.key)}"></option>
+							</select>
+						</div>
+						<div
+							th:unless="${projectMenuDetail!= null && projectMenuDetail.parent_menu_code!= null}">
+							<select class="form-control" name="parent_menu_code"
+								id="parent_menu_code" title=""
+								th:value="${projectMenuDetail != null && projectMenuDetail.parent_menu_code != null && projectMenuDetail.menu_code != null ? projectMenuDetail.parent_menu_code : ''}">
+								<option value="">--Select Parent Menu Name--</option>
+								<option
+									th:each="parent_menu_code : ${projectParentMenu.entrySet()}"
+									th:value="${parent_menu_code.key}"
+									th:text="${parent_menu_code.value}"></option>
+							
+							</select>
+						</div>
+					</div>
+
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Sub Menu Name <span
+							class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" name="sub_menu_type"
+							id="sub_menu_type" title=""
+							th:value="${projectMenuDetail != null && projectMenuDetail.sub_menu_type != null && projectMenuDetail.menu_code != null ? projectMenuDetail.sub_menu_type : ''}"
+							multiple="multiple">
+							<option th:each="submenuType : ${submenuType.entrySet()}"
+								th:value="${submenuType.key}" th:text="${submenuType.value}"
+								th:selected="${projectMenuDetail != null && projectMenuDetail.sub_menu_type != null && projectMenuDetail.menu_code != null && projectMenuDetail.sub_menu_type.contains(submenuType.key)}"></option>
+						</select>
+					</div>
+
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Menu Type <span
+							class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="menu_type"
+							name="menu_type"
+							th:value="${projectMenuDetail != null && projectMenuDetail.menu_type != null? projectMenuDetail.menu_type : ''}" />
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Menu Status<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<div class="form-check form-check-inline">
+							<input type="radio" class="form-check-input ml-2"
+								name="menu_status" id="menu_status1" th:value="A"
+								th:checked="${projectMenuDetail != null && 'A'.equals(projectMenuDetail.menu_status) ? 'checked' : ''}" />
+							<label class="form-check-label" for="newscheck1">Active</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input type="radio" class="form-check-input ml-2"
+								name="menu_status" id="menu_status2" th:value="I"
+								th:checked="${projectMenuDetail != null && 'I'.equals(projectMenuDetail.menu_status)}" />
+							<label class="form-check-label" for="newscheck2">Inactive</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 offset-md-4">
+						<div class="form-group  text-center">
+
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'save'}"
+								onclick="saveProjectMenu();">
+								<i class="fa save" aria-hidden="true"></i>Save & Exit
+							</button>
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'edit'}"
+								onclick="saveProjectMenu();">
+								<i class="fa fa-floppy-o" aria-hidden="true"></i><span>Update
+									& Exit</span>
+							</button>
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'save'}"
+								onclick="window.location.href='./projectMenuDetailsEntry'">
+								<i class="fa fa-undo" aria-hidden="true"></i>Reset
+							</button>
+							<button type="button" class="form-btn"
+								onclick="OpenProjectMenu();">
+								<i class="fa cancel" aria-hidden="true"></i>Cancel
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+
+		<script type="text/javascript"
+			src="./static/js/projectMgmt/projectMgmt.js"></script>
+		<script type="text/javascript"
+			src="./static/js/global/bootstrap-multiselect.min.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#sub_menu_type').multiselect({
+					buttonWidth : '160px',
+					includeSelectAllOption : true,
+					nonSelectedText : '--Select Sub Menu Name--'
+				});
+			});
+		</script>
+	</div>
+</th:block>

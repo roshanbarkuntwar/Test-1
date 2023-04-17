@@ -1,0 +1,165 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/wishlistWork/wishlistWork.css"
+		rel="stylesheet" />
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+
+	<div class="right-section">
+		
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					style="cursor: not-allowed; pointer-events: all" data-toggle="pill"
+					href="#">App Audit Entry</a></li>
+
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+
+		<div class="tab-content form-wrapper px-4 py-4">
+			<div class="row pt-3">
+				<div class="col-md-3">
+					<div class="media p-3 kpi bg-white">
+						<div
+							class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/appsec.jpg"  style="height: 60px; width: 70px">
+						</div>
+						<div class="media-body text-muted">
+							<span class="mr-2" th:attr="onclick=|openUrlByType('')|"
+								title="AppSec Entry">AppSec</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="media p-3 kpi bg-white">
+						<div
+							class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/VA.jpg" style="height: 60px; width: 70px">
+						</div>
+						<div class="media-body text-muted">
+							<span class="mr-2" th:attr="onclick=|vulnerableEntry('')|"
+								title="Vulnerability Assessment Entry">Vulnerability
+								Assessment </span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="media p-3 kpi bg-white">
+						<div
+							class="kpi-icon position-relative mx-4 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/sourcecode.jpg" style="height: 60px; width: 90px">
+						</div>
+						<div class="media-body text-muted">
+							<span class="mr-2" th:attr="onclick=|srcCodeReview('')|"
+								title="Source Code Entry">Source Code</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="media p-3 kpi bg-white">
+						<div
+							class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/other.webp" style="height: 60px; width: 70px">
+						</div>
+						<div class="media-body text-muted">
+							<span class="mr-2" th:attr="onclick=|openUrlByOther('')|"
+								title="OtherEntry">Other</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="col-md-2">
+					<div class="media p-3 kpi bg-white">
+						<div
+							class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/svn.png">
+						</div>
+						<div class="media-body text-muted">
+							<span class="mr-2" th:attr="onclick=|bestPracticeEntry('')|"
+								title="Entry">Best Practice</span>
+						</div>
+					</div>
+				</div> -->
+			</div>
+		</div>
+		<!-- <div class="tab-content form-wrapper px-4 py-4"> 
+			<div class="row pt-3">
+				<div class="col-md-4" >
+					<div class="media p-3 kpi bg-white">
+						<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/svn.png">
+						</div>
+						<div class="media-body text-muted">
+							<span class="mr-2" th:attr="onclick=|vulnerableEntry('')|" title="Entry">Vulnerability Assessment </span>
+						</div>
+					</div>
+				</div>
+				
+			</div>				
+		</div> 
+		<div class="tab-content form-wrapper px-4 py-4"> 
+			<div class="row pt-3 ">
+				<div class="col-md-2" >
+					<div class="media p-3 kpi bg-white">
+						<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/svn.png">
+						</div>
+						<div class="media-body text-muted">
+							<span >Source Code</span>
+						</div>
+					</div>
+				</div>
+				
+			</div>				
+		</div>
+		<div class="tab-content form-wrapper px-4 py-4"> 
+			<div class="row pt-3">
+				<div class="col-md-6" >
+					<div class="media p-3 kpi bg-white">
+						<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/svn.png">
+						</div>
+						<div class="media-body text-muted">
+							<span class="mr-2" th:attr="onclick=|openUrlByOther('')|" title="OtherEntry" >Other</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-6" >
+					<div class="media p-3 kpi bg-white">
+						<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/svn.png">
+						</div>
+						<div class="media-body text-muted">
+							<span class="mr-2" th:attr="onclick=|bestPracticeEntry('')|" title="Entry">Best Practice</span>
+						</div>
+					</div>
+				</div>
+				
+			</div>				
+		</div>
+		<!-- <div class="tab-content form-wrapper px-4 py-4"> 
+			<div class="row pt-3">
+				<div class="col-md-4" >
+					<div class="media p-3 kpi bg-white">
+						<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+							<img src="./static/images/dashboard/svn.png">
+						</div>
+						<div class="media-body text-muted">
+							<span class="mr-2" th:attr="onclick=|bestPracticeEntry('')|" title="Entry">Best Practice</span>
+						</div>
+					</div>
+				</div>
+				
+			</div>				
+		</div> -->
+	</div>
+	<script type="text/javascript" src="./static/js/appAudit/appAudit.js"></script>
+
+
+</th:block>

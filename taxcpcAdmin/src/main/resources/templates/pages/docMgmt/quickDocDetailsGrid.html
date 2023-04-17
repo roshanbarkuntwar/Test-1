@@ -1,0 +1,64 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<div th:fragment="ajaxQuickDocList">
+	<div class="container-fluid">
+		<div class="row sticky-container py-4" id="table">
+			<th:block th:if="${datalist != null}"
+				th:each="dataGrid,index_count : ${datalist}">
+				<input type="hidden" th:id="${'data-'+index_count.count}"
+					th:remove="tag" th:value="${dataGrid.doc_data}">
+				<div class="col-md-4 col-xl-3">
+					<div class="sticky">
+						<div class="sticky-body">
+							<div class="scroll" th:each="project : ${docTypeList.entrySet()}"
+								th:if="${project.key} == ${dataGrid.doc_type_code}"
+								th:title="${project.value}">
+								<p th:id="'doc_data~'+${index_count.count}"
+									th:utext="${dataGrid.doc_data}" maxlength="4000"></p>
+							</div>
+							<input type="hidden" id="totalrecordsgrid"
+								th:value="${dataGridDTO.paginator.totalRecords}"> <input
+								type="hidden" id="totalPagesgrid"
+								th:value="${dataGridDTO.paginator.totalPages}"> <input
+								type="hidden" id="pageNumbergrid"
+								th:value="${dataGridDTO.paginator.pageNumber}"> <input
+								type="hidden" id="recordsPerPageSelectgrid"
+								th:value="${dataGridDTO.paginator.recordsPerPage}">
+						</div>
+						<div class="sticky-footer">
+							<div class="d-flex align-items-center justify-content-between">
+								<h4 th:id="'doc_name~'+${index_count.count}"
+									th:text="${dataGrid.doc_name}"></h4>
+								<div class="">
+									<span title="download"
+										th:id="'download~'+${index_count.count}+'~'+${dataGrid.doc_data}"
+										onclick="downloadQuickDoc(this.id);"
+										class="fa fa-download download-icon mr-2"></span> <span
+										title="delete"
+										th:id="'delete~'+${index_count.count}+'~'+${dataGrid.doc_code}+'~'+${dataGrid.doc_mode}"
+										onclick="deleteDoc(this.id);"
+										class="fa fa-trash delete-icon  text-danger"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</th:block>
+			<div class="row" >
+			     <div class="col-md-4"></div>
+				<div class="col-md-12" style="margin-left: 650px;">
+				<div class="input-group">
+				<div  th:unless="${datalist != null && !datalist.isEmpty()}">
+				<div class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"> 
+				<img  src="static/images/global/empty-box.png"> No Records Found</div>
+			     </div>	
+				</div></div>
+				<div class="col-md-4"></div>
+				</div>
+		</div>
+
+	</div>
+</div>
+</html>

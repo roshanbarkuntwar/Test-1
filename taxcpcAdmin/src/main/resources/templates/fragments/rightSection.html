@@ -1,0 +1,39 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="rightSection">
+	<div class="right-section-wrapper">
+		<input type="hidden" id="globalContextPath"
+			th:value="${#httpServletRequest.getContextPath()}">
+			
+		<div th:insert="fragments/alertBoxes :: alertBoxes"></div>
+		
+		<div th:insert="fragments/header :: header"></div>
+		
+		<div class="header-gap"></div>
+		
+		
+		<div layout:fragment="content" id="content-fragment">
+			<h1>This is the Layout's main section</h1>
+			<p>This content will be replaced if the page using the layout
+				also defines a layout:fragment="content" segment.</p>
+
+
+		</div>
+	</div>
+
+	<script>
+		/* $(document).bind("contextmenu", function(e) {
+			return false;
+		}); */
+
+		try {
+			let dynamicHeight = $("html").height();
+			//document.getElementsByClassName("treeview")[0].style.height=(dynamicHeight-30)+"px";
+			$("#iframe").attr({
+				'height' : (dynamicHeight - 71) + 'px'
+			});
+		} catch (err) {
+
+		}
+	</script>
+</div>
+</html>

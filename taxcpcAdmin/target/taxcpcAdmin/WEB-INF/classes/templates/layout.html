@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html class="h-100" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+
+<title>TaxCPC Admin Portal</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="icon" href="./static/images/global/taxcpc-fevicon.png" type="image/icon">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="./static/font-awesome/css/font-awesome.min.css" />
+
+<!-- Bootstrap core CSS -->
+<link href="./static/css/global/jquery-ui.css" rel="stylesheet" />
+<link href="./static/css/bootstrap/bootstrap-reboot.min.css" rel="stylesheet" />
+<link href="./static/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Project Specific CSS -->
+<link href="./static/stylesheets/main/layout.css" rel="stylesheet" />
+<link href="./static/stylesheets/main/main.css" rel="stylesheet" />
+
+<!-- jQuery JS files -->
+
+<script type="text/javascript" src="./static/js/global/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="./static/js/global/bootstrap/bootstrap.bundle.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+
+<script type="text/javascript" src="./static/js/global/jquery-ui.js"></script>
+
+
+<!-- Calender -->
+<link href="./static/css/global/calendar/dhtmlxcalendar.css" rel="stylesheet">
+<script type="text/javascript" src="./static/js/global/calendar/dhtmlxcalendar.js"></script>
+<!-- Time Picker -->
+<link rel="stylesheet" href="./static/css/global/calendar/timepicker.css">
+<script src="./static/js/global/calendar/timepicker.js"></script>
+
+<script type="text/javascript" src="./static/js/global/lhs/lhsGlobalValidation.js"></script>
+<script type="text/javascript" src="./static/js/global/lhs/lhsGlobal.js"></script>
+<script type="text/javascript" src="./static/js/global/lhs/lhsAjax.js"></script>
+<script type="text/javascript" src="./static/js/global/lov/lightBoxPopup.js"></script>
+<script type="text/javascript" src="./static/js/global/keyPressScript.js"></script>
+<script type="text/javascript" src="./static/js/global/paginator/paginator.js"></script>
+
+<!-- table sorting -->
+<script type="text/javascript" src="./static/js/global/tableSorter/jquery.tablesorter.min.js"></script>
+
+
+</head>
+<body class="h-100">
+	<div th:insert="fragments/lov/lovModal :: globalLov"></div>
+	<div th:insert="fragments/sidebar :: sidebar" class="footer"></div>
+	<div th:insert="fragments/rightSection :: rightSection"></div>
+	<div th:insert="fragments/alertBoxes :: alertBoxes"></div>
+	<input type="hidden" id="globalcontextpath" th:value="@{/}">
+	
+	<!-- Project specific JS files -->
+	<script type="text/javascript" src="./static/js/global/main.js"></script>	
+	<script type="text/javascript" src="./static/js/server details/serverDetails.js"></script>
+
+	<script th:if="${session.CLIENT_LOGIN_SEQ == null}">
+		$(document).ready(function() {
+			doProcessGlobalParameters();
+		});
+	</script>
+	<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
+</body>
+</html>

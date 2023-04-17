@@ -1,0 +1,39 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<link href="./static/stylesheets/dashboard/dashboard.css" rel="stylesheet" />
+	<link href="./static/stylesheets/dashboard/dashboard-new.css" rel="stylesheet" />
+
+	<div class="right-section">
+	<div class="assessment-section-header heading-marquee" style="background: #e2ecff;">
+<div class="col-md-12 text-center p-0">
+				<marquee scrollamount="4">
+				<p class="mb-0"><span class="text-primary"><i class="fa fa-star"></i> Welcome To Taxcpc Gam ! <i class="fa fa-star"></i></span></p>
+				</marquee>
+					
+					<div class="clearfix"></div>
+				</div>	
+				</div>		
+		<div class="container-fluid mt-3">
+			<div class="row">
+				<div class="col-md-4">
+							<div class="media p-3 kpi bg-white">
+								<div class="kpi-icon position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+									<img src="./static/images/dashboard/receipt.png">
+								</div>
+								<div class="media-body text-muted">
+									<span th:text="${session.USER_ROLE.role_name !=null ? session.USER_ROLE.role_name :''}"></span>
+								</div>
+							</div>
+						</div>
+
+			</div>		
+		</div>
+	</div>
+		
+</th:block>
+</html>

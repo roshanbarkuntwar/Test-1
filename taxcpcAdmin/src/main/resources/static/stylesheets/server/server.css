@@ -1,0 +1,72 @@
+/* line 1, ../../sass/server/server.scss */
+.choose-file {
+  background: #e2ecff;
+  border-radius: 10px;
+  padding: 12px 20px;
+  text-align: center;
+}
+/* line 6, ../../sass/server/server.scss */
+.choose-file label {
+  margin-right: 10px;
+}
+/* line 9, ../../sass/server/server.scss */
+.choose-file input {
+  margin-right: 5px;
+}
+
+/* line 14, ../../sass/server/server.scss */
+.server-card {
+  	/*background-image: -webkit-gradient(linear, left top, left bottom, from(#26c6da), to(#0288d1));
+      background-image: linear-gradient(#26c6da, #0288d1);*/
+  background-color: #fff;
+  box-shadow: -1px 2px 0px 0px rgba(226, 226, 226, 0.76);
+  border-radius: 0.25rem;
+  box-shadow: 1px 1px 20px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  position: relative;
+}
+/* line 23, ../../sass/server/server.scss */
+.server-card .tag-name {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #4e8dff;
+  border-radius: 15px 0px 15px 0;
+  color: #fff;
+}
+/* line 30, ../../sass/server/server.scss */
+.server-card .tag-name span {
+  font-weight: bold;
+  display: inline-block;
+  padding: 6px 18px;
+}
+/* line 36, ../../sass/server/server.scss */
+.server-card .media-body {
+  padding-top: 25px;
+}
+/* line 38, ../../sass/server/server.scss */
+.server-card .media-body span.server-list {
+  /*border-bottom: 1px dashed #ccc; */
+  /* display: block; */
+  padding-bottom: 3px;
+  margin-bottom: 4px;
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 5px;
+}
+/* line 47, ../../sass/server/server.scss */
+.server-card .media-body .server-list.bg-success {
+  background: #e0ffe0 !important;
+}
+/* line 48, ../../sass/server/server.scss */
+.server-card .media-body .server-list.bg-info {
+  background: #d5f8ff !important;
+}
+/* line 49, ../../sass/server/server.scss */
+.server-card .media-body .server-list.bg-warning {
+  background: #fff3e2 !important;
+}
+/* line 50, ../../sass/server/server.scss */
+.server-card .media-body .server-list.bg-primary {
+  background: #cbdff5 !important;
+}

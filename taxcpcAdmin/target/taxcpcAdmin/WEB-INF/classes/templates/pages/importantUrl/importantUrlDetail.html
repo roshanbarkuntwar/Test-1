@@ -1,0 +1,144 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" /> 
+	<div class="right-section">
+    
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"
+					onclick="window.location.href='./importantUrl'"><a
+					class="nav-link" data-toggle="pill" href="#"><p>Important
+							Weblinks Dashboard</p> </a></li>
+				<li class="nav-item"><a class="nav-link active"
+					data-toggle="pill" href="#">
+						<p th:text="${link_type != null ? link_type+' Link' : 'Link'}"></p>
+				</a></li>
+				<!-- <li class="nav-item mr-5" onclick="window.location.href='./docEntry?mode=Q'"><a class="nav-link" data-toggle="pill" href="#"><p> Quick Document Entry </p></a></li>-->
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4">
+			<div class="tab-pane show in active">
+
+				<div class="row pt-4">
+					<div class="col-md-8 offset-md-2">
+						<div class="url-details-wrapper">
+							<table class="table" style="width:60%;" >
+								<tbody  th:if="${impLinkList != null && !impLinkList.isEmpty()}" th:each="dataGrid,index_count : ${impLinkList}">
+									<tr>
+										<td rowspan="2" class="grey-td w-5">
+											<div class="dashboard-icon-wrap">
+												<img style="width:100% ; height:100%;"   th:if="${(link_type == 'SVN') }" src="./static/images/dashboard/svn.png">
+												<img style="width:100% ; height:100%;"   th:if="${(link_type == 'Website') }" src="./static/images/dashboard/website.png">
+												<img style="width:100% ; height:100%;"   th:if="${(link_type == 'External') }" src="./static/images/dashboard/external.png">
+											</div>
+										</td>
+										<td class="w-80"><p class="url-description" th:text="${dataGrid.link_description}"></p></td>
+										<td rowspan="2" class="grey-td w-5">
+											<div class="collapsible" data-toggle="collapse" th:data-target="'#demo'+${index_count.count}">
+												<i class="fa fa-chevron-down"></i>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="w-80">
+										<a href="#" target="_blank" class="url-description"  th:attr="onclick=|OpenLink('${dataGrid.link}')|" th:text="${dataGrid.link}"></a></td>
+									</tr>
+									<tr>
+										<td colspan="3" class="p-0 text-left">
+											<div th:id="'demo'+${index_count.count}" class="collapse p-2 text-right">
+												<span class="mr-2" th:attr="onclick=|editLinkDetail('${dataGrid.link_code}')|" title="Edit"><i class="fa fa-pencil edit-button"></i></span>
+												 <span class="mr-2" th:attr="onclick=|deleteLinkDetail('${dataGrid.link_code}')|"><i class="fa fa-trash delete-button" title="Delete"></i></span>
+												  <span class="mr-2" th:attr="onclick=|viewLinkDetail('${dataGrid.link_code}')|"><i class="fa fa-eye view-button" title="View"></i></span>
+											</div>
+										</td>
+									</tr>
+									 
+									
+									 
+								
+								</tbody>
+								 <tr th:unless="${impLinkList != null && !impLinkList.isEmpty()}">
+				                     <div class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"> 
+				                     <img  src="static/images/global/empty-box.png"> No Records Found</div>
+									 </tr>
+							</table>
+							<!-- <table class="table">
+								<tbody>
+									<tr>
+										<td rowspan="2" class="grey-td w-15">
+											<div class="dashboard-icon-wrap">
+												<img src="./static/images/dashboard/svn.png">
+											</div>
+										</td>
+										<td class="w-80"><p class="url-description">Description
+												: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+												sed do eiusmod tempor incididunt ut labore et dolore magna
+												aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+												ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></td>
+										<td rowspan="2" class="grey-td w-5">
+											<div class="collapsible" data-toggle="collapse" data-target="#demo2">
+												<i class="fa fa-chevron-down"></i>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="w-80">
+										<a href="" target="_blank" class="url-description">http://lhs-svn/svn/TAXCPC</a></td>
+									</tr>
+									<tr>
+										<td colspan="3" class="p-0 text-left">
+											<div id="demo2" class="collapse p-2 text-right">
+												<span class="mr-2"><i class="fa fa-pencil edit-button" title="Edit"></i></span>
+												 <span class="mr-2"><i class="fa fa-trash delete-button" title="Delete"></i></span>
+												  <span class="mr-2"><i class="fa fa-eye view-button" title="View"></i></span>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="view-details" tabindex="-1" role="dialog" aria-labelledby="detail-modal" aria-modal="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Details</h5>
+                        <button type="button" title="close" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                   		<div class="">
+                   			<div class="row">
+                   				<div class="col-md-12">
+                   					<table class="table details-table">
+                   						<tbody id="viewModelBody">                  							
+                   							<tr>
+                   								<td class="text-bold">Link : </td>
+                   								<td class="pre-wrap"></td>
+                   							</tr>
+                   							<tr>
+                   								<td class="text-bold">Description : </td>
+                   								<td class="pre-wrap"></td>
+                   							</tr>                   							
+                   						</tbody>
+                   					</table>
+                   				
+                   				</div>
+                   			</div>
+                   		</div>
+                    </div>
+                </div>
+            </div>  </div>
+	</div>
+	<script type="text/javascript" src="./static/js/importantUrl/importantUrl.js"></script>
+</th:block>
