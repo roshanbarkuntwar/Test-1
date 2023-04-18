@@ -1,0 +1,324 @@
+
+
+%fa-icon
+{
+   
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.dashboard
+{
+    @extend %fa-icon;
+    &:before
+    {
+        content: "\f0e4";
+    }
+}
+.import,.upload
+{
+    @extend %fa-icon;
+    &:before
+    {
+       content: "\f093";
+    }
+}
+.save
+{
+    @extend %fa-icon;
+    &:before
+    {
+       content: "\f0c7";
+    }
+}
+.update
+{
+     @extend %fa-icon;
+    &:before
+    {
+           content: "\f14b";
+    }
+}
+.next
+{
+     @extend %fa-icon;
+    &:before
+    {
+          content: "\f054";
+    }
+}
+.previous,.back
+{
+     @extend %fa-icon;
+    &:before
+    {
+        content: "\f053";
+    }
+}
+.refresh
+{
+     @extend %fa-icon;
+    &:before
+    {
+       content: "\f021";
+    }
+}
+.reprocess
+{
+     @extend %fa-icon;
+    &:before
+    {
+      content: "\f079";
+    }
+}
+.approve
+{
+    @extend %fa-icon;
+    &:before
+    {
+      content: "\f164";
+    } 
+}
+.cancel
+{
+      @extend %fa-icon;
+    &:before
+    {
+     content: "\f05e";
+    } 
+}
+.revert
+{
+      @extend %fa-icon;
+    &:before
+    {
+     content: "\f01e";
+    } 
+}
+.verification
+{
+     @extend %fa-icon;
+    &:before
+    {
+     content: "\f00e";
+    }   
+}
+.search
+{
+    @extend %fa-icon;
+    &:before
+    {
+      content: "\f002";
+    }   
+}
+.filter
+{
+    @extend %fa-icon;
+    &:before
+    {
+      content: "\f0b0";
+    }   
+}
+.details,.information
+{
+    @extend %fa-icon;
+    &:before
+    {
+     content: "\f05a";
+    }   
+}
+.bulk-updation
+{
+    @extend %fa-icon;
+    &:before
+    {
+         content: "\f161";
+    }   
+}
+.view
+{
+    @extend %fa-icon;
+    &:before
+    {
+        content: "\f06e";
+    }   
+}
+.download
+{
+    @extend %fa-icon;
+    &:before
+    {
+        content: "\f019";
+    }   
+}
+.deductor
+{
+    @extend %fa-icon;
+    &:before
+    {
+        content: "\f007";
+    }   
+}
+.deductor
+{
+    @extend %fa-icon;
+    &:before
+    {
+        content: "\f007";
+    }   
+}
+.centralize-allocation
+{
+    @extend %fa-icon;
+    &:before
+    {
+       content: "\f140";
+    }   
+}
+.challan
+{
+    @extend %fa-icon;
+    &:before
+    {
+       content: "\f15c";
+    }   
+}
+.transaction
+{
+    @extend %fa-icon;
+    &:before
+    {
+       content: "\f283";
+    }   
+}
+.clean,.clear
+{
+    @extend %fa-icon;
+    &:before
+    {
+       content: "\f12d";
+    }   
+}
+.delete
+{
+    @extend %fa-icon;
+    &:before
+    {
+      content: "\f1f8";
+    }   
+}
+.file-extraction
+{
+    @extend %fa-icon;
+    &:before
+    {
+     content: "\f1c6";
+    }   
+}
+.edit
+{
+    @extend %fa-icon;
+    &:before
+    {
+    content: "\f040";
+    }   
+}
+.generate
+{
+    @extend %fa-icon;
+    &:before
+    {
+    content: "\f2dd";
+    }   
+}
+.deductee
+{
+    @extend %fa-icon;
+    &:before
+    {
+    content: "\f0c0";
+    }   
+}
+.salary
+{
+    @extend %fa-icon;
+    &:before
+    {
+        content: "\f2bc";
+    }   
+}
+.lower-deduction
+{
+      @extend %fa-icon;
+    &:before
+    {
+            content: "\f02d";
+    }   
+}
+.validation
+{
+      @extend %fa-icon;
+    &:before
+    {
+            content: "\f046";
+    }   
+}
+.prn-information
+{
+        @extend %fa-icon;
+    &:before
+    {
+            content: "\f24a";
+    }   
+}
+.tds-certificate
+{
+       @extend %fa-icon;
+    &:before
+    {
+           content: "\f1c5";
+    }   
+}
+.generate-reference-no
+{
+       @extend %fa-icon;
+    &:before
+    {
+           content: "\f1ea";
+    }   
+}
+.kill-process
+{
+     @extend %fa-icon;
+    &:before
+    {
+         content: "\f2d3";
+    }   
+}
+.duplicate-records
+{
+    @extend %fa-icon;
+    &:before
+    {
+        content: "\f24d";
+    }    
+}
+.new-error-process-request
+{
+    @extend %fa-icon;
+    &:before
+    {
+        content: "\f058";
+    }    
+}
+.process
+{
+     @extend %fa-icon;
+    &:before
+    {
+       content: "\f013";
+    }    
+}

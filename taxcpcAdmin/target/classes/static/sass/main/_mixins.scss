@@ -1,0 +1,109 @@
+%before-after
+{
+    content:"";
+    position:absolute;
+}
+@mixin primary-gradient($angle)
+{
+    background: linear-gradient($angle, #2358b7, #689eff);
+}
+@mixin global-bg($url,$bg-size,$bg-repeat)
+{
+    url:$url;
+    background-size:$bg-size;
+    background-repeat:no-repeat;
+}
+
+
+@mixin respond-to($media)
+{
+    @if $media==extra-large-screen
+    {
+        @media only screen and (min-width:$extra-large-media) and (max-width:$extra-large-media+20)
+        {
+            @content;
+        }
+    }
+    @else if $media==large-screen
+    {
+        @media only screen and (min-width:$large-media) and (max-width:$large-media+200) 
+        {
+            @content;
+        }
+    }
+    @else if $media==medium-screen
+    {
+        @media only screen and (min-width:$medium-media) and (max-width:$medium-media+66)
+        {
+             @content;
+        } 
+    }
+    @else if $media==lg-laptop-screen
+        
+    {
+        @media only screen and (min-width:$lg-laptop-media) and (max-width:$lg-laptop-media+80)
+        {
+            @content;
+        }
+    }
+    @else if $media==medium-laptop-screen
+    {
+        @media only screen and (min-width:$medium-laptop-media) and (max-width:$medium-laptop-media+24)
+        {
+            @content;
+        }
+    }
+    @else if $media==large-tablet-screen
+    {
+        @media only screen and (min-width:$large-tablet-media) and (max-width:$large-tablet-media+63)
+        {
+            @content;
+        }
+    }
+    
+    @else if $media==small-tablet-screen
+    {
+        @media only screen and (min-width:$small-tablet-media) and (max-width:$small-tablet-media+135)
+        {
+             @content;
+        }
+    }
+    @else if $media==large-mobile-screen
+    {
+        @media only screen and (min-width:$large-mobile-media) and (max-width:$large-mobile-media+119)
+        {
+            @content;
+        }
+    }
+    
+    @else if $media==medium-mobile-screen
+    {
+        @media only screen and (min-width:$medium-mobile-media) and (max-width:$medium-mobile-media+119)
+        {
+            @content;
+        }
+    }
+    @else if $media==small-mobile-screen
+    {
+        @media only screen and (min-width:$small-mobile-media) and (max-width:$small-mobile-media+39)
+        {
+            @content;
+        }
+    }
+      @else if $media==extra-small-mobile-screen
+    {
+        @media only screen and (min-width:$extra-small-mobile-media) and (max-width:$extra-small-mobile-media+80)
+        {
+            @content;
+        }
+    }
+    
+     @else if $media==small-to-medium-screen
+    {
+        @media only screen and (min-width:$extra-small-mobile-media) and (max-width:$large-tablet-media)
+        {
+            @content;
+        }
+    }
+    
+}

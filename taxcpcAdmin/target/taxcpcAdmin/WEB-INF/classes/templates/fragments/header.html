@@ -1,0 +1,158 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="header">
+	<div class="right-section__header">
+		<!--Top Navigation-->
+		<div class="client-section-header">
+			<div class="row">
+				<div class="col-md-7 col-lg-6 col-xl-7">
+					
+					<div class="dropdown top-dropdown d-inline-block pl-3">
+
+						<a class="position-relative home-btn" style="font-size:14px;color:#4e8dff;font-weight:500" th:href="${session.USER_ROLE.assigned_dashboard !=null ? session.USER_ROLE.assigned_dashboard :'#'}"><i class="fa fa-home" aria-hidden="true" style="font-size: 18px;"></i> Home</a>
+                        
+					</div>
+					<!-- <ul>
+					<li class="notification-icon" title="Main Dashboard" style="margin-top: -4px;"><a class="position-relative" th:href="${session.USER_ROLE.assigned_dashboard !=null ? session.USER_ROLE.assigned_dashboard :'#'}" style="font-size: 1.5rem; padding: 2px 11px;"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+					</ul> -->
+
+					<!-- <input type="hidden" id="session_clientCode" value="12755"> -->
+				
+				
+				</div>
+				<div class="col-md-5 col-lg-6  col-xl-5 text-right px-lg-3">
+
+					<div class="dropdown top-dropdown d-inline-block">
+
+						<img class="mr-1 align-sub" style="width: 13px;"
+							src="./static/images/global/time.png"> <span>Login
+							Since : </span> <span th:text="${session.SESSION_TIMESTAMP+' | '}">16 Mar 2020 02:57:51 PM</span> <i class="fa fa-user mr-1">
+						</i> <a href="./userProfile" title="Edit Profile" th:text="${session.LOGIN_USER.loginId}">12755</a><b
+							class="caret"></b>
+
+					</div>
+					<button type="button" class="btn btn-sm btn-primary logout-btn"
+						title="Logout" onclick="window.location = './logout';">
+						<i class="fa fa-sign-out"></i>
+					</button>
+				</div>
+			</div>
+			<div class="project-title">
+					<h2>TaxCPC Admin Portal</h2>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<!--Top Navigation-->
+
+		<!--Main Navigation-->
+
+
+		<div
+			class="position-fixed taxcpc-process-indicator-outer taxcpc-process-indicator-outer--black "
+			id="global-black-process-indicator" style="display: none">
+			<div class="taxcpc-process-indicator position-absolute text-center">
+				<img class="pulse2"
+					src="./static/images/global/taxcpcProcessIndicator.png">
+				<div class="spinner">
+					<div class="bounce1"></div>
+					<div class="bounce2"></div>
+					<div class="bounce3"></div>
+				</div>
+			</div>
+		</div>
+		<div class="position-fixed taxcpc-process-indicator-outer "
+			id="global-simple-process-indicator" style="display: none">
+			<div class="taxcpc-process-indicator position-absolute text-center">
+				<img class="pulse2"
+					src="./static/images/global/taxcpcProcessIndicator.png">
+				<div class="spinner">
+					<div class="bounce1"></div>
+					<div class="bounce2"></div>
+					<div class="bounce3"></div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- <div class="assessment-section-header heading-marquee" style="background: #e2ecff;">
+		 -->
+		<div class="container-fluid">
+		
+			<div class="row">
+				
+				<!-- <div class="col-md-6 p-0 pl-3" th:with="asmt=${#session.getAttribute('ASSESSMENT')}"> -->
+				<!-- <span class="dropdown-head">FY :</span>					
+					<select class="borderless-select" title="Acc-Year" id="accYear"
+						onchange="changeAssessmentDialog();">
+						<option value="16-17" th:attr="selected=${asmt != null && asmt.accYear == '16-17'?'selected':_}">16-17</option>
+						<option value="17-18" th:attr="selected=${asmt != null && asmt.accYear == '17-18'?'selected':_}">17-18</option>
+						<option value="18-19" th:attr="selected=${asmt != null && asmt.accYear == '18-19'?'selected':_}">18-19</option>
+						<option value="19-20" th:attr="selected=${asmt != null && asmt.accYear == '19-20'?'selected':_}">19-20</option>
+						<option value="20-21" th:attr="selected=${asmt == null || asmt.accYear == '20-21'?'selected':_}">20-21</option>
+					</select> 
+					<span class="dropdown-head">QTR :</span>
+					<select class="borderless-select" title="Quarter" id="quarter"
+						onchange="changeAssessmentDialog();">
+
+						<option value="1" th:attr="selected=${asmt == null || asmt.quarterNo == 1?'selected':_}">Q1</option>
+						<option value="2" th:attr="selected=${asmt != null && asmt.quarterNo == 2?'selected':_}">Q2</option>
+						<option value="3" th:attr="selected=${asmt != null && asmt.quarterNo == 3?'selected':_}">Q3</option>
+						<option value="4" th:attr="selected=${asmt != null && asmt.quarterNo == 4?'selected':_}">Q4</option>
+
+					</select> 
+					<span class="dropdown-head">TDS Type :</span>
+					<select class="borderless-select" title="TDS Type" id="tdsType"
+						onchange="changeAssessmentDialog();">
+
+						<option value="24Q" th:attr="selected=${asmt == null || asmt.tdsTypeCode == '24Q'?'selected':_}">24Q</option>
+						<option value="26Q" th:attr="selected=${asmt != null && asmt.tdsTypeCode == '26Q'?'selected':_}">26Q</option>
+						<option value="27Q" th:attr="selected=${asmt != null && asmt.tdsTypeCode == '27Q'?'selected':_}">27Q</option>
+						<option value="27EQ" th:attr="selected=${asmt != null && asmt.tdsTypeCode == '27EQ'?'selected':_}">27EQ</option>
+						<option value="GBD" th:attr="selected=${asmt != null && asmt.tdsTypeCode == 'GBD'?'selected':_}">GBD</option>
+						<option value="HRM" th:attr="selected=${asmt != null && asmt.tdsTypeCode == 'HRM'?'selected':_}">HRM</option>
+
+					</select> 
+					 <span class="dropdown-head">Month :</span>
+					<select th:if="${asmt != null}" class="borderless-select" title="Month" id="month"
+						onchange="changeAssessmentDialog();">						
+						<option value="JAN" th:if="${asmt.quarterNo == 4}" th:attr="selected=${asmt.month == 'JAN'?'selected':_}">JAN</option>
+						<option value="FEB" th:if="${asmt.quarterNo == 4}" th:attr="selected=${asmt.month == 'FEB'?'selected':_}">FEB</option>
+						<option value="MAR" th:if="${asmt.quarterNo == 4}" th:attr="selected=${asmt.month == 'MAR'?'selected':_}">MAR</option>
+						<option value="APR" th:if="${asmt.quarterNo == 1}" th:attr="selected=${asmt.month == 'APR'?'selected':_}">APR</option>
+						<option value="MAY" th:if="${asmt.quarterNo == 1}" th:attr="selected=${asmt.month == 'MAY'?'selected':_}">MAY</option>
+						<option value="JUN" th:if="${asmt.quarterNo == 1}" th:attr="selected=${asmt.month == 'JUN'?'selected':_}">JUN</option>
+						<option value="JUL" th:if="${asmt.quarterNo == 2}" th:attr="selected=${asmt.month == 'JUL'?'selected':_}">JUL</option>
+						<option value="AUG" th:if="${asmt.quarterNo == 2}" th:attr="selected=${asmt.month == 'AUG'?'selected':_}">AUG</option>
+						<option value="SEP" th:if="${asmt.quarterNo == 2}" th:attr="selected=${asmt.month == 'SEP'?'selected':_}">SEP</option>
+						<option value="OCT" th:if="${asmt.quarterNo == 3}" th:attr="selected=${asmt.month == 'OCT'?'selected':_}">OCT</option>
+						<option value="NOV" th:if="${asmt.quarterNo == 3}" th:attr="selected=${asmt.month == 'NOV'?'selected':_}">NOV</option>
+						<option value="DEC" th:if="${asmt.quarterNo == 3}" th:attr="selected=${asmt.month == 'DEC'?'selected':_}">DEC</option>
+					</select> -->
+					
+				<!-- </div> -->
+<!-- 				<div class="col-md-12 text-center p-0">
+ -->				<!-- <marquee scrollamount="4">
+		     	<p class="mb-0"><span class="text-primary"><i class="fa fa-star"></i> Welcome To Taxcpc Gam ! <i class="fa fa-star"></i></span></p>
+				</marquee> -->
+					<!-- <ul class="nav nav-pills pull-right main-menu-navigation">
+					<li class="notification-icon" title="User Config" style="margin-top: -4px;"><a class="position-relative" href="./userDetails" style="font-size: 1.4rem; padding: 2px 11px;"><i class="fa fa-users" aria-hidden="true"></i></a></li>
+                        <li class="notification-icon" title="Role Config" style="margin-top: -4px;"><a class="position-relative" href="./roleDetails" style="font-size: 1.5rem; padding: 2px 7px;"><i class="fa fa-cog" aria-hidden="true" style="border-right: 2px solid #4e8dff;padding-right: 12px;"></i></a></li>
+						<li class="notification-icon" title="Main Dashboard" style="margin-top: -4px;"><a class="position-relative" th:href="${session.USER_ROLE.assigned_dashboard !=null ? session.USER_ROLE.assigned_dashboard :'#'}" style="font-size: 1.5rem; padding: 2px 11px;"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                        <li class="notification-icon mr-4" title="Notifications"><a class="position-relative" href="#" style="padding: 2px 11px;"><i class="fa fa-bell" aria-hidden="true"></i></a></li> -->
+						
+						<!-- <li th:class="${session.MODULE_TYPE == 'C'?'active':_}"><a href="dashboard?moduleType=C">Correction</a></li>
+						<li th:class="${session.MODULE_TYPE == 'G'?'active':_}"><a href="dashboard?moduleType=G">15G/H</a></li>
+						<li th:class="${session.MODULE_TYPE == 'M'?'active':_}"><a href="dashboard?moduleType=M">MIS</a></li>  -->
+
+					<!-- </ul> -->
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<!--Main Navigation-->
+	</div>
+
+</div>
+
+</html>

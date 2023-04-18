@@ -1,0 +1,236 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/docMgmt/docDetails.css"
+		rel="stylesheet" />
+		<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="./docDetail"><p>Document Details</p> </a></li>
+				<li class="nav-item mr-5"><a class="nav-link"
+					data-toggle="pill" href="#"
+					onclick="window.location.href='./docEntry'"><p>Document
+							Entry</p> </a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4">
+					<form id="docDetails" th:object="${dataGridDTO}" class="px-2 py-2">
+					    <input type="hidden"  th:value="${dataGridDTO.paginator.totalRecords}"name="paginator.totalRecords" id="totalRecords" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"name="paginator.recordsPerPage" id="recordsPerPage" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"	id="dataGridAction" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+				        <input type="hidden" name="doc_code" id="doc_code" th:each="docTranAttachList: ${docTranAttachList}"  th:value="${docTranAttachList.doc_code}" />
+						<input type="hidden" name="doc_attach_name" id="doc_attach_name" th:each="docTranAttachList : ${docTranAttachList}"  th:value="${docTranAttachList.doc_attach_name}" />
+					    <input type="hidden" name="u_code" id="u_code"   th:value="${userCode}" />
+					    
+						
+					   
+						<div class="filter-section my-1 pt-1">
+							<div class="row sec-bottom">
+								<div class="col-lg-10 col-xl-11">
+									<div class="row form-group">
+										<div class="col-lg-3">
+									
+											<select class="form-control" id="doc_code_type" name="doc_type_code">
+												<option value="">--Select Document Type--</option>
+											<option th:each="doc : ${docTypeList.entrySet()}" th:value="${doc.key}" th:text="${doc.value}" th:selected="${docTranEntity != null && docTranEntity.doc_type_code != null && docTranEntity.doc_type_code.contains(doc.key)}"></option>
+											</select>
+										</div>
+										
+										<div class="col-lg-3">
+											<input type="text" class="form-control" id="doc_name"
+												name="doc_name" placeholder="Document Name" onkeydown="return (event.keyCode!=13);">
+										</div>
+										
+									<div class="col-lg-3">
+									<div th:if="${projectList!= null && !projectList.isEmpty()}" >
+									<select class="form-control" id="project_code" name="project_code">
+			                        	<option value="">--Select Application Name--</option>
+  										<option th:each="project : ${projectList.entrySet()}" th:value="${project.key}" th:text="${project.value}" th:selected="${workEntity != null && workEntity.project_code != null && workEntity.project_code.equals(project.value)}"></option>
+ 		                        	</select>
+									</div>
+									<div th:unless="${projectList!= null && !projectList.isEmpty()}" >
+									<select class="form-control" id="project_code" name="project_code">
+			                        	<option value="">--Select Application Name--</option>
+<!--   										<option th:each="project : ${projectList.entrySet()}" th:value="${project.key}" th:text="${project.value}" th:selected="${workEntity != null && workEntity.project_code != null && workEntity.project_code.equals(project.value)}"></option>
+ --> 		                        	</select>
+									</div>
+									</div>
+								  <div class="col-lg-3">
+	                       <select class="form-control" id="user_code" name="user_code" >
+	                        	<option value="">--Select Prepared By--</option>
+								<option th:each="user : ${userList.entrySet()}" th:value="${user.key}" th:text="${user.value}" th:selected="${workEntity != null && workEntity.user_code!= null && workEntity.user_code.equals(user.key)}"></option>
+                        	</select>
+	                    </div>
+							
+
+	                </div>
+                </div>
+
+								<div class="col-lg-5 col-xl-1 pl-0 d-flex justify-content-between">
+									<button type="button"
+										class="btn btn-primary addon-btn filter-inner-btn"
+										title="Search" onclick="searchDocFilter();">
+										<i class="fa search"></i>
+									</button>
+									<button type="reset"
+										class="btn btn-primary addon-btn filter-inner-btn"
+										title="Clear" onclick="refreshDoc();">
+										<i class="fa clear"></i>
+									</button>
+									<button type="button"
+										class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+										title="No Extra Filters" aria-expanded="false">
+										<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					
+					
+					<div class="clearfix"></div>
+					<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+					<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+					<div class="clearfix"></div>
+					
+					<div class="table-responsive mt-2 w-60" id="dataSpan">
+					<table class="table table-bordered table-striped mb-1"  id="table">
+							<thead>
+				 	<tr>
+							<th class="th-action">Action</th>
+							                <th>Sr. No</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Document Type</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Document Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Application Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Prepared By</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Download</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Link</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+							</tr> 
+
+						</thead>
+						 <tbody>
+						
+                            </tbody>
+                  	</table>
+				</div>
+				
+				</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="action-section bg-white text-center fixed-bottom"
+				id="actiondiv">
+				<button type="button" class="action-btn action-btn--edit mr-2"
+					id="editBtn" style="display: inline-block;"  
+					onclick="editRecord('editDocCode');" >
+					<i class="fa fa-pencil"></i>Edit
+				</button>
+				<button type="button" class="action-btn action-btn--view mr-2" id="viewBtn" style="display: inline-block;" data-toggle="modal" data-target="#detailss-modal" onclick="viewDocTran();" ><i class="fa fa-eye" ></i>View</button>
+ 				<button type="button" class="action-btn action-btn--delete mr-2"id="deleteBtn" style="display: inline-block;" onclick="deleteRecord('deleteDocdetails');">
+					<i class="fa fa-trash"></i>Delete
+				</button>
+
+			</div>
+
+
+
+
+	<div class="modal fade" id="detailss-modal" tabindex="-1" role="dialog"
+		aria-labelledby="detail-modal" aria-modal="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalCenterTitle">Details</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table details-table">
+									<tbody id="doctranModelTableBody">
+
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+		<script type="text/javascript" src="./static/js/docMgmt/docMgmt.js"></script>
+	
+	<script type="text/javascript">
+		loadDataUsingPaginator('docDetails');
+		document.addEventListener('keypress', function (e) {
+		    if (e.keyCode === 13 || e.which === 13) {
+		        e.preventDefault();
+		        return false;
+		    }
+		    
+		});
+	</script>
+	<script>
+	getHideDownload();
+	</script>
+</th:block>

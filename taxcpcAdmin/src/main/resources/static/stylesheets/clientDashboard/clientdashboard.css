@@ -1,0 +1,86 @@
+/* line 1, ../../sass/clientDashboard/clientdashboard.scss */
+body {
+  margin-top: 20px;
+  background: #FAFAFA;
+}
+
+/* line 5, ../../sass/clientDashboard/clientdashboard.scss */
+.order-card {
+  color: #fff;
+}
+
+/* line 9, ../../sass/clientDashboard/clientdashboard.scss */
+.bg-c-blue {
+  background: linear-gradient(45deg, #4099ff, #73b4ff);
+}
+
+/* line 13, ../../sass/clientDashboard/clientdashboard.scss */
+.bg-c-green {
+  background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+}
+
+/* line 17, ../../sass/clientDashboard/clientdashboard.scss */
+.bg-c-yellow {
+  background: linear-gradient(45deg, #FFB64D, #ffcb80);
+}
+
+/* line 21, ../../sass/clientDashboard/clientdashboard.scss */
+.bg-c-pink {
+  background: linear-gradient(45deg, #FF5370, #ff869a);
+}
+
+/* line 26, ../../sass/clientDashboard/clientdashboard.scss */
+.card {
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+  box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+  border: none;
+  margin-bottom: 30px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+/* line 36, ../../sass/clientDashboard/clientdashboard.scss */
+.card .card-block {
+  padding: 25px;
+}
+
+/* line 40, ../../sass/clientDashboard/clientdashboard.scss */
+.order-card i {
+  font-size: 26px;
+}
+
+/* line 44, ../../sass/clientDashboard/clientdashboard.scss */
+.f-left {
+  float: left;
+}
+
+/* line 48, ../../sass/clientDashboard/clientdashboard.scss */
+.f-right {
+  float: right;
+}
+
+
+.client-details .edit-button {
+  background: linear-gradient(to bottom, #3fecb2, #14de9b);
+  color: #fff;
+  padding: 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.client-details .delete-button {
+  background: linear-gradient(to bottom, #ef4009, #ef4009);
+  color: #fff;
+  padding: 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.client-details .view-button {
+  background: linear-gradient(to bottom, #4dd5e8, #00BCD4);
+  color: #fff;
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 5px;
+}

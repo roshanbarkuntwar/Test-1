@@ -1,0 +1,253 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link rel="stylesheet"
+		href="./static/css/global/bootstrap-multiselect.css">
+	<link rel="stylesheet" href="./static/css/global/bootstrap-select.css">
+	<div class="right-section">
+
+			<div class="tab-section col-md-12 mt-3">
+				<ul class="nav nav-pills">
+					<li class="nav-item mr-5"
+						onclick="window.location.href='./AppAuditEntry'"><a
+						class="nav-link " data-toggle="pill" href="#"><p><th:block th:text="${action != null && action == 'save' ? 'Best Practice Entry' : 'Edit Best Practice'}">Best Practice Entry</th:block> 
+								</p> </a></li>
+		        </ul>
+				<div class="clearfix"></div>
+			</div>
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+			<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add </th:block> Project</h4></div>  -->
+			<div class="tab-content form-wrapper px-4 py-4">
+				<form id="BestPracticeEntryForm" th:object="${bankAuditEntity}"
+					autocomplete="off">
+					<input type="hidden" class="form-control" id="seq_id" name="seq_id" th:value="${bankAuditEntity != null ? bankAuditEntity.seq_id : ''}">
+
+					<!-- <div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Bank / Entity Type<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+
+							<select class="form-control" id="entity_code" name="entity_code">
+							 <option value="">--Select Bank / Entity Type--</option>
+								<option th:each="entity_type : ${entityNameList.entrySet()}"
+									th:value="${entity_type.key}" th:text="${entity_type.value}"></option>
+							</select>
+						</div>
+
+					</div> -->
+
+                   <div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> App Name<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control"
+								id="audit_applied_app_name" name="audit_applied_app_name"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_applied_app_name != null ? bankAuditEntity.audit_applied_app_name : ''}"/>
+
+						</div>
+					</div>
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Section Header <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="audit_name"
+								name="audit_name" th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_name != null ? bankAuditEntity.audit_name : ''}"/>
+
+						</div>
+					</div>
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Section Description<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<textarea class="form-control" rows="12" id="audit_description"
+								name="audit_description"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_description != null ? bankAuditEntity.audit_description : ''}" 
+								 th:text="${bankAuditEntity != null ? bankAuditEntity.audit_description : ''}"></textarea>
+
+						</div>
+					</div>
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> No. Of Occurrence<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control"  id="no_of_occurences"
+								name="no_of_occurences" oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.no_of_occurences != null ? bankAuditEntity.no_of_occurences : ''}" />
+
+						</div>
+					</div>
+
+					<div class="applicationDiv row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label" for="doc_file1"> Attachment<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<div class="file">
+								<input type="file" class="form-control" name="doc_file"
+									id="doc_file" th:text="${docfile}">
+							</div>
+
+
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> External Link<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="audit_ext_link"
+								name="audit_ext_link" onblur ="isValidUrl(audit_ext_link);"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_ext_link != null ? bankAuditEntity.audit_ext_link : ''}"/>
+
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Applied Region<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="audit_applied_region"
+								name="audit_applied_region"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_applied_region != null ? bankAuditEntity.audit_applied_region : ''}"/>
+
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Server IP<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control"
+								id="audit_applied_server_ip" name="audit_applied_server_ip" onblur="ValidateIP(audit_applied_server_ip);"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_applied_server_ip != null ? bankAuditEntity.audit_applied_server_ip : ''}"/>
+
+						</div>
+					</div>
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Other <span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="other_info"
+								name="other_info"
+								th:value="${bankAuditEntity != null && bankAuditEntity.other_info != null  && bankAuditEntity.seq_id != null ? bankAuditEntity.other_info : ''}"/>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-4 offset-md-4">
+							<div class="form-group  text-center">
+							
+								<button type="button" class="form-btn" th:if="${action != null && action == 'save'}" onclick="saveBestPracticeAudit();">
+									<i class="fa save" aria-hidden="true"></i>Save & Exit
+								</button>
+								<button type="button" class="form-btn" th:if="${action != null && action == 'save'}"
+									onclick="window.location.href='./bestPracticeEntry'">
+									<i class="fa fa-undo" aria-hidden="true"></i>Reset
+								</button>
+								<button type="button" class="form-btn" th:if="${action != null && action == 'save'}" 
+									onclick="window.location.href='./AppAuditEntry'">
+									<i class="fa previous" aria-hidden="true"></i>Back
+								</button>
+
+							</div>
+						</div>
+					</div>
+					
+					
+					<div id="BestPracticeEditForm" style="display: none;">
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Resolve Remark<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="audit_resolve_remark"
+								name="audit_resolve_remark"/>
+
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Resolve Reference<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control"
+								id="audit_resolve_reference" name="audit_resolve_reference"/>
+
+						</div>
+
+					</div>
+					 <div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Resolve Attachment <span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<div class="file">
+								<input type="file" class="form-control"
+									name="file_attach" id="file_attach">
+							</div>
+						</div>
+
+					</div>
+
+					<div class="row">
+						<div class="col-md-4 offset-md-4">
+							<div class="form-group  text-center">
+	                            <button type="button" class="form-btn" th:if="${action != null && action == 'edit'}"  onclick="updateBestPracticeDetails();"><i class="fa fa-floppy-o" aria-hidden="true"></i><span>Update</span></button>
+                          		<button type="button" class="form-btn" th:if="${action != null && action == 'edit'}"  onclick="window.location.href='./appAuditDashboard'"><i class="fa previous" aria-hidden="true"></i>Back</button>
+                          	
+							</div> 
+						</div>
+					</div>
+                </div>
+				</form>
+			</div>
+
+	</div>
+
+	<script type="text/javascript" src="./static/js/appAudit/appAudit.js"></script>
+	
+<script type="text/javascript">
+onloadBestPractice();
+</script>
+	
+</th:block>
+
+</html>

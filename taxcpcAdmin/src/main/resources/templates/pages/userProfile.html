@@ -1,0 +1,187 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+<link href="./static/stylesheets/wishlistWork/wishlistWork.css" rel="stylesheet" />
+
+<th:block layout:fragment="content">
+	<div class="right-section">
+		<!-- <div class="container-fluid mt-3"> -->
+			<div class="text-center col-md-12 " id="notificationMsgDiv"
+				style="display: none">
+				<div class="d-inline-block">
+					<div class="form-validation form-validation--info p-1 my-1">
+						<i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
+						<h5 class="d-inline-block" id="notificationMsg">Please Fill
+							Mandatory Fields</h5>
+					</div>
+				</div>
+			</div>
+			<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Update User Profile</p> </a></li>
+					
+				 <li onclick="window.location.href='./addFavMenu'" class="nav-item mr-5"><a
+					class="nav-link" data-toggle="pill" href="#"><p>Add Favorite Menu
+							</p></a></li>
+						<li class="nav-item mr-5"  onclick="window.location.href='lastLoginDetail'"><a class="nav-link "
+					data-toggle="pill" style="cursor:allowed; pointer-events: all"
+					href="#">Last 10 Login Details</a></li> 
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+			<form id="userProfileForm" th:object="${loginUser}" autocomplete="off">            
+            
+            <input type="hidden" id="user_code" name="user_code" th:value="${#session.getAttribute('LOGIN_USER').user_code}"/>
+            
+		
+<!--             <div class="col-md-12 my-1"> <h4 class="nav-link active">Update User Profile</h4></div>
+ -->            
+            <div class="tab-content form-wrapper p-2">
+            <div class="row form-group">
+                    <div class="col-lg-4 col-xl-4 text-right">
+                        <label class="control-label">
+                            User Role<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-7 col-xl-4">
+                        <input th:name="role_code" class="form-control" id="role_code" placeholder="Enter Role" th:value="${Role_name}" readonly="readonly"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-4 col-xl-4 text-right">
+                        <label class="control-label">
+                            Login ID<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-7 col-xl-4">
+                        <input th:name="loginId" class="form-control" id="loginId" placeholder="Enter Login ID" th:value="${loginUser.loginId}"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-4 col-xl-4 text-right">
+                        <label class="control-label">
+                            Name<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-7 col-xl-4">
+                        <input th:name="user_name" class="form-control" id="userName" th:value="${loginUser.user_name}" placeholder="Enter Name" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-4 col-xl-4 text-right">
+                        <label class="control-label">
+                            Email
+                        </label>
+                    </div>
+                    <div class="col-lg-7 col-xl-4">
+                        <input type="email" th:name="email" class="form-control" id="email" th:value="${loginUser.email != null ? loginUser.email : ''}" placeholder="Enter Email"/>
+                    </div>
+                </div>
+                 <div class="row form-group">
+                    <div class="col-lg-4 col-xl-4 text-right">
+                        <label class="control-label">
+                            Phone No.
+                        </label>
+                    </div>
+                    <div class="col-lg-7 col-xl-4">
+                        <input type="number" th:name="phone_no" class="form-control" id="phone_no" th:value="${loginUser.phone_no != null ? loginUser.phone_no : ''}" placeholder="Enter Phone No."/>
+                    </div>
+                </div>
+                
+                <div class="row form-group">
+                    <div class="col-lg-4 col-xl-4 text-right">
+                        <label class="control-label">
+                            Old Password
+                        </label>
+                    </div>
+                    <div class="col-lg-5 col-xl-4 ">
+                        <div class="input-group">
+                            <input type="password" id="oldPassword" class="form-control" th:value="${loginUser.loginPwd}" readonly>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" onclick="togglePasswordFields('oldPassword', 'oldPasswordIcon')" style="margin-right: 12px;"><i id="oldPasswordIcon" class="fa fa-eye" title="Show Password"></i></button>
+                                 
+                                <button type="button" class="btn btn-primary " data-toggle="collapse" data-target="#showPasswordFeilds" title="Change Password">
+                                               <i class="fa fa-pencil"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                </div>
+                <div class="collapse" id="showPasswordFeilds">
+                <div class="row form-group">
+                    <div class="col-lg-4 col-xl-4 text-right">
+                        <label class="control-label">
+                            Change Password
+                        </label>
+                    </div>
+                    <div class="col-lg-7 col-xl-4">
+                        <div class="input-group">
+                            <input type="password" id="newPassword" class="form-control" placeholder="Enter New Password" onkeypress="return AvoidSpace(event);">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary btn-sm addon-btn" onclick="togglePasswordFields('newPassword', 'newPasswordIcon')"><i id="newPasswordIcon" class="fa fa-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row form-group">
+                    <div class="col-lg-4 col-xl-4 text-right">
+                        <label class="control-label">
+                            Confirm New Password
+                        </label>
+                    </div>
+                    <div class="col-lg-7 col-xl-4">
+                        <div class="input-group">
+                            <input type="password" th:name="loginPwd"  id="confirmNewPassword" class="form-control" placeholder="Enter Confirm New Password" onkeypress="return AvoidSpace(event);" >
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary btn-sm addon-btn" onclick="togglePasswordFields('confirmNewPassword', 'confirmNewPasswordIcon')"><i id="confirmNewPasswordIcon" class="fa fa-eye"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 </div>
+               <!--  <div class="row form-group">
+                    <div class="col-lg-4 col-xl-4 text-right">
+                        <label class="control-label">
+                            Transaction Rights 
+                        </label>
+                    </div>
+                    <div class="col-lg-8 col-xl-8">
+                        <div class="custom-control custom-control-inline custom-checkbox">                            
+                                <input th:if="${loginUser.add_right == 1}" type="checkbox" class="custom-control-input" id="AddRights" checked disabled>
+                                <input th:unless="${loginUser.add_right == 1}" type="checkbox" class="custom-control-input" id="AddRights" disabled>
+                            <label class="custom-control-label" for="Add">Add</label>
+                        </div>                 
+                        <div class="custom-control custom-control-inline custom-checkbox">
+                            <input th:if="${loginUser.edit_right == 1}" type="checkbox" class="custom-control-input" id="EditRights" checked disabled/>
+                            <input th:unless="${loginUser.edit_right == 1}" type="checkbox" class="custom-control-input" id="EditRights" disabled>
+                            <label class="custom-control-label" for="Edit">Edit</label>
+                        </div>
+                        <div class="custom-control custom-control-inline custom-checkbox">
+                            <input th:if="${loginUser.delete_right == 1}" type="checkbox" class="custom-control-input" id="DeleteRights" checked disabled>
+                            <input th:unless="${loginUser.delete_right == 1}" type="checkbox" class="custom-control-input" id="DeleteRights" disabled>
+                            <label class="custom-control-label" for="Delete">Delete</label>
+                        </div>  
+                        <div class="custom-control custom-control-inline custom-checkbox">
+                            <input th:if="${loginUser.special_right == 1}" type="checkbox" class="custom-control-input" id="SpecialRights" checked disabled>
+                            <input th:if="${loginUser.special_right == 1}" type="checkbox" class="custom-control-input" id="SpecialRights" disabled>
+                            <label class="custom-control-label" for="SpecialRights">Special Rights</label>
+                        </div>  
+                    </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
+                        <div class="form-group  text-center">
+                            <button type="button" class="btn btn-primary w-50 mx-auto rounded-0" onclick="updateUserProfile();">Update & Exit</button>
+                        </div>               
+                    </div>
+                </div>
+            </div>
+        </form>
+		<!-- </div> -->
+	</div>
+	<script type="text/javascript" src="./static/js/userProfile.js"></script>
+</th:block>

@@ -1,0 +1,103 @@
+/*Quick Doc Dash starts*/
+/* line 2, ../../sass/docMgmt/docMgmt.scss */
+.sticky-container .sticky {
+  position: relative;
+  height: 320px;
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 25px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 24px;
+  animation: stickAnim 0.3s ease;
+}
+
+/* line 13, ../../sass/docMgmt/docMgmt.scss */
+.sticky-container .sticky .sticky-body {
+  padding: 8px;
+  background: #fff0b0;
+}
+
+/* line 18, ../../sass/docMgmt/docMgmt.scss */
+.sticky-container .sticky .sticky-body .scroll {
+  overflow-y: auto;
+  padding: 8px;
+  height: 280px;
+}
+
+/* line 23, ../../sass/docMgmt/docMgmt.scss */
+.sticky-container .sticky .sticky-body p {
+  font-size: 14px;
+  text-align: justify;
+  word-break: break-word;
+}
+
+/* line 28, ../../sass/docMgmt/docMgmt.scss */
+.sticky-container .sticky .sticky-footer {
+  background: #ffe168;
+  padding: 0 8px;
+}
+
+/* line 33, ../../sass/docMgmt/docMgmt.scss */
+.sticky-container .sticky .sticky-footer h4 {
+  font-size: 17px;
+  margin-bottom: 0;
+  color: #886e02;
+}
+
+/* line 38, ../../sass/docMgmt/docMgmt.scss */
+.sticky-container .sticky .sticky-footer span {
+  font-size: 16px;
+  cursor: pointer;
+  color: #4e8dff;
+}
+
+/* line 43, ../../sass/docMgmt/docMgmt.scss */
+.sticky-container .sticky .sticky-footer span:hover {
+  transform: scale(1.1);
+}
+
+/* line 55, ../../sass/docMgmt/docMgmt.scss */
+.delete-icon {
+  position: relative;
+  top: -2px;
+}
+
+/* width */
+/* line 61, ../../sass/docMgmt/docMgmt.scss */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+/* line 66, ../../sass/docMgmt/docMgmt.scss */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+/* line 71, ../../sass/docMgmt/docMgmt.scss */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+/* line 77, ../../sass/docMgmt/docMgmt.scss */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  border-radius: 8px;
+}
+
+/*Quick Doc Dash ends*/
+/* line 83, ../../sass/docMgmt/docMgmt.scss */
+#paginationUl {
+  justify-content: flex-end;
+}
+
+/* line 89, ../../sass/docMgmt/docMgmt.scss */
+.space {
+  width: 4px;
+  height: auto;
+  display: inline-block;
+}

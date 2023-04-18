@@ -1,0 +1,377 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/dashboard/dashboard.css"
+		rel="stylesheet" />
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+
+	<div class="right-section">
+		<div class="header-gap"></div>
+		<div class="header-gap"></div>
+
+		<div class="tab-section col-md-12">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Entity Dashboard</p> </a></li>
+				<li onclick="window.location.href='./entityEntry'" class="nav-item mr-5"><a
+					class="nav-link" data-toggle="pill" href="#"><p>Entity
+							Entry</p></a></li>
+				<li
+					th:if="${#session.getAttribute('LOGIN_USER').add_right.equalsIgnoreCase('1')}"
+					class="nav-item mr-5"
+					onclick="window.location.href='./defaultEntityDashboard'"><a
+					data-toggle="pill" href="#"><p>Default Entity Dashboard</p> </a></li>
+				<li
+					th:if="${#session.getAttribute('LOGIN_USER').add_right.equalsIgnoreCase('1')}"
+					class="nav-item"
+					onclick="window.location.href='./defaultEntityEntry'"><a
+					data-toggle="pill" href="#"><p>Default Entity Creation Entry</p> </a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+
+
+		<div class="clearfix"></div>
+		<div class="tab-content px-4 py-4">
+			<div class="tab-pane form-wrapper show in active">
+				<div class="row text-right px-2 py-2">
+					<div class="col-md-12">
+
+
+						<form id="entityDetail" th:object="${dataGridDTO}">
+							<input type="hidden"
+								th:value="${dataGridDTO.paginator.totalRecords}"
+								name="paginator.totalRecords" id="totalRecords" /> <input
+								type="hidden" th:value="${dataGridDTO.paginator.totalPages}"
+								name="paginator.totalPages" id="totalPages" /> <input
+								type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"
+								name="paginator.recordsPerPage" id="recordsPerPage" /> <input
+								type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"
+								id="dataGridAction" /> <input type="hidden"
+								th:value="${dataGridDTO.paginator.pageNumber}"
+								name="paginator.pageNumber" id="pageNumber" /> <input
+								type="hidden" id="fltrformId" value="entityDetail">
+
+							<div class="filter-section my-1 pt-1">
+								<div class="row sec-bottom">
+									<div class="col-lg-10 col-xl-11">
+										<div class="row form-group">
+
+											<div class="col-lg-3">
+												<input type="text" name="entity_name" id="entity_name"
+													class="form-control" placeholder="Entity Name">
+											</div>
+
+											<div class="col-lg-3">
+												<select class="form-control" id="division" name="division">
+													<option value="">-- Select Division --</option>
+													<option th:each="doc : ${divisionList.entrySet()}"
+														th:value="${doc.key}" th:text="${doc.value}"></option>
+
+												</select>
+											</div>
+											<br>
+
+											<div class="col-lg-3 text right">
+												<label class="control-label">View Mode<span
+													class="text-danger font-weight-bold ml-1"></span>
+												</label>
+											</div>
+											<div class="col-lg-col-xl-">
+												<input type="radio" id="btn1" value="T" checked> <label>Text
+													View</label> <input type="radio" id="btn2" value="C"
+													onclick="window.location.href='./entityDetail'"> <label>Card
+													View</label>
+											</div>
+										</div>
+
+
+									</div>
+									<div
+										class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+										<button type="button"
+											class="btn btn-primary addon-btn filter-inner-btn"
+											title="Search" onclick="EntitySearch()">
+											<i class="fa search"></i>
+										</button>
+										<button type="button"
+											class="btn btn-primary addon-btn filter-inner-btn"
+											title="Clear" onclick="window.location.reload();">
+											<i class="fa clear"></i>
+										</button>
+										<button type="button"
+											class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+											title="No Extra Filters" data-toggle="collapse"
+											data-target="#extra-filter">
+											<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</form>
+
+						<div class="clearfix"></div>
+						<div class="clearfix"></div>
+
+						<div
+							th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+						<div
+							th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+
+						<div class="clearfix"></div>
+
+
+
+						<div class="table-responsive mt-2 w-60" id="dataSpan">
+							<table class="table table-bordered table-striped mb-1" id="table">
+								<thead>
+									<tr>
+										<th class="th-action">Action</th>
+										<th>Sr. No</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Entity Code</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Entity Name</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Parent Code</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Division</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Address</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Line1</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Line2</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">City Name</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Pin Code</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">District</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Country</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Phone No</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Email Id</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Currency Code</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Print Name / short Name</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Website</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Db_User</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">Db_User_Password</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+									</tr>
+
+								</thead>
+								<tbody>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- button -->
+				</div>
+			</div>
+
+			<div class="action-section bg-white text-center fixed-bottom"
+				id="actiondiv">
+				<button type="button" class="action-btn action-btn--view mr-2"
+					style="display: inline-block;" data-toggle="modal"
+					data-target="#myModal" onclick="viewEntityText();">
+					<i class="fa fa-pencil"></i>View
+				</button>
+				<!-- 	<button type="button" class="action-btn action-btn--delete mr-2"
+				id="deleteBtn" style="display: inline-block;"
+				onclick="deleteEntity();">
+				<i class="fa fa-trash"></i>Delete
+			</button> -->
+				<button type="button" class="action-btn action-btn--edit mr-2"
+					id="editBtn" onclick="editEntityText();"
+					style="display: inline-block;">
+					<i class="fa fa-pencil"></i>Edit
+				</button>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- view box -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModal" aria-modal="true" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="">Details</h5>
+					<button type="button" title="close" class="close"
+						data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table details-table" style="text-align: left">
+									<tbody id="ModelTableBody">
+										<tr>
+											<td class="text-bold">Entity Code :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Entity Name :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+
+									</tbody>
+								</table>
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<script type="text/javascript"
+		src="./static/js/entityForm/entityMust.js"></script>
+	<!-- //<script type="text/javascript"> selectTable()</script> 
+ -->
+	<script type="text/javascript">
+		loadDataUsingPaginator('entityDetail');
+	</script>
+
+
+</th:block>
+</html>

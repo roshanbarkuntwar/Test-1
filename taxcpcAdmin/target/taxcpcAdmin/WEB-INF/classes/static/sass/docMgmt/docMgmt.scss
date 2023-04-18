@@ -1,0 +1,93 @@
+/*Quick Doc Dash starts*/
+.sticky-container .sticky {
+    position: relative;
+    height: 320px;
+    width:100%;
+    display: inline-block;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 24px;
+    animation: stickAnim 0.3s ease;
+}
+.sticky-container .sticky .sticky-body {
+ padding: 8px;
+  background: #fff0b0;
+ // border: 1px solid #ffe168;
+}
+.sticky-container .sticky .sticky-body .scroll{
+	overflow-y: auto;
+	padding: 8px;
+ 	height: 280px;
+}
+.sticky-container .sticky .sticky-body p {
+	font-size:14px;
+	text-align:justify;
+	word-break: break-word;
+}
+.sticky-container .sticky .sticky-footer {
+    background: #ffe168;
+    padding: 0 8px;
+    //border: 1px solid #ffe168;
+}
+.sticky-container .sticky .sticky-footer h4{
+	font-size: 17px;
+	margin-bottom:0;
+	color: #886e02;
+}
+.sticky-container .sticky .sticky-footer span {
+    font-size:16px;
+    cursor: pointer;
+    color:#4e8dff;
+}
+.sticky-container .sticky .sticky-footer span:hover {
+	transform:scale(1.1)
+}
+//.sticky-container .col-md-4:nth-child(even) .sticky .sticky-body{
+//	background: #d8e6ff;
+//}
+//.sticky-container .col-md-4:nth-child(even) .sticky .sticky-footer h4,.sticky-container .col-md-4:nth-child(even) .sticky .sticky-footer span{
+//	color: #fff;
+//}
+//.sticky-container .col-md-4:nth-child(even) .sticky .sticky-footer {
+//	background: #4e8dff;
+//}
+.delete-icon {
+	position:relative;
+	top:-2px
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius:8px
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  border-radius:8px
+}
+/*Quick Doc Dash ends*/
+
+#paginationUl{
+justify-content: flex-end;
+}
+
+
+
+.space {
+  width: 4px;
+  height: auto;
+  display: inline-block;
+}

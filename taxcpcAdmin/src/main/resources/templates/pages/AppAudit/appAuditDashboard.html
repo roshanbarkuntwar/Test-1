@@ -1,0 +1,208 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link />
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+	<div class="right-section">
+
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link "
+					data-toggle="pill" href="#"
+					onclick="window.location.href='./AppAuditDiscription'"><p>Application
+							Audit Description</p> </a></li>
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"
+					onclick="window.location.href='./appAuditDashboard'"><p>Application
+							Audit Dashboard</p> </a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+
+		<div class="tab-content form-wrapper px-4 py-4">
+			<form id="AuditDashboard" th:object="${dataGridDTO}">
+
+				<div class="filter-section my-1 pt-1">
+					<div class="row form-group">
+
+						<br>
+						<!-- <div class=" text-center">
+					<textarea class="form-control" style="width:800px; margin:0 auto;[B]padding:20px 0;[/B] ;    border-radius: 30px;" 
+					id="" name="" rows="4" placeholder="Discription" text="" readonly="readonly"></textarea>
+					
+					<div class="clearfix"> </div>
+					</div> -->
+						<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}"
+							name="filterFlag" id="filterFlag" /> <input type="hidden"
+							th:value="${dataGridDTO.paginator.totalRecords}"
+							name="paginator.totalRecords" id="totalRecords" /> <input
+							type="hidden" th:value="${dataGridDTO.paginator.totalPages}"
+							name="paginator.totalPages" id="totalPages" /> <input
+							type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"
+							name="paginator.recordsPerPage" id="recordsPerPage" /> <input
+							type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"
+							id="dataGridAction" /> <input type="hidden"
+							th:value="${dataGridDTO.paginator.pageNumber}"
+							name="paginator.pageNumber" id="pageNumber" />
+
+
+						<div>
+						<div class="row" style="    margin-left: 400px;">
+						
+						
+								<input type="radio" name="btn" id="ALL" value="ALL" onclick="searchFilter(this.id);" checked>
+								<label style="margin-right: 40px; margin-left: 6px;">All</label>
+								<input type="radio" name="btn" id="VA" value="VA" onclick="searchFilter(this.id);">
+								<label style="margin-right: 40px; margin-left: 6px;">Vulnerability Assessment</label> 
+								<input type="radio" name="btn" id="APS" value="APS" onclick="searchFilter(this.id);">
+								<label style="margin-right: 40px; margin-left: 6px;">AppSec</label> 
+								<input type="radio" name="btn" id="SC" value="SC" onclick="searchFilter(this.id);">
+								<label style="margin-right: 40px; margin-left: 6px;">Source Code</label> 
+								<input type="radio" name="btn" id="OT" value="OT" onclick="searchFilter(this.id);">
+								<label style="margin-right: 40px; margin-left: 6px;">Other </label>
+							<!-- <input type="radio" name="btn" id="BP" value="BP" onclick="searchFilter(this.id);"><label>Best Practice</label> -->
+
+							<input type="hidden" id="hidden_audit_type" value="ALL">
+						
+							</div>
+						</div>
+					</div>
+					<br>
+
+
+					<div class="row sec-bottom">
+						<div class="col-lg-10 col-xl-11">
+							<div class="row form-group">
+
+								<div class="col-lg-3">
+									<select class="form-control" id="entity_code"
+										name="entity_code">
+										<option value="">-- Select Entity Name --</option>
+										<option th:each="entity : ${entityNameList.entrySet()}"
+											th:value="${entity.key}" th:text="${entity.value}"
+											th:selected="${serverDetailModel!= null && serverDetailModel.entity_code != null && serverDetailModel.entity_code.contains(entity.key)}"></option>
+
+									</select>
+								</div>
+								<!-- <div class="col-lg-3">
+									<input type="text" placeholder="Enter Text"
+										class="form-control" id="search_value" name="search_value" onkeydown="return (event.keyCode!=13);">
+								</div> -->
+								
+
+									<div class="col-lg-3">
+									<div th:if="${appNameList != null && !appNameList.isEmpty()}" > 
+										<select class="form-control" id="project_name"
+											name="project_name">
+											<option value="">-- Application Name --</option>
+											<option th:each="role : ${appNameList.entrySet()}"
+												th:value="${role.key}" th:text="${role.value}"
+												th:selected="${dataGridDTO != null && dataGridDTO.filter != null && 
+											dataGridDTO.filter.project_name != null && dataGridDTO.filter.project_name.equalsIgnoreCase(role.key)}"></option>
+										</select>
+									</div>
+									</div>
+									<div th:unless="${appNameList != null && !appNameList.isEmpty()}" > 
+										<select class="form-control" id="project_name"
+										name="project_name">
+										<option value="">-- Application Name --</option>
+										</select>
+									</div>
+									
+									
+								
+
+							</div>
+
+
+						</div>
+
+						<div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn"
+								title="Search" onclick="searchFilter('');">
+								<i class="fa search"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn" title="Clear"
+								onclick="resetAppAuditFilter();">
+								<i class="fa clear"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+								data-toggle="collapse" data-target="#extra-filter"
+								title="No Extra Filters">
+								<i class="fa fa-ellipsis-h"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+
+
+			</form>
+
+			<div class="clearfix"></div>
+			<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+			<div
+				th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+			<div class="clearfix"></div>
+
+			<div class="table-responsive mt-2 w-60" id="dataSpan">
+				<!-- <table class="table table-bordered table-striped mb-1" id="table">
+					<tbody>
+					</tbody>
+				</table> -->
+			</div>
+			<!-------------------------->
+
+		</div>
+	</div>
+
+	<div class="modal fade" id="myModalAudit" tabindex="-1" role="dialog"
+		aria-labelledby="myModal" aria-modal="true" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content ">
+				<div class="modal-header">
+					<h5 class="modal-title" id="">Details</h5>
+					<button type="button" title="close" class="close"
+						data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
+				</div>
+				<div class="modal-body" id="appAuditView">
+					<!-- getting table data from String builder -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="action-section bg-white text-center fixed-bottom"
+		id="actiondiv">
+		<button type="button" class="action-btn action-btn--view mr-2"
+			id="viewBtn" style="display: inline-block;" data-toggle="modal"
+			data-target="#myModal" onclick="viewAuditRecord('viewAppAuditData');">
+			<i class="fa fa-eye"></i>View
+		</button>
+		<button type="button" class="action-btn action-btn--edit mr-2"
+			id="editAuditBtn" style="display: inline-block;"
+			onclick="editAuditEntry('editAppSecForm');">
+			<i class="fa fa-pencil"></i>Mark As Resolved
+		</button>
+	</div>
+
+
+	<script type="text/javascript" src="./static/js/appAudit/appAudit.js"></script>
+	<script type="text/javascript"
+		src="./static/js/global/paginator/paginator.js"></script>
+
+	<script>
+		loadDataUsingPaginator('AuditDashboard');
+		onLoadFunction();
+	</script>
+
+
+</th:block>

@@ -1,0 +1,82 @@
+.details-table {
+	td.pre-wrap {
+		white-space: pre-wrap;
+	}
+	td.text-bold {
+		font-weight: 700;
+	}
+	
+	
+}
+
+.table1 {
+    width: 60%;
+    height:70%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.star {
+  visibility: hidden;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.star:before {
+  content: "\2606";
+  position: absolute;
+  visibility: visible;
+  color:blue;
+}
+
+.star:checked:before {
+  content: "\2605";
+  position: absolute;
+  visibility: visible;
+  color:blue;
+}
+
+.kpi {
+  /* box-shadow: -1px 2px 0px 0px rgb(226 226 226 / 76%); */
+  border-radius: .25rem;
+  box-shadow: 1px 1px 20px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  border-bottom: 3px solid #2c5aad !important;
+  margin-bottom: 20px; 
+  padding: 20px !important;
+  height: 120px;
+  display: flex;
+  align-items: center;  
+  overflow: hidden !important;
+  position: relative;
+}
+.kpi-icon {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #092559, #4e8dff);
+  border-radius: 50%;
+}
+
+@media (min-width: 1200px) and (max-width: 1440px) {
+  /* line 1055, ../../sass/dashboard/dashboard.scss */
+  .kpi h5 {
+    font-size: 25px;
+  }
+  
+  .kpi h5 {
+  color: #425abe;
+  font-size: 1.5rem;
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+
+#example3 {
+  border: 10px  black;
+  padding: 15px;
+  background: lightblue;
+  background-clip: content-box;
+}
+
+}

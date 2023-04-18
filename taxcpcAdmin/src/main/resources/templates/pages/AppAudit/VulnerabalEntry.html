@@ -1,0 +1,344 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link rel="stylesheet"
+		href="./static/css/global/bootstrap-multiselect.css">
+	<link rel="stylesheet" href="./static/css/global/bootstrap-select.css">
+	<div class="right-section">
+
+			<div class="tab-section col-md-12 mt-3">
+				<ul class="nav nav-pills">
+					<li class="nav-item mr-5"
+						onclick="window.location.href='./AppAuditEntry'"><a
+						class="nav-link " data-toggle="pill" href="#"><p><th:block th:text="${action != null && action == 'save' ? 'Vulnerability Assessment Entry' : 'Edit Vulnerability Assessment'}">Vulnerability Assessment Entry</th:block> 
+								</p> </a></li>
+<!-- 					<li class="nav-item mr-5"><a class="nav-link active" data-toggle="pill" href="#"><p> <th:block th:text="${action != null && action == 'save' ? 'Vulnerability Assessment Entry' : 'Edit Vulnerability Assessment'}">Vulnerability Assessment Entry</th:block> </p></a></li>
+ -->		        </ul>
+				<div class="clearfix"></div>
+			</div>
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+			<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add </th:block> Project</h4></div>  -->
+			<div class="tab-content form-wrapper px-4 py-4">
+			
+				<form id="vulnerabilityEntryForm" th:object="${bankAuditEntity}"
+					autocomplete="off">
+					<input type="hidden" class="form-control" id="seq_id" name="seq_id" th:value="${bankAuditEntity != null ? bankAuditEntity.seq_id : ''}">
+               
+             <div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Application Name<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						 <div th:if="${projectName!= null && !projectName.isEmpty()}" >
+							<select class="form-control" id="audit_applied_app_name" name="audit_applied_app_name">
+							 <option value="">--Select Application Name--</option>
+								<option th:each="project_name : ${projectName.entrySet()}"
+									th:value="${project_name.key}" th:text="${project_name.value}" 
+									th:selected="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.entity_code != null && bankAuditEntity.audit_applied_app_name.contains(project_name.key)}"></option>
+							</select>
+							</div>
+							<div th:unless="${projectName!= null && !projectName.isEmpty()}" >
+							<select class="form-control" id="audit_applied_app_name" name="audit_applied_app_name">
+							 <option value="">--Select Application Name--</option>
+								<!-- <option th:each="project_name : ${projectName.entrySet()}"
+									th:value="${project_name.key}" th:text="${project_name.value}" 
+									th:selected="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.entity_code != null && bankAuditEntity.audit_applied_app_name.contains(project_name.key)}"></option>
+							 --></select>
+							</div>
+							<!-- 
+							<input type="text" class="form-control"
+								id="audit_applied_app_name" name="audit_applied_app_name"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_applied_app_name != null ? bankAuditEntity.audit_applied_app_name : ''}"/>
+ -->
+						</div>
+					</div>
+            
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Bank / Entity Type<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+
+							<select class="form-control" id="entity_code" name="entity_code">
+							 <option value="">--Select Bank / Entity Type--</option>
+								<option th:each="entity_type : ${entityNameList.entrySet()}"
+									th:value="${entity_type.key}" th:text="${entity_type.value}" 
+									th:selected="${bankAuditEntity != null && bankAuditEntity.entity_code != null && bankAuditEntity.entity_code.contains(entity_type.key)}"></option>
+							</select>
+						</div>
+
+					</div>
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Header <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="audit_name" placeholder="Enter Header"
+								name="audit_name" th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_name != null ? bankAuditEntity.audit_name : ''}"/>
+
+						</div>
+					</div>
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Description<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="input-group col-lg-7 col-xl-4">
+							<input class="form-control" rows="12" id="audit_description"
+								name="audit_description" placeholder="Enter Description"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_description != null ? bankAuditEntity.audit_description : ''}" >
+								 <div class="input-group-append req-w-15">
+								 <button type="button" class="btn btn-primary btn-addon" id="button_desc"
+									onclick="viewDescription();" title="Enter Description">
+									<i class="fa fa-ellipsis-h"></i>
+								</button>
+                           </div>
+						</div>
+					</div>
+
+                     <div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">No. Of Occurrence<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control"  id="no_of_occurences" placeholder="Enter No. of Occurrence"
+								name="no_of_occurences" oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.no_of_occurences != null ? bankAuditEntity.no_of_occurences : ''}" />
+
+						</div>
+					</div>
+					<div class="applicationDiv row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label" for="doc_file1">Attachment<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<div class="file">
+								<input type="file" class="form-control" name="doc_file"
+									id="doc_file" th:text="${docfile}">
+							</div>
+
+
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> External Link<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" th:id="audit_ext_link"
+								name="audit_ext_link" placeholder="Enter External Link"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_ext_link != null ? bankAuditEntity.audit_ext_link : ''}"/>
+
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Applied Region<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="audit_applied_region"
+								name="audit_applied_region" placeholder="Enter Applied Region"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_applied_region != null ? bankAuditEntity.audit_applied_region : ''}"/>
+
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Server IP<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control"
+								id="audit_applied_server_ip" name="audit_applied_server_ip" 
+								placeholder="e.g. 192.168.1.1" 
+									 onblur="validateIPaddresdatabase(this);"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null && bankAuditEntity.audit_applied_server_ip != null ? bankAuditEntity.audit_applied_server_ip : ''}"/>
+
+						</div>
+					</div>
+				
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Other <span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="other_info"
+								name="other_info" placeholder="Enter Other"
+								th:value="${bankAuditEntity != null && bankAuditEntity.other_info != null  && bankAuditEntity.seq_id != null ? bankAuditEntity.other_info : ''}"/>
+						</div>
+					</div>
+
+                       <div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Other 1 <span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="other_info1"
+								name="other_info1" placeholder="Enter Other 1" 
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null ? bankAuditEntity.other_info1 : ''}"/>
+						</div>
+					</div>
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Other 2 <span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="other_info2"
+								name="other_info2" placeholder="Enter Other 2"
+								th:value="${bankAuditEntity != null && bankAuditEntity.seq_id != null ? bankAuditEntity.other_info2 : ''}"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 offset-md-4">
+							<div class="form-group  text-center">
+							
+								<button type="button" class="form-btn" th:if="${action != null && action == 'save'}" onclick="saveVAudit();">
+									<i class="fa save" aria-hidden="true"></i>Save & Exit
+								</button>
+								<button type="button" class="form-btn" th:if="${action != null && action == 'save'}"
+									onclick="window.location.href='./vulnerableEntry'">
+									<i class="fa fa-undo" aria-hidden="true"></i>Reset
+								</button>
+								<button type="button" class="form-btn" th:if="${action != null && action == 'save'}"
+									onclick="window.location.href='./AppAuditEntry'">
+									<i class="fa cancel" aria-hidden="true"></i>Cancel
+								</button>
+
+							</div>
+						</div>
+					</div>
+				
+					
+					<div id="vulnerabilityEditForm" style="display: none;">
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Resolve Remark<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="audit_resolve_remark"
+								name="audit_resolve_remark"/>
+
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Resolve Reference<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control"
+								id="audit_resolve_reference" name="audit_resolve_reference"/>
+
+						</div>
+
+					</div>
+					 <div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Resolve Attachment <span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<div class="file">
+								<input type="file" class="form-control"
+									name="file_attach" id="file_attach">
+							</div>
+						</div>
+
+					</div>
+
+					<div class="row">
+						<div class="col-md-4 offset-md-4">
+							<div class="form-group  text-center">
+	                            <button type="button" class="form-btn" th:if="${action != null && action == 'edit'}"  onclick="updateVulnerableDetails();"><i class="fa fa-floppy-o" aria-hidden="true"></i><span>Update & Exit</span></button>
+                          		<button type="button" class="form-btn" th:if="${action != null && action == 'edit'}" onclick="window.location.href='./appAuditDashboard'"><i class="fa cancel" aria-hidden="true"></i>Cancel</button>
+                          	
+							</div> 
+						</div>
+					</div>
+                </div>
+				</form>
+			</div>
+
+	</div>
+	
+	<div id="description_data" class="modal fade" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<h4 class="modal-title">Description</h4>
+					<button type="button" title="Close" class="close"data-dismiss="modal" aria-hidden="true" onclick="CloseErrorData();">&times; </button>
+				</div>
+				<div class="modal-body error-Group-Description">
+					<form id="description">
+						<div class="row">
+							<div  class="col-md-12">
+							 <textarea class="form-control" rows="10" id="audit_description_view" name="audit_description_view"   
+						 th:text="${bankAuditEntity != null ? bankAuditEntity.audit_description : ''}"  placeholder="Description" maxlength="4000" ></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<div class="form-group row">
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-green-btn"
+								onclick="submitDescription();">
+								<i class="fa fa-save" aria-hidden="true"></i> Submit
+							</button>
+
+						</div>
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-red-btn"
+								onclick="resetDescription();">
+								<i class="fa fa-refresh" aria-hidden="true"></i> Reset
+							</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="./static/js/appAudit/appAudit.js"></script>
+
+<script type="text/javascript">
+onloadDisplayFunction();
+</script>
+
+</th:block>
+
+</html>

@@ -1,0 +1,268 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5" onclick="openWorkForm('W')">
+					<a th:class="${workType != null && workType.equals('W') ? 'nav-link active' : 'nav-link'}"
+						data-toggle="pill" href="#"><p>Wishlist Work Dashboard</p> 
+					</a>
+				</li>
+				<li class="nav-item mr-5" onclick="openWorkForm('P')">
+					<a th:class="${workType != null && workType.equals('P') ? 'nav-link active' : 'nav-link'}"
+						data-toggle="pill" href="#"><p>Pending Work Dashboard</p> 
+					</a>
+				</li>
+				<li class="nav-item"
+					onclick="window.location.href='./workEntry'"><a
+					class="nav-link " data-toggle="pill" href="#"><p>Wishlist/Pending 
+							Work Entry</p></a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="tab-content form-wrapper px-4 py-4">
+	<form id="workDetails" th:object="${dataGridDTO}" class="px-2 py-2">
+
+	<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}" name="filterFlag" id="filterFlag" />
+    <input type="hidden" th:value="${dataGridDTO.paginator.totalRecords}" name="paginator.totalRecords" id="totalRecords" /> 
+    <input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" />
+    <input	type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}" name="paginator.recordsPerPage" id="recordsPerPage" />
+    <input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}" id="dataGridAction" /> 
+    <input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" 	name="paginator.pageNumber" id="pageNumber" />
+    <input type="hidden" id="fltrformId" value="workDetails">
+    <input type="hidden" th:value="${workType}" name="work_type"  id="worktypeget" />
+       
+				<div class="filter-section my-1 pt-1">
+					<div class="row sec-bottom">
+						<div class="col-lg-10 col-xl-11">
+							<div class="row form-group">
+								<div class="col-lg-3">
+									<select class="form-control" id="work_nature"
+										name="work_nature" title="User Type">
+										<option value="">--Select Work Nature--</option>
+										<option value="N">New Development</option>
+										<option value="E">Enhancement</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+									<select class="form-control" id="work_priority" name="work_priority" title="Priority">
+										<option value="">--Select Priority--</option>
+										<option value="High">High</option>
+									   <option value="Medium">Medium</option>
+										<option value="Low">Low</option>
+									</select>
+								</div>
+								<div class="col-lg-3">
+								    <select class="form-control" id="project_code" name="project_code">
+			                        	<option value="">--Select Application Name--</option>
+										<option th:each="project : ${projectList.entrySet()}"  th:text="${project.value}" th:value="${project.key}" th:selected="${workEntity != null && workEntity.project_code != null && workEntity.project_code.equals(project.key)}"></option>
+		                        	</select>
+								</div>
+
+                                    <div class="col-lg-3">
+									<select class="form-control" id="status" name="status" title="status">
+										<option value="">--Select Status--</option>
+										<option value="d">Done</option>
+									   <option value="n">Not Done</option>
+									</select>
+								</div>
+
+								
+							</div>
+							
+							</div>
+						
+						<div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn" onclick="searchwishlistFilter();"
+								title="Search">
+								<i class="fa search"></i>
+							</button>
+							<button type="refresh"
+								class="btn btn-primary addon-btn filter-inner-btn" onclick="resetwishFilter();"
+								title="Clear"> 
+								<i class="fa clear"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+								data-toggle="collapse" data-target="#remainingFilter"
+								title="Extra Filters" aria-expanded="false">
+								<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+							</button>
+						</div>
+						
+					</div>
+					</div>
+					
+			</form>
+			<div class="clearfix"></div>
+			<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+			<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div> 
+			<div class="clearfix"></div>
+			<div class="table-responsive mt-2 w-60" id="dataSpan">
+			<table class="table table-bordered table-striped mb-1" id="table">
+					<thead>
+						<tr class="text-center">
+							<th class="th-action check-action text-center"></th>
+					   <th class="th-action">Action</th> 
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Work Nature</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Priority</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Application</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Tentative Completion Date</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">To Be Done By</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Detailed Work Description</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Remark</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<!-- <tr th:if="${workList != null && !workList.isEmpty()}" th:each="dataGrid,index_count : ${workList}" th:id="${'tr-'+index_count.count}">
+							<td class="td-action">
+							<div class="custom-control custom-checkbox action-check checkbox-mt">
+	                                  <input type="checkbox" class="custom-control-input toggle-action-section" name="actionCheckbox" th:id="'action~'+${index_count.count}+'~'+${dataGrid.work_code}" onclick="openActionDiv(this.id);">
+	                                  <label class="custom-control-label" th:for="'action~'+${index_count.count}+'~'+${dataGrid.work_code}"></label>
+	                              </div>
+							</td>
+							<td th:text="${index_count.count}"></td>
+							<td th:text="${dataGrid.work_nature != null && dataGrid.work_nature == 'N'} ? 'New Development' : 'Enhancement'"></td>
+							<td th:text="${dataGrid.work_priority}"></td>
+							<td th:text="${dataGrid.project_code}"></td>
+							<td th:text="${(dataGrid.completion_date != null) ? #dates.format(dataGrid.completion_date, 'dd-MM-yyyy') : ''}"></td>
+							<td th:text="${dataGrid.done_by_user}"></td>
+							<td th:text="${dataGrid.work_description}"></td>
+							<td th:text="${dataGrid.remark}"></td>
+						</tr>
+						<tr th:unless="${workList != null && !workList.isEmpty()}">
+							<td colspan="9" class="text-center">No Record Found </td>			
+						</tr> -->
+					</tbody>
+				</table> -->
+			</div>
+		</div>
+		<div class="action-section bg-white text-center fixed-bottom" id="actiondiv">
+			<button type="button" class="action-btn action-btn--edit mr-2" id="editBtn" onclick="editWork();" style="display: inline-block;"> <i class="fa fa-pencil"></i>Edit</button>
+			<button type="button" class="action-btn action-btn--delete mr-2" id="deleteBtn" onclick="deleteWork()" style="display: inline-block;"> <i class="fa fa-trash"></i>Delete</button>
+			<button type="button" class="action-btn action-btn--view mr-2" id="viewBtn"  onclick="viewWork()" style="display: inline-block;" data-toggle="modal" data-target="#detail-modal"> <i class="fa fa-eye"></i>View</button>
+			<button type="button" class="action-btn action-btn--edit mr-2" id="Btnmark"  onclick="markdone()"   data-toggle="modal" data-target="#detail-modal"> <i class="fa fa-check"></i>Mark As Done</button>
+		</div>
+	</div>
+	
+	
+	
+					
+
+                   			
+	
+	<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="detail-modal" aria-modal="true"  data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg" role="document">
+            <form id="workDetail" th:object="${dataGridDTO}" class="px-2 py-2">
+                <div class="modal-content"  >
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Details</h5>
+                        <button type="button"  title="close" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                   		<div class="">
+                   			<div class="row">
+                   				<div class="col-md-12">
+                   					<table class="table details-table">
+									<tbody id="workModelTableBody">
+									
+										
+									</tbody>
+									
+								</table>
+									
+					<div class="modal-footer justify-content-center">
+					<div class="form-group row">
+						<div class="col-md-6">
+							<button type="button" title="Done" class="form-btn form-green-btn"
+								 onclick="getDone();">
+								<i class="fa fa-save" aria-hidden="true"></i>Done
+							</button>
+
+						</div>
+						<div class="col-md-6">
+							<button type="button"  title="close" class="form-btn form-red-btn " data-dismiss="modal" aria-label="Close">
+								<i class="fa fa-close" aria-hidden="true"></i> Cancel
+							</button>
+
+						</div>
+					</div>
+				</div>
+                    </div>
+                </div>
+            </div>  
+            </div>
+            </div>
+            </form>
+            </div>
+            </div>
+            
+
+   <script type="text/javascript">
+	loadDataUsingPaginator('workDetails');
+	</script>
+	
+	<script type="text/javascript" src="./static/js/wishlistPendingWork/wishlistPendingWork.js"></script>	
+	
+	<script type="text/javascript">
+	downloadbutton();
+	</script>
+</th:block>

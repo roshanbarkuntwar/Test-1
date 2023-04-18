@@ -1,0 +1,422 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link rel="stylesheet" href="./static/css/global/bootstrap-select.css">
+    <link rel="stylesheet" href="./static/css/global/bootstrap-multiselect.css">
+	<div class="right-section">
+
+			<div class="tab-section col-md-12 mt-3">
+				<ul class="nav nav-pills">
+					<li class="nav-item mr-5"
+						onclick="window.location.href='./projectDetail'"><a
+						class="nav-link " data-toggle="pill" href="#"><p>Project
+								Details</p> </a></li>
+					<li class="nav-item mr-5"><a class="nav-link active"
+						data-toggle="pill" href="#"><p>
+								<th:block
+									th:text="${action != null && action == 'save' ? 'Project Entry' : 'Edit Project'}">Project Entry </th:block>
+							</p></a></li>
+					<!--  <li onclick="OpenProjectMenu();"  class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p> Project Menu Detail </p></a></li> -->
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+			<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add </th:block> Project</h4></div>  -->
+			<div class="tab-content form-wrapper px-4 py-4">
+				<form id="projectEntryForm" th:object="${projectEntity}"
+					autocomplete="off">
+					<input type="hidden" class="form-control" id="project_code"
+						name="project_code"
+						th:value="${projectEntity != null ? projectEntity.project_code : ''}">
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Project Name <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="project_name"
+								name="project_name"
+								th:value="${projectEntity != null && projectEntity.project_code != null && projectEntity.project_name != null ? projectEntity.project_name : ''}" />
+						</div>
+
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Project Info <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="project_info"
+								name="project_info"
+								th:value="${projectEntity != null && projectEntity.project_info != null && projectEntity.project_code != null ? projectEntity.project_info : ''}" />
+						</div>
+
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Application Type <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						
+					 <select class="form-control" id="application_type" name="application_type"
+				th:value="${projectEntity != null && projectEntity.application_type != null  && projectEntity.application_type != null ? projectEntity.application_type : ''}"  onchange="getApplicationTypeName()"
+								>
+								<option value="">--Select Application Type--</option>
+
+								<option th:each="application_type  : ${applicationList.entrySet()}"
+									th:value="${application_type.key}" th:text="${application_type .value}"
+									th:selected="${projectEntity!= null && projectEntity.application_type != null && projectEntity.application_type.contains(application_type.key)}"></option>
+							</select>
+
+						</div>
+					</div>
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Architecture<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+
+							<select  class="form-control"
+								id="architecture_type_code" name="architecture_type_code"
+								th:value="${projectEntity != null && projectEntity.architecture_type_code != null  && projectEntity.project_code != null ? projectEntity.architecture_type_code : ''}"
+								>
+								<option value="">--Select Architecture--</option>
+								<option
+									th:each="project_architecture : ${projectArchitectureList.entrySet()}"
+									th:value="${project_architecture.key}"
+									th:text="${project_architecture.value}"
+									th:selected="${projectEntity != null && projectEntity.architecture_type_code != null && projectEntity.architecture_type_code.contains(project_architecture.key)}"></option>
+							</select>
+
+						</div>
+					</div>
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Frontend<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+
+						<div class="col-lg-7 col-xl-4">
+							<select type="text" class="form-control" id="frontend_type_code"
+								name="frontend_type_code"
+								th:value="${projectEntity != null && projectEntity.frontend_type_code != null && projectEntity.frontend_type_code != null ? projectEntity.frontend_type_code : ''}"
+								multiple="multiple" >
+								<!--  <option value="">--Select Frontend--</option> -->
+								
+								<option
+									th:each="project_frontend : ${projectFrontendList.entrySet()}"
+									th:value="${project_frontend.key}"
+									th:text="${project_frontend.value}"
+									th:selected="${projectEntity != null && projectEntity.frontend_type_code != null && projectEntity.frontend_type_code.contains(project_frontend.key)}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Backend<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4" id="frontend">
+						
+							<select type="text" class="form-control" id="backend_type_code"
+								name="backend_type_code"
+								th:value="${projectEntity != null && projectEntity.backend_type_code != null  && projectEntity.project_code != null ? projectEntity.backend_type_code : ''}"
+								multiple="multiple">
+								<!-- <option value="">--Select Backend--</option> -->
+								
+								<option
+									th:each="project_backend : ${projectBackendList.entrySet()}"
+									th:value="${project_backend.key}"
+									th:text="${project_backend.value}"
+									th:selected="${projectEntity != null && projectEntity.project_code != null && projectEntity.backend_type_code.contains(project_backend.key)}"></option>
+									
+							</select>
+							
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Database<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select type="text" class="form-control" id="database_type_code"
+								name="database_type_code"
+								th:value="${projectEntity != null  && projectEntity.database_type_code != null  && projectEntity.project_code != null ? projectEntity.database_type_code : ''}"
+								multiple="multiple">
+								<!-- <option value="">--Select Database--</option> -->
+								<option
+									th:each="project_database : ${projectDatabaseList.entrySet()}"
+									th:value="${project_database.key}"
+									th:text="${project_database.value}"
+									th:selected="${projectEntity != null && projectEntity.project_code != null && projectEntity.database_type_code.contains(project_database.key)}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Framework<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select type="text" class="form-control" id="framework_type_code"
+								name="framework_type_code"
+								th:value="${projectEntity != null && projectEntity.framework_type_code != null  && projectEntity.project_code != null ? projectEntity.framework_type_code : ''}"
+								multiple="multiple">
+								<!-- <option value="">--Select Framework--</option> -->
+								<option
+									th:each="project_framework : ${projectFrameworkList.entrySet()}"
+									th:value="${project_framework.key}"
+									th:text="${project_framework.value}"
+									th:selected="${projectEntity != null && projectEntity.project_code != null && projectEntity.framework_type_code.contains(project_framework.key)}"></option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Build Type<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select type="text" class="form-control" id="project_type"
+								name="project_type"
+								th:value="${projectEntity != null && projectEntity.project_type != null  && projectEntity.project_type != null ? projectEntity.project_type : ''}"
+								multiple="multiple">
+								<option value="Jar" th:selected="${projectEntity != null && 'Jar'.equals(projectEntity.project_type)}">Jar</option>
+						    <option value="War" th:selected="${projectEntity != null && 'War'.equals(projectEntity.project_type)}">War</option>
+							<option value="Server_build" th:selected="${projectEntity != null && 'Server_build'.equals(projectEntity.project_type)}">Server Less Build</option>
+							</select>
+						</div>
+					</div>
+					
+					
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> SVN Link<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<div class="input-group input-group-sm">
+						
+							<input type="url" class="req-w-30 form-control" id="svn_link"
+								name="svn_link"
+								 readonly  th:each="user : ${svn_link.entrySet()}"
+							     th:value="${user.value}" />
+								<input type="text" class="req-w-20 form-control" id="svn_link"
+								name="svn_link"
+							   th:value="${projectEntity != null && projectEntity.svn_link != null  && projectEntity.project_code != null ? projectEntity.svn_link : ''}" />
+							   </div>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Original War File Name<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control"
+								id="war_filename" name="war_filename"
+								th:value="${projectEntity != null && projectEntity.war_filename != null  && projectEntity.project_code != null ? projectEntity.war_filename : ''}" />
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Other War File Name<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="other_war_filename"
+								name="other_war_filename"
+								th:value="${projectEntity != null && projectEntity.other_war_filename != null  && projectEntity.project_code != null ? projectEntity.other_war_filename : ''}" />
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Parent Project Name<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select type="text" class="form-control" id="parent_code"
+								name="parent_code"
+								th:value="${projectEntity != null  && projectEntity.parent_code != null && projectEntity.project_code != null ? projectEntity.parent_code : ''}">
+								<option value="">--Select Parent Project Name--</option>
+								<option th:each="parentcode : ${parentCodeList.entrySet()}"
+									th:value="${parentcode.key}" th:text="${parentcode.value}"
+									th:selected="${projectEntity != null && projectEntity.parent_code != null && projectEntity.parent_code.contains(parentcode.key)}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">LHS Connected Database User<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select type="text" class="form-control" id="connected_db_user"
+								name="connected_db_user"
+								th:value="${projectEntity != null && projectEntity.connected_db_user != null && projectEntity.project_code != null ? projectEntity.connected_db_user : ''}">
+								<option>--Connected Database User--</option>
+								<option th:each="connUser : ${connUserList.entrySet()}"
+									th:value="${connUser.key}" th:text="${connUser.value}"
+									th:selected="${projectEntity != null && projectEntity.connected_db_user != null && projectEntity.connected_db_user.contains(connUser.key)}"></option>
+							</select>
+						</div>
+
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Remark <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="remark" name="remark"
+								th:value="${projectEntity != null && projectEntity.remark != null  && projectEntity.project_code != null ? projectEntity.remark : ''}" />
+						</div>
+
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Project Status<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<div class="form-check form-check-inline">
+								<input type="radio" class="form-check-input ml-2"
+									name="project_status" id="project_status1" th:value="A"
+									th:checked="${projectEntity != null && 'A'.equals(projectEntity.project_status) ? 'checked' : ''}" />
+								<label class="form-check-label" for="newscheck1">Active</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input type="radio" class="form-check-input ml-2"
+									name="project_status" id="project_status2" th:value="I"
+									th:checked="${projectEntity != null && 'I'.equals(projectEntity.project_status)}" />
+								<label class="form-check-label" for="newscheck2">Inactive</label>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 offset-md-4">
+							<div class="form-group  text-center">
+								<button type="button" class="form-btn"
+									th:if="${action != null && action == 'save'}"
+									onclick="saveProjectDetail();">
+									<i class="fa save" aria-hidden="true"></i>Save & Exit
+								</button>
+								<button type="button" class="form-btn"
+									th:if="${action != null && action == 'edit'}"
+									onclick="saveProjectDetail();">
+									<i class="fa fa-floppy-o" aria-hidden="true"></i><span>Update & Exit</span>
+								</button>
+								<button type="button" class="form-btn"
+									th:if="${action != null && action == 'save'}"
+									onclick="window.location.href='./projectEntry'">
+									<i class="fa fa-undo" aria-hidden="true"></i>Reset
+								</button>
+								<button type="button" class="form-btn"
+									onclick="window.location.href='./projectDetail'">
+									<i class="fa cancel" aria-hidden="true"></i>Cancel
+								</button>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+	
+	</div>
+	
+ 	<script type="text/javascript" src="./static/js/global/bootstrap-multiselect.min.js"></script>
+     <script type="text/javascript" src="./static/js/projectMgmt/projectMgmt.js"></script>
+
+		
+		
+	<script type="text/javascript">
+	onload();
+	
+	 $(document).ready(function() {
+			$('#project_type').multiselect({
+				buttonWidth : '160px',
+				includeSelectAllOption : true,
+				nonSelectedText : '--Select BuildType--'
+	
+			});
+		});
+	
+	 
+	
+
+	/* 	$(document).ready(function() {
+			$('#architecture_type_code').multiselect({
+				buttonWidth : '160px',
+				includeSelectAllOption : true,
+				nonSelectedText : '--Select Architecture--',
+				
+			});
+		});
+ */
+ 
+
+
+ 		$(document).ready(function() {
+			$('#frontend_type_code').multiselect({
+				buttonWidth : '160px',
+				includeSelectAllOption : true,
+				nonSelectedText : '--Select Frontend--'
+			});
+		});
+
+		$(document).ready(function() {
+			$('#backend_type_code').multiselect({
+				buttonWidth : '160px',
+				includeSelectAllOption : true,
+				nonSelectedText : '--Select Backend--'
+			});
+		});
+
+		$(document).ready(function() {
+			$('#database_type_code').multiselect({
+				buttonWidth : '160px',
+				includeSelectAllOption : true,
+				nonSelectedText : '--Select Database--'
+			});
+		});
+
+		$(document).ready(function() {
+			$('#framework_type_code').multiselect({
+				buttonWidth : '160px',
+				includeSelectAllOption : true,
+				nonSelectedText : '--Select Framework--'
+			});
+		});
+		
+		
+		
+	</script>
+	
+	
+</th:block>

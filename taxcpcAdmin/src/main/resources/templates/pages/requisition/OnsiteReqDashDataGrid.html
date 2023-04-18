@@ -1,0 +1,181 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout" th:with="title='Hello, template'">
+	<div th:fragment="ajaxOnsiteList">
+					<table class="table table-bordered table-striped mb-1" id="table">
+						<thead>
+							<tr class="text-center">
+								<th class="th-action">Sr. No.</th>
+								
+								<th>Action</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Req. No.</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc" aria-hidden="true"></i> <i
+												class="fa fa-sort-asc" aria-hidden="true"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Current Status</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Reported By</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Reported Date</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Types Of Issues</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc" aria-hidden="true"></i> <i
+												class="fa fa-sort-asc" aria-hidden="true"></i>
+										</div>
+									</div>
+								</th>
+								
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Target Date</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								
+							</tr>
+						</thead>
+						<tbody>
+				<input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}">
+				<input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				<input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				<input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}">
+						
+							<tr
+								th:if="${onsiteReqListGrid!= null && !onsiteReqListGrid.isEmpty()}"
+								th:each="dataGrid,index_count : ${onsiteReqListGrid}"
+								th:id="${index_count.count}+'~'+${dataGrid.req_code}" ondblclick=" viewOnsite(this.id);"
+								th:style="${dataGrid.current_req_status == 'CRS_019' ? 'background-color:#b8dda9' : '' }">
+								
+								<td th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10" class="text-center"></td>
+
+					<td class="text-center">
+						<span th:type="button" title="Start"
+						th:if="${dataGrid.current_req_status != null && dataGrid.current_req_status == 'CRS_018'}"
+						th:id="${index_count.count}+'-'+${dataGrid.req_code}"
+						style="background-color: #28a745;
+						 border: none; 
+						color: white; 
+						padding: 1px 10px;
+						 text-align: center;
+						 display: inline-block; 
+						 font-size: 14px; 
+						 margin: 1px 1px;
+						  font-style: inherit;
+						   cursor: pointer;"
+						onclick="StartOnsite(this.id);">Start</span> <!-- 							<i class="startonsite">Start</i>
+ -->
+				<span th:type="button"
+							title="Closed"
+							th:if="${dataGrid.current_req_status != null && dataGrid.current_req_status == 'CRS_019'}"
+							th:id="${index_count.count}+'-'+${dataGrid.req_code}"
+                       		th:style="${dataGrid.current_req_status == 'CRS_019' ? 'background:#bbbdbb;pointer-events: none;padding: 1px 7px;' : ''}"
+							onclick="">Closed
+<!-- 							<i class="closedonsite">closed</i>
+ -->						</span>
+						<button th:type="button"
+							title="Close"
+							th:if="${dataGrid.current_req_status != null && dataGrid.current_req_status == 'CRS_020'}"
+							th:id="${index_count.count}+'-'+${dataGrid.req_code}"
+							style="background-color: #e51e1e; 
+                            border: none; 
+                            color: white; 
+                            padding:1px 8px; 
+                            text-align: center; 
+                            display: inline-block; 
+                            font-size: 14px; 
+                            margin: 1px 1px; 
+                            font-style: inherit; 
+                            cursor: pointer;"
+							onclick="markDoneOnsite(this.id)">Close</i>
+						</button>
+					</td>
+					
+								<td th:text="${dataGrid.req_code}"  class="text-center">  </td>
+								
+					           
+								 <td>
+								 			
+								 
+								 <span th:each="user : ${statusList.entrySet()}"
+				         	th:if="${user.key} == ${dataGrid.current_req_status}"
+					             th:text="${user.value}"> </span> 
+                       
+                         </td>
+                         
+                         <td  class="text-center"><span th:each="user : ${userList.entrySet()}"
+				         	th:if="${user.key} == ${dataGrid.reported_by}"
+					             th:text="${user.value}"> </span></td>
+					             
+							<td th:text="${(dataGrid.reported_date != null) ? #dates.format(dataGrid.reported_date, 'dd-MMM-yyyy HH:mm:ss') : ''}"  class="text-center"></td>	
+							
+							 <td> <span th:each="doc : ${viewList.entrySet()}" th:if="${doc.key} == ${dataGrid.req_type}"
+					            th:text="${doc.value}">
+				                      </span> </td>
+				
+						 <td th:text="${(dataGrid.deploy_delivered_date != null) ? #dates.format(dataGrid.deploy_delivered_date, 'dd-MMM-yyyy') : ''}" class="text-center"></td>
+                        
+                          
+                          <!--   <td class="text-center">
+					<button th:type="button"
+						class="btn btn-primary addon-btn filter-inner-btn"
+						title="Download"
+						th:id="${index_count.count}+'-'+${dataGrid.req_code}"
+						onclick="downloadOnsiteFile(this.id);">
+						<i class="fa fa-download"></i>
+
+					</button>
+
+				     </td> -->
+						
+							</tr>
+							<tr
+								th:unless="${onsiteReqListGrid!= null && !onsiteReqListGrid.isEmpty()}">
+								<td colspan="16" class="text-center">No Record Found</td>
+							</tr>
+						</tbody>
+					</table>
+					
+				
+	
+				</div>
+			</div>
+<script type="text/javascript"
+		src="./static/js/requisition/requisition.js"></script>
+
+
+
+</html>

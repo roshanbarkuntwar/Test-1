@@ -1,0 +1,123 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout" th:with="title='Hello, template'">
+
+<div th:fragment="ajaxDocList">
+				<table class="table table-bordered table-striped mb-1" id="table">
+					<thead>
+						<tr class="text-center">
+							<th>Action</th>
+							<th>Sr. No.</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading" >Work Nature</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Priority</div>
+									<div class="sort-icon">
+									<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Application Name</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Tentative Completion Date</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							
+ 							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">Status</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							
+							<th class="header">
+								<div class="table-head-inner">
+									<div class="table-heading">External Link</div>
+									<div class="sort-icon">
+										<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+									</div>
+								</div>
+							</th>
+							
+						</tr>
+					</thead>
+							<tbody>
+							<input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}">
+				<input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				<input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				<input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}">
+					  
+						<tr th:if="${workList != null && !workList.isEmpty()}" th:each="dataGrid,index_count : ${workList}" th:id="${'tr-'+index_count.count}">
+						
+							<td class="td-action text-center">
+							<div class="custom-control custom-checkbox action-check checkbox-mt">
+	                                  <input type="checkbox" class="custom-control-input toggle-action-section" name="actionCheckbox" th:id="'action~'+${index_count.count}+'~'+${dataGrid.work_code}+'~'+view+'~'+${dataGrid.status}+'~'+mark" onclick="openActionDiv(this.id);">
+	                                  <label class="custom-control-label" th:for="'action~'+${index_count.count}+'~'+${dataGrid.work_code}+'~'+view+'~'+${dataGrid.status}+'~'+mark"></label>
+	                              </div>
+							</td>
+					 <td th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10" class="text-center"></td>
+							
+							<td th:text="${dataGrid.work_nature != null && dataGrid.work_nature == 'N'} ? 'New Development' : 'Enhancement'" ></td>
+							
+							<td th:text="${dataGrid.work_priority}" ></td>
+							
+						     <td class="text-left"><span th:each="project : ${projectList.entrySet()}"
+					               th:if="${project.key} == ${dataGrid.project_code}"
+					           th:text="${project.value}"></span></td>
+						
+ 							<td th:text="${(dataGrid.completion_date != null) ? #dates.format(dataGrid.completion_date, 'dd-MM-yyyy') : ''}" class="text-center"></td>
+ 				
+                          <td th:text="${dataGrid.status != null && dataGrid.status == 'N'} ? 'Not Done' : 'Done'"  
+                          
+                          th:class="${dataGrid.status == 'D'} ? 'text-success text-center' : 'text-danger text-center'"></td>
+                          
+                          <td class="text-center">
+					<button th:type="button"
+						class="btn btn-primary addon-btn filter-inner-btn"
+						 th:id="'url~'+${index_count.count}" th:value="${dataGrid.external_link}"  
+						 th:title="${dataGrid.external_link == null ? 'There is No Link' : ' Open Link'}";
+						onclick="OpenExternalLink(this.id);">
+						<i class="fa fa-external-link"></i>
+
+					</button>
+				</td>
+						</tr>
+						<tr th:unless="${workList!= null && !workList.isEmpty()}">
+					<td colspan="9"
+						class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"><img
+						src="static/images/global/empty-box.png">No Record Found</td>
+				   </tr>
+					
+						
+					</tbody>
+						</table>
+				<script type="text/javascript">
+				onchange();
+				</script>
+					</div>
+
+<script type="text/javascript" src="./static/js/wishlistPendingWork/wishlistPendingWork.js"></script>
+
+</html>

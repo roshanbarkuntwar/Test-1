@@ -1,0 +1,114 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<!-- <li class="nav-item mr-5" id="server_entry" style="display: block;"><a
+					data-toggle="" href="#"><p>Server Entry</p> </a></li> -->
+				<li class="nav-item mr-5" id="app_server_detail"
+					style="display: block;"><a class="nav-link" data-toggle=""
+					href="#"><p>Application Server detail Entry</p> </a></li>
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Application Name Detail
+							Entry</p> </a></li>
+
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+
+		<input type="hidden" id="action" name="action" th:value="${action}" />
+		<div class="tab-content form-wrapper px-4 py-4">
+			<br> <br> <br>
+
+
+			<form id="serverEntryForm" autocomplete="off"
+				enctype="multipart/form-data" th:object="${appDetails}">
+
+				<input type="hidden" id="server_id" name="server_id" th:value="${server_id}" /> 
+				<input type="hidden" id="size" name="size" th:value="${size}" /> 
+				<input type="hidden" id="app_name" name="app_name" /> 
+				<input type="hidden" id="local_app_url" name="local_app_url" /> 
+				<input type="hidden" id="public_app_url" name="public_app_url" />
+				<input type="hidden" id="server_type" th:value="${server_type_code}" />
+
+				<div class="row form-group pt-2">
+					<div class="col-lg-4 col-xl-7 text-right ">
+						<button type="button" id="" class="form-btn text-center"
+							onclick="AddTextBox()">
+							<i class="fa fa-plus" aria-hidden="true"></i> Add Application
+							Name Detail
+						</button>
+					</div>
+
+					<div class="col-lg-4 col-xl-7 text-center" id="Div"
+						style="display: none">
+						<!-- <label class="control-label"> Application name<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label> -->
+					</div>
+
+					<!--  <div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="app_name" name="app_name" rows="1" />
+					</div> -->
+
+
+
+				</div>
+				<div class="row">
+					<div class="offset-xl-4 col-lg-7 col-xl-4">
+						<div style="display: none">
+							<input type="hidden" th:each="dataGrid,index_count : ${appDetailsList}" th:id="'app_code-'+${index_count.count}" th:value="${dataGrid.app_code}"> 
+							<input type="hidden" th:each="dataGrid,index_count : ${appDetailsList}" th:id="'app_name-'+${index_count.count}" th:value="${dataGrid.app_name}"> 
+							<input type="hidden" th:each="dataGrid,index_count : ${appDetailsList}" th:id="'local_app_url-'+${index_count.count}" th:value="${dataGrid.local_app_url}"> 
+							<input type="hidden" th:each="dataGrid,index_count : ${appDetailsList}" th:id="'public_app_url-'+${index_count.count}" th:value="${dataGrid.public_app_url}"> 
+							<input type="hidden" id="boxCount">
+						</div>
+						<div id="TextBoxContainer"></div>
+					</div>
+
+				</div>
+
+				<!-- </div> -->
+
+				<div class="row">
+					<div class="col-md-4 offset-md-4">
+						<div class="form-group  text-center">
+						<button type="button" class="form-btn" onclick="backToAppEntry()">
+								<i class="fa previous" aria-hidden="true"></i> Previous
+							</button>
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'save' }"
+								onclick="saveAppNameEntry();">
+								<i class="fa save" aria-hidden="true"></i><span id="btn-1"
+									name="btn-1">Save & Exit</span>
+							</button>
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'edit' }"
+								onclick="saveAppNameEntry();">
+								<i class="fa save" aria-hidden="true"></i><span id="btn-1"
+									name="btn-1">Update & Exit</span>
+							</button>
+							
+
+						</div>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript"
+		src="./static/js/server details/serverDetails.js"></script>
+
+	<script type="text/javascript">
+		AddTextBox1();
+	</script>
+
+
+
+</th:block>

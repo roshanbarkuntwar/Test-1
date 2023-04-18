@@ -1,0 +1,293 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<div class="right-section">
+		<div class="container-fluid mt-3">
+			<div class="page-section">
+				<div class="tab-section col-md-12 my-1">
+					<ul class="nav nav-pills">
+						<li class="nav-item mr-5"><a class="nav-link active" data-toggle="pill" href="#browse"><p>Challan Browse</p> </a></li>
+						<li class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="tdsChallanEntry"><p>Challan Entry</p></a></li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="tab-content px-4 py-4">
+					<div id="browse" class="tab-pane show in active">
+						<div class="button-section my-1">
+
+
+
+							<button type="button" class="form-btn" title="Select filter for download">
+								<i class="fa fa-file-excel-o" aria-hidden="true"></i>Capture Page Data in Excel
+							</button>
+
+							<button type="button" class="form-btn" title="Sorry!You have no rights to download">
+								<i class="fa download" aria-hidden="true"></i>Capture Page Data in Excel
+							</button>
+
+
+							<button type="button" class="form-btn" id="refreshAllocationBtn">
+								<i class="fa refresh" aria-hidden="true"></i>Refresh Allocation
+							</button>
+
+							<button type="button" id="verifyChallanBtn" class="form-btn">
+								<i class="fa challan" aria-hidden="true"></i>Challan Verification
+							</button>
+							<button type="button" class="form-btn">
+								<i class="fa centralize-allocation" aria-hidden="true"></i>Centralize Allocation
+							</button>
+
+
+						</div>
+
+						<div class="filter-section">
+							<div class="row sec-bottom">
+								<div class="col-lg-10 col-xl-11">
+									<div class="row form-group">
+										<div class="col-lg-3">
+											<select class="form-control">
+												<option>--Select Allocation Status--</option>
+											</select>
+										</div>
+										<div class="col-lg-3">
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="FROM DATE">
+												<div class="input-group-append">
+													<button type="button" class="btn btn-primary addon-btn">
+														<i class="fa fa-calendar" id="fromDateCal"></i>
+													</button>
+												</div>
+											</div>
+
+										</div>
+										<div class="col-md-3">
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="TO DATE">
+												<div class="input-group-append">
+													<button type="button" class="btn btn-primary addon-btn" id="toDateBtn" onmouseover="openCalendar('to_date', 'toDateCal');">
+														<i class="fa fa-calendar" id="toDateCal"></i>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-3">
+											<select class="form-control">
+												<option>--Select Allocation Status--</option>
+											</select>
+										</div>
+									</div>
+									<div class="collapse" id="remainingFilter">
+										<div class="row form-group">
+
+											<div class="col-md-3">
+												<select class="form-control">
+													<option>--Section--</option>
+												</select>
+											</div>
+
+											<div class="col-md-3">
+												<input type="text" class="form-control" placeholder="Bank Branch Code">
+
+											</div>
+
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+									<button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Show">
+										<i class="fa search"></i>
+									</button>
+									<button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Clear">
+										<i class="fa clean"></i>
+									</button>
+									<button type="button" class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn" data-toggle="collapse" data-target="#remainingFilter" title="Extra Filters">
+										<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 text-center p-1 mt-1 see-record">
+							Click The Above Button
+							<button type="button" class="btn mx-1 btn-primary addon-b tn filter-inner-btn">
+								<i class="fa search"></i>
+							</button>
+							To See The Records
+						</div>
+						<div id="paginator_top" class="paginator-section mb-2" style="display: block;">
+							<div class="row " style="margin-top: 6px;">
+								<div class="col-lg-3">
+									<span style="vertical-align: -webkit-baseline-middle;">Total Records : <span id="">3</span></span>
+								</div>
+								<div class="col-lg-9 justify-content-end d-flex" id="">
+									<button type="button" id="bulk_download_btn" class="btn form-btn mr-2 mt-0" title="Generate bulk data download request">
+										<i class="fa download"></i>Request Download
+									</button>
+									<div class="cust_paginator_wrap cust_paginator_wrap d-flex justify-content-end text-center">
+										<input type="hidden" name="startValue" id="" value="1"> <input type="hidden" name="endValue" id="" value="6">
+										<ul class="pagination">
+
+											<!--                            <li class="page-item"> 
+                                                                    <a  class="no-cursor page-link ">
+                                                                        <label class="m-0"> <span>Total Records :<span>0 </span></span></label>
+                                                                    </a>
+                                                                </li>-->
+											<li class="page-item"><a href="#" class="page-link go-to-pageno-link">
+													<div class="input-group">
+														<input class="form-control m-0" id="pagination_number" placeholder="Page No" type="text" value=""> <input id="totalPages" type="hidden" value="0">
+														<div class="input-group-append">
+															<button class="my-0 btn btn-primary addon-btn" style="width: 25px;" type="button" id="">Go</button>
+														</div>
+													</div>
+											</a></li>
+											<li class="page-item"><a class="current-page no-cursor page-link"> <span id="pageNumberSpan">0</span>&nbsp;of&nbsp; <span id="totalPagesSpan">0</span>
+											</a></li>
+											<li class="page-item"><a href="#settings" data-toggle="collapse" class="setting-btn page-link"> <i class="fa fa-cog" aria-hidden="true"></i></a></li>
+										</ul>
+
+										<ul class="pagination m-0" style="margin-top: 0px;">
+											<li class="page-item" title="Go To First Page"><a class="page-link"><i class="fa fa-fast-backward"></i></a></li>
+											<li class=" page-item" title="Go To Previous Page"><a class="page-link"><i class="fa fa-chevron-left"></i></a></li>
+											<li class="page-item" title="Go To Next Page"><a class="page-link"><i class="fa fa-chevron-right"></i></a></li>
+											<li class="page-item" title="Go To Last Page"><a class="page-link" id="832"><i class="fa fa-fast-forward"></i></a></li>
+										</ul>
+
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+						<div class="table-responsive mt-2" id="dataSpan">
+							<table id="table" class="table table-bordered table-striped mb-1 tablesorter">
+								<thead>
+									<tr>
+										<th class="th-action text-center" colspan="5">Action</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">
+													Sr.No.
+													<hr>
+													Branch Code
+												</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">
+													Tds Section
+													<hr>
+													BSR Code
+												</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">
+													Challan Date
+													<hr>
+													Challan Number
+												</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">
+													Challan Amount
+													<hr>
+													Interest Payment
+												</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">
+													Others Payment
+													<hr>
+													Allocated To Deductee
+												</div>
+												<div class="sort-icon">
+													<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+												</div>
+											</div>
+										</th>
+										<th class="header">
+											<div class="table-head-inner">
+												<div class="table-heading">
+													Pending for Allocation
+													<hr>
+												</div>
+											</div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="td-action text-center px-0"><a href=""> <i class="fa edit text-primary cursor-pointer mr-1" style="cursor: pointer;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edit"></i>
+										</a></td>
+										<td class="td-action text-center px-0"><i class="fa view text-success cursor-pointer mr-1" style="cursor: pointer; color: green;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="View"></i></td>
+										<td class="td-action text-center px-0"><a href="#"><i class="fa delete text-danger cursor-pointer mr-1" style="font-size: 17px;" title="Delete"></i></a></td>
+										<td class="td-action text-center px-0">
+											<div class="btn btn-info taxcpc-general-btn" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Map Deductee Transaction" style="font-size: 10px; padding-left: 3px; padding-right: 2px; padding-top: 1px; padding-bottom: 0PX; font-weight: bold; cursor: pointer;">M</div>
+											</a>
+										</td>
+										<td class="td-action text-center px-0"><a href=""> <i style="color: blue; font-size: 17px;" class="fa fa-plus-circle table-add-icon table-add-icon" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Add Deductee Transaction"></i>
+										</a></td>
+										<td><div class="data-height font-weight-bold">1</div>
+											<hr>3437</td>
+										<td><div class="data-height font-weight-bold"></div>
+											<hr>0000129</td>
+										<td><div class="data-height font-weight-bold">07-FEB-2020</div>
+											<hr>12345</td>
+										<td class="text-right"><div class="data-height font-weight-bold">10,583.00</div>
+											<hr>0.00</td>
+										<td class="text-right"><div class="data-height font-weight-bold">0.00</div>
+											<hr>10,583.00</td>
+										<td class="text-right"><div class="data-height font-weight-bold">0.00</div></td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr class="highlight header1" onclick="collapseOn(this);">
+										<td class="text-center" title="Show Grand Total"><img src="./static/images/global/sum-icon.png" class="cursor-pointer"></td>
+										<td class="text-right data-height font-weight-bold" colspan="7">Page Wise Total :</td>
+										<td class="text-right data-height font-weight-bold">31,749.00
+											<hr>0.00
+										</td>
+										<td class="text-right data-height font-weight-bold">0.00
+											<hr>31,749.00
+										</td>
+										<td class="text-right data-height font-weight-bold">0.00</td>
+									</tr>
+									<tr class="highlight" style="display: none;">
+										<td class="text-right data-height font-weight-bold" colspan="8">Grand Total :</td>
+										<td class="text-right data-height font-weight-bold">31,749.00
+											<hr>0.00
+										</td>
+										<td class="text-right data-height font-weight-bold">0.00
+											<hr>31,749.00
+										</td>
+										<td class="text-right data-height font-weight-bold">0.00</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+</html>

@@ -1,0 +1,420 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/main/multiple-file-upload.css"
+		rel="stylesheet">
+	<link href="./static/stylesheets/requisition/requisition.css"
+		rel="stylesheet">
+	<div class="right-section">
+		
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Requisition Entry</p></a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+
+		<div class="tab-content form-wrapper px-4 py-4">
+
+			<form id="reqEntryForm" autocomplete="off"
+				enctype="multipart/form-data">
+				<input type="hidden" id="reported_by" name="reported_by"
+					th:value="${sessionUser.user_code}" />
+					<input type="hidden" id="reported_rolecode" name="reported_rolecode"
+					th:value="${sessionUser.role_code}" />
+				<div class="row form-group pt-2">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Requisition Type<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="req_type" name="req_type"
+							onchange="showFieldsOnType()">
+							<option value="Application">Application</option>
+							<option value="Deployment">Deployment</option>
+						</select>
+					</div>
+				</div>
+				<div class="row form-group" id="projectDiv">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Application Name <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+					<div th:if="${projectList != null && !projectList.isEmpty()}" > 
+						<select class="form-control" id="project_name" name="project_name"
+							onchange="getProjectModules();">
+							
+							<option value="">--Select Application Name--</option>
+							<option th:each="project : ${projectList.entrySet() }"
+								th:value="${project.key}"
+								th:text="${project.value}"></option>
+						</select>
+					</div>
+					<div th:unless ="${projectList != null && !projectList.isEmpty()}" >	
+						<select class="form-control" id="project_name" name="project_name"
+							onchange="getProjectModules();">
+							
+							<option value="">--Select Application Name--</option>
+							
+						</select>
+					</div>
+					</div>
+				</div>
+				
+				
+							
+				<div class="applicationDiv row form-group" id="moduleDiv">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Module Name <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+					<div th:if="${projectModuleList != null && !projectModuleList.isEmpty()}" > 
+						<select class="form-control" id="module_name" name="module_name"
+							onchange="getProjectMenu();" disabled>
+							<option value="">--Select Module Name--</option>
+							<option th:each="project : ${projectModuleList.entrySet()}"
+								th:value="${project.key}" 
+								th:text="${project.value}"></option>
+						</select>
+					</div>
+					<div th:unless="${projectModuleList != null && !projectModuleList.isEmpty()}" > 
+						<select class="form-control" id="module_name" name="module_name"
+							onchange="getProjectMenu();" disabled>
+							<option value="">--Select Module Name--</option>
+							</select>
+					</div>
+					</div>
+				</div>
+				<div class="applicationDiv row form-group" id="menuDiv">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Menu Name <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+					<div th:if="${projectMenuList != null && !projectMenuList.isEmpty()}" > 
+						<select class="form-control" id="menu_name" name="menu_name"
+							disabled>
+							<option value="">--Select Menu Name--</option>
+							<option th:each="projectMenu : ${projectMenuList.entrySet()}"
+								th:value="${projectMenu.key}" 
+								th:text="${projectMenu.value}"></option>
+						</select>
+						</div>
+						<div th:unless="${projectMenuList != null && !projectMenuList.isEmpty()}" > 
+							<select class="form-control" id="menu_name" name="menu_name"
+							disabled>
+							<option value="">--Select Menu Name--</option>
+							</select>
+						</div>
+						
+					</div>
+				</div>
+				<div class="applicationDiv row form-group" id="parentReqDiv">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Parent Requisition </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<div class="input-group input-group-sm">
+							<input type="text" class="req-w-20 form-control"
+								th:id="parent_req_code" name="parent_req_code"
+								placeholder="Req Code"
+								onblur="validateFromLOV(event, 'getEntityCode','','','entity_name', this.id);"
+								onkeypress="openLOV(event,'getEntityCode','','','entity_code');">
+							<!-- ondblclick="openLOV(event,'getEntityCode','','','entity_code');" -->
+							<input type="text" class="req-w-65 form-control form-control-sm"
+								name="parent_req_desc" id="parent_req_desc"
+								placeholder="Req Description" readonly="readonly"
+								onkeypress="openLOV(event,'getParentReq','','','parent_req_code');">
+							<!-- ondblclick="openLOV(event,'getParentReq','','','parent_req_code');" -->
+
+							<div class="input-group-append">
+								<button type="button" class="btn btn-primary btn-addon"
+									onclick="openParentReqLov(event);" title="Search">
+									<i class="fa fa-search"></i>
+								</button>
+								<button type="button" class="btn btn-primary btn-addon"
+									onclick="clearFields('parent_req_code#parent_req_desc');" title="Clear">
+									<i class="fa fa-eraser"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class=" row form-group" id="issueTypeDiv">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Issue Type<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="issue_type" name="issue_type">
+							<option value="">--Select Issue Type--</option>
+							<option value="JAVA">Java</option>
+							<option value="Oracle">Oracle</option>
+							<option value="Other">Other</option>
+						</select>
+					</div>
+				</div>
+				<div class="applicationDiv row form-group" id="errorClassDiv">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Error Classification </label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<textarea class="form-control" id="req_error_group_str"
+							name="req_error_group_str" placeholder="Error Classification"
+							onclick="getErrorClassification()" style="resize: none;"
+							readonly="readonly"></textarea>
+					</div>
+				</div>
+				<div class="row form-group" id="dataFilterDiv">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Sample Data Filter<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<textarea class="form-control" id="sample_data_filter_str"
+							name="sample_data_filter_str" placeholder="Sample Data"
+							onclick="getSampledata1()" style="resize: none;"
+							readonly="readonly"></textarea>
+					</div>
+				</div>
+				<div class="applicationDiv row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label" for="doc_file1"> Attachments<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+
+						 
+						 <div class="custom-file" >
+							<input type="file" class="custom-file-input"  name="doc_file1" id="reqDoc"  title="You can select multiple files" required="" multiple="multiple">
+							<label class="custom-file-label" for="">Choose file...</label>
+						 </div>
+
+						 
+					</div>
+				</div>
+				<div class=" row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label">Priority<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="req_priority" name="req_priority">
+							<option value="">--Select Priority--</option>
+							<option value="High">High</option>
+							<option value="Medium">Medium</option>
+							<option value="Low">Low</option>
+						</select>
+					</div>
+				</div>
+
+
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="cont rol-label"> Remark / Issue Description<span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<textarea class="form-control" id="issue_description"
+							name="issue_description" rows="3"></textarea>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-4 offset-md-4">
+						<div class="form-group  text-center">
+							<button type="button" class="form-btn"
+								onclick="addRequisition();">
+								<i class="fa save" aria-hidden="true"></i> Save &amp Exit
+							</button>
+							<button type="reset" class="form-btn" onclick="resetReqDash();">
+								<i class="fa fa-undo" aria-hidden="true"></i> Reset
+							</button>
+							<!-- <button type="button" class="form-btn" onclick="resetReqDash()">
+								<i class="fa previous" aria-hidden="true"></i> Back
+							</button> -->
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+	<!-- Modal HTML -->
+	<div id="sample_data" class="modal fade" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<h4 class="modal-title">Sample Data Filter</h4>
+					<button type="button" title="Close" class="close" 
+					data-dismiss="modal" aria-hidden="true" onclick="refreshSampleData();">&times;</button>
+
+				</div>
+				<div class="modal-body error-Group-Description">
+
+					<div class="row">
+						<div class="col-md-4" style="border-right: 1px">
+							<!--  <div class="col-md-6" style="border-right: 1px dashed #ccc;">-->
+							<h5>Sample Code</h5>
+
+						</div>
+						<div class="col-md-8">
+							<h5>Sample data Description</h5>
+						</div>
+					</div>
+					<div id="sampleReqDiv1">
+						<input type="hidden" th:value=" ${sampleDataFilter}">
+						<div class="row" th:if="${sampleDataFilter != null}"
+							th:each="sampleData,index_count : ${sampleDataFilter}">
+							<div class="col-md-4" style="border-right: 1px;">
+								<p>
+									<input type="checkbox"
+										th:id="'sample_code~'+${index_count.count}" name="sample_code"
+										th:value="${sampleData}"
+										onclick="clearUncheckedSampleValue(this.id);"> <label
+										th:for="'sample_code~'+${index_count.count}"
+										class="sample-code"
+										th:id="'sample_code_lbl~'+${index_count.count}"
+										th:text="${sampleData}">Login-Entity</label>
+								</p>
+							</div>
+							<div class="col-md-8">
+								<p>
+									<input type="text" class="form-control"
+										th:id="'sample_code_txt~'+${index_count.count}"
+										onkeyup="chkSampleCkBox(this);" onblur="chkSampleCkBox(this);"
+										tabindex="21">
+								</p>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer justify-content-center">
+					<div class="form-group row">
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-green-btn"
+								onclick="createString();">
+								<i class="fa fa-save" aria-hidden="true"></i> Submit
+							</button>
+
+						</div>
+						<div class="col-md-6">
+							<button type="reset" class="form-btn form-red-btn"
+								onclick="refreshSampleData();">
+								<i class="fa fa-undo" aria-hidden="true"></i> Reset
+							</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="error_data" class="modal fade" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+
+					<h4 class="modal-title">Error Classification</h4>
+					<button type="button" title="Close" class="close"
+
+						data-dismiss="modal" aria-hidden="true" onclick="CloseErrorData();">&times; </button>
+
+
+				</div>
+				<div class="modal-body error-Group-Description">
+					<form id="error_data_form">
+						<div class="row">
+							<div class="col-md-4" style="border-right: 1px;">
+								<!--<div class="col-md-6" style="border-right: 1px dashed #ccc;">-->
+								<h5>Error Group</h5>
+
+							</div>
+							<div class="col-md-8">
+								<h5>Error Description</h5>
+							</div>
+						</div>
+						<div id="errordataDiv">
+							<div class="row" th:if="${errorGroup != null}"
+								th:each="error,index_count : ${errorGroup.entrySet()}">
+								<div class="col-md-4" style="border-right: 1px;">
+									<p>
+										<input type="checkbox"
+											th:id="'error_code~'+${index_count.count}" name="error_code"
+											th:value="${error.key}"
+											onclick="clearUncheckedValue(this.id);"> <label
+											th:id="'error_name~'+${index_count.count}"
+											th:for="'error_code~'+${index_count.count}"
+											th:value="${error.key}" th:text="${error.value}"></label>
+									</p>
+								</div>
+								<div class="col-md-8">
+									<p>
+										<input type="text" class="form-control" name="e_code"
+											th:id="'error_code_txt~'+${index_count.count}"
+											onkeyup="chkCkBox(this);" onblur="chkCkBox(this);"
+											tabindex="21">
+									</p>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<div class="form-group row">
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-green-btn"
+								onclick="createErrorString();">
+								<i class="fa fa-save" aria-hidden="true"></i> Submit
+							</button>
+						</div>
+						<div class="col-md-6">
+							<button type="button" class="form-btn form-red-btn"
+								onclick="refreshErrorData();">
+								<i class="fa fa-undo" aria-hidden="true"></i> Reset
+							</button>
+						</div>
+					</div>
+				</div>
+				
+				
+		
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript"
+		src="./static/js/global/multipleFileSelect/multifile.js"></script>
+	<script type="text/javascript"
+		src="./static/js/requisition/requisition.js"></script>
+	<script>
+		showFieldsOnType();
+
+		jQuery(function($) {
+			$('#reqDoc').multifile();
+		});
+	</script>
+	
+
+</th:block>

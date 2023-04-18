@@ -1,0 +1,173 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<div class="right-section">
+
+			<div class="tab-section col-md-12 mt-3">
+				<ul class="nav nav-pills">
+					<li class="nav-item mr-5"><a class="nav-link active"
+						data-toggle="pill" href="#"><p>Database Table / View
+								Browser</p> </a></li>
+					<li onclick="window.location.href='./databaseTableEntry'"
+						class="nav-item mr-5"><a class="nav-link" data-toggle="pill"
+						href="#"><p>Database Table / View Entry</p></a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+			<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add </th:block> Project</h4></div>  -->
+			<div class="tab-content form-wrapper px-4 py-4">
+
+				<form id="databaseMainTable" th:object="${dataGridDTO}">
+					<input type="hidden" th:value="${dataGridDTO.filter.filterFlag}" name="filterFlag" id="filterFlag" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.totalRecords}" name="paginator.totalRecords" id="totalRecords" /> 
+				<input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}" name="paginator.recordsPerPage" id="recordsPerPage" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}" id="dataGridAction" />
+				<input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+
+					<div class="filter-section my-1 pt-1">
+						<div class="row sec-bottom">
+							<div class="col-lg-10 col-xl-11">
+								<div class="row form-group">
+									<div class="col-lg-3">
+										<input type="text" name="table_or_view_name" value=""
+											id="table_or_view_name" class="form-control"
+											title="table_or_view_name"
+											placeholder="Enter Table or View Name"
+											onkeydown="return (event.keyCode!=13);">
+
+									</div>
+									<div class="col-lg-3">
+										<select class="form-control" name="object_type"
+											id="object_type" title="object_type">
+											<option value="">--Select Type of Object--</option>
+											<option value="Table">Table</option>
+											<option value="View">View</option>
+										</select>
+									</div>
+								<div class="col-lg-3">
+									<select class="form-control" id="project_code" name="project_code">
+								<option value="">--Select Project Name--</option>
+								<option th:each="project : ${projectList.entrySet()}"
+									th:value="${project.key}" th:text="${project.value}"></option>
+							</select>
+									</div> 
+
+								</div>
+							</div>
+							<div
+								class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+								<button type="button"
+									class="btn btn-primary addon-btn filter-inner-btn"
+									title="Search" onclick="searchDatabaseTableFilter()">
+									<i class="fa search"></i>
+								</button>
+								<button type="button"
+									class="btn btn-primary addon-btn filter-inner-btn"
+									title="Clear" onclick="resetDatabaseTableFilter()">
+									<i class="fa clear"></i>
+								</button>
+								<button type="button"
+									class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+									title="No Filters">
+									<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				
+         <div class="clearfix"></div>
+             <div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+		<div th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>        
+			<div class="clearfix"></div>
+				
+					<div class="table-responsive mt-2 w-60" id="dataSpan">
+						<table class="table table-bordered table-striped mb-1" id="table">
+							<thead>
+								<tr class="text-center">
+									<th class="th-action">Action</th>
+									<th>Sr. No.</th>
+
+									<th class="header">
+										<div class="table-head-inner">
+											<div class="table-heading">Table / View Name</div>
+											<div class="sort-icon">
+												<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+											</div>
+										</div>
+									</th>
+									<th class="header">
+										<div class="table-head-inner">
+											<div class="table-heading">Project Name</div>
+											<div class="sort-icon">
+												<i class="fa fa-sort-desc" aria-hidden="true"></i> <i
+													class="fa fa-sort-asc" aria-hidden="true"></i>
+											</div>
+										</div>
+									</th>
+									<th class="header">
+										<div class="table-head-inner">
+											<div class="table-heading">Object Type</div>
+											<div class="sort-icon">
+												<i class="fa fa-sort-desc" aria-hidden="true"></i> <i
+													class="fa fa-sort-asc" aria-hidden="true"></i>
+											</div>
+										</div>
+									</th>
+
+
+									<th class="header">
+										<div class="table-head-inner">
+											<div class="table-heading">Remark</div>
+											<div class="sort-icon">
+												<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+											</div>
+										</div>
+									</th>
+
+									<th class="header">
+										<div class="table-head-inner">
+											<div class="table-heading">Lastupdate</div>
+											<div class="sort-icon">
+												<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+											</div>
+										</div>
+									</th>
+								</tr>
+							</thead>
+							
+						</table>
+					</div>
+				</div>
+				<div class="action-section bg-white text-center fixed-bottom"
+					id="actiondiv">
+					<button type="button" class="action-btn action-btn--edit mr-2"
+						id="editBtn" onclick="editDatabaseTable();"
+						style="display: inline-block;">
+						<i class="fa fa-pencil"></i>Edit
+					</button>
+
+
+				</div>
+			</div>
+
+	<script type="text/javascript"
+		src="./static/js/databaseMgmt/databaseMgmt.js"></script>
+	<script type="text/javascript">
+		document.addEventListener('keypress', function(e) {
+			if (e.keyCode === 13 || e.which === 13) {
+				e.preventDefault();
+				return false;
+			}
+
+		});
+	</script>
+	<script type="text/javascript">
+		loadDataUsingPaginator('databaseMainTable');
+	</script>
+	
+</th:block>

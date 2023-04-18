@@ -1,0 +1,110 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link />
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+			<link href="./static/stylesheets/dashboard/dashboard.css"
+		rel="stylesheet" />
+	<link href="./static/stylesheets/dashboard/dashboard-new.css"
+		rel="stylesheet" />
+	<div class="right-section">
+
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"
+					onclick="window.location.href='./AppAuditDiscription'"><p>Application
+							Audit Description</p> </a></li>
+				<li class="nav-item mr-5"><a class="nav-link"
+					data-toggle="pill" href="#"
+					onclick="window.location.href='./appAuditDashboard'"><p>Application
+							Audit Dashboard</p> </a></li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="tab-content form-wrapper px-4 py-4 ">
+	
+				<div class="bg-white"></div>
+
+
+					<div class="align-self-center justify-content-center align-items-center mt-4">
+					<div class="container-fluid row">
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
+					<div class="card " style="border:none;">
+					<div class="card-body">
+
+					<div class="align-self-center justify-content-center align-items-center">
+
+
+						<h4 style="color:#4E8DFF;">VAPT Security Audit Services</h4>
+
+						<p style="font-size:15px;word-space:5px; letter-spacing: 1px;line-height: 2;color:#656565;">VAPT Service is the combination of two different Security
+
+							Services one is Vulnerability Assessment (VA) & Penetration
+							Testing (PT). <br>The tests have different powers and are often
+							shared to achieve a more complete vulnerability analysis. Both
+							Services have their own area for securing your network &
+							application.</p>
+					</div>
+					</div>
+					</div>
+					<div class="col-md-2"></div>
+					</div>
+
+					</div>
+
+					</div>
+
+					
+					<div class="clearfix"></div>
+					<div class="clearfix"></div>
+					<div class="clearfix"></div>
+
+						<div class="align-self-center justify-content-center align-items-center mt-3 mb-3">
+
+
+				<div class="container-fluid row">
+
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
+					<div class="card" style="border:none;">
+					<div class="card-body">
+							<h3 style="color:#4E8DFF;">Benefits of Vulnerability Assessment and Penetration
+							Testing (VAPT)</h3>
+
+						<p style="font-size:15px;word-space:5px; letter-spacing: 1px;line-height: 2;color:#656565;">Vulnerability Assessment and Penetration Testing (VAPT)
+							provides enterprises with a more comprehensive application
+							evaluation than any single test alone. <br> Using the Vulnerability
+							Assessment and Penetration Testing (VAPT) approach gives an
+							organization a more detailed view of the threats facing its
+							applications, enabling the business to better protect its systems
+							and data from malicious attacks. <br> Vulnerabilities can be found in
+							applications from third-party vendors and internally made
+							software, but most of these flaws are easily fixed once found. <br>
+							Using a VAPT provider enables IT security teams to focus on
+							mitigating critical vulnerabilities while the VAPT provider
+							continues to discover and classify vulnerabilities.</p>
+								</div>
+					</div>
+					</div>
+					<div class="col-md-2"></div>
+					</div>
+						</div>
+
+
+		</div>
+	</div>
+
+	<script type="text/javascript" src="./static/js/appAudit/appAudit.js"></script>
+
+	<script>
+		loadDataUsingPaginator('AuditDashboard');
+		onLoadFunction();
+	</script>
+
+
+</th:block>

@@ -1,0 +1,145 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<div class="right-section">
+		<div class="container-fluid mt-3">
+			<div class="page-section">
+				<div class="tab-section col-md-12 my-1">
+					<ul class="nav nav-pills">
+						<li class="nav-item mr-5"><a class="nav-link " data-toggle="pill" href="#browse"><p>Challan Browse</p> </a></li>
+						<li class="nav-item mr-5"><a class="nav-link active" data-toggle="pill" href="tdsChallanEntry"><p>Challan Entry</p></a></li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="tab-content px-4 py-4">
+					<div id="entry" class="tab-pane show in active">
+						<div class="container-fluid pt-2">
+							<div class="row form-group">
+								<div class="col-lg-11 text-center">
+									<div class="custom-control custom-checkbox custom-control-inline">
+										<input type="checkbox" name="" class="custom-control-input" id="nill_challan_flag" onclick=""> <label class="custom-control-label" for="nill_challan_flag">Nill Challan</label>
+									</div>
+									<div class="custom-control custom-checkbox custom-control-inline">
+										<input type="checkbox" name="" id="book_entry_flag" class="custom-control-input"> <label class="custom-control-label" for="book_entry_flag">Book Entry</label>
+									</div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-4 col-xl-4  text-right">
+									<label class="control-label"> BSR Code<span class="text-danger font-weight-bold ml-1">*</span>
+									</label>
+								</div>
+								<div class="col-lg-7 col-xl-4">
+									<input type="number" class="form-control" placeholder="Enter BSR Code">
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-4 col-xl-4 text-right">
+									<label class="control-label"> Challan Date <span class="text-danger font-weight-bold ml-1">*</span>
+									</label>
+								</div>
+								<div class="col-lg-7 col-xl-4">
+									<div class="input-group">
+										<input type="number" class="form-control" placeholder="Enter Challan Date(dd-mm-yy)">
+										<div class="input-group-append">
+											<button type="button" class="btn btn-primary btn-sm addon-btn" id="calenderBtn" onmouseover="openCalendar('l_challan_date','calendarIcon');">
+												<i class="fa fa-calendar" id="calendarIcon"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-4 col-xl-4 text-right">
+									<label class="control-label"> DDO/Challan Serial No.<span class="text-danger font-weight-bold ml-1">*</span>
+									</label>
+								</div>
+								<div class="col-lg-7 col-xl-4">
+									<input type="text" name="" maxlength="5" value="" id="" class="form-control" placeholder=" Enter Challan Serial Number">
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-4 col-xl-4 text-right">
+									<label class="control-label"> Challan Amount<span class="text-danger font-weight-bold ml-1">*</span>
+									</label>
+								</div>
+								<div class="col-lg-7 col-xl-4">
+									<input type="text" class="form-control" placeholder=" Enter Challan Amount">
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-4 col-xl-4 text-right">
+									<label class="control-label"> TDS Section </label>
+								</div>
+								<div class="col-lg-7 col-xl-4">
+									<select name="objChallan.tds_code" class="form-control" placeholder="Section">
+										<option value="">--Select Section--</option>
+
+
+
+									</select>
+
+
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-4 col-xl-4 text-right">
+									<label class="control-label"> Interest On Late Payment </label>
+								</div>
+								<div class="col-lg-7 col-xl-4">
+									<input type="text" name="" value="" id="" class="form-control" placeholder="Enter Interest Late Filing Fee">
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-4 col-xl-4 text-right">
+									<label class="control-label"> Late Payment Fee </label>
+								</div>
+								<div class="col-lg-7 col-xl-4">
+									<input type="text" class="form-control" placeholder="Enter Late Payment Fee">
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-lg-4 col-xl-4 text-right">
+									<label class="control-label"> Minor Head <span id="minorheadspanid" class="text-danger font-weight-bold ml-1">*</span>
+									</label>
+								</div>
+								<div class="col-lg-7 col-xl-4">
+									<select class="form-control">
+										<option value="200">Normal Tax</option>
+										<option value="400">Assessment Tax</option>
+
+
+									</select>
+
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="button-section col-md-12 my-1 text-center">
+
+
+									<button type="button" id="saveContinue" class="form-btn" onclick="">
+										<i class="fa save" aria-hidden="true"></i>Save &amp; Continue
+									</button>
+									<button type="button" id="saveexit" class="form-btn" onclick="">
+										<i class="fa save" aria-hidden="true"></i>Save &amp; Exit
+									</button>
+
+									<a href=""><button type="button" class="form-btn">
+											<i class="fa cancel" aria-hidden="true"></i>Cancel
+										</button></a>
+
+
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</th:block>
+</html>

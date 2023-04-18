@@ -1,0 +1,100 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="sidebar">
+
+	<div class="text-center logo-container  px-2">
+		<img src="./static/images/taxcpcAdmin-whitelogo.png"
+			class="img-fluid allahabad_logo rounded" id="session_entity_logo">
+	</div>
+	<div class="left-sidebar" id="leftBar">
+
+		<div class="text-center powered-by position-fixed">
+			<p class="text-white mb-0" style="font-size: 14px;">
+				Powered By : <img src="./static/images/login/lighthouse-logo.png">
+			</p>
+		</div>
+		
+		<ul class="nav nav-pills flex-column flex-nowrap" id="nav_menus"
+			th:with="activeTab=${session.ACTIVE_TAB}">
+			
+			<li title="Import Dashboard"
+				th:class="${activeTab == null || activeTab == 'dashboard' ? 'active' : 'inactive' }"><a
+				th:href="${session.USER_ROLE.assigned_dashboard !=null ? session.USER_ROLE.assigned_dashboard :'#'}"><i class="fa dashboard" aria-hidden="true"></i>Dashboard</a></li>
+
+			<!-- <th:block th:if="${session.ASSIGNED_MENU != null}"
+				th:each="menuList : ${session.ASSIGNED_MENU}">
+				<li
+					th:class="${activeTab != null && activeTab.equals(menuList.menu_code) ? 'active' : ''}"
+					th:attr="onclick=|setActiveTab('${menuList.menu_code}')|"><a
+					th:href="${menuList.menu_url !=null ? menuList.menu_url :'#'}"><i
+						class="fa fa-file-text mr-2" aria-hidden="true"></i><span
+						th:text="${menuList.menu_name}"></span> </a></li>
+			</th:block> -->
+
+			<th:block th:if="${session.ASSIGNED_MENU != null} "
+				th:each="menuList,index_count : ${session.ASSIGNED_MENU}" >
+				
+				<li 
+				th:if="${menuList.parent_code == null}"
+					th:class="${activeTab != null && activeTab.equals(menuList.menu_code) ? 'active hasChild ' : 'hasChild'} "
+					th:value="${activeTab != null && activeTab.equals(menuList.menu_code) ? 'active' : 'inactive'}" 
+					th:attr="onclick=${menuList.parent_code == null && menuList.menu_url != null ? 'setActiveTab('''+menuList.menu_code+''','''')' : null}"
+					th:title="${menuList.menu_name}"   data-toggle="collapse"
+	                th:data-target="'#collapseExample'+${index_count.count}">
+					<a th:href="${menuList.menu_url !=null ? menuList.menu_url :'#'}"><i class="fa fa-caret-square-o-right" aria-hidden="true"></i>
+					<span th:text="${menuList.menu_name}"></span><i
+						th:if="${menuList.parent_code == null && menuList.menu_url == null}" class="fa fa-chevron-down hasChild-icon ml-2" aria-hidden="true" ></i></a>
+					<ul th:with="activeSubTab=${session.ACTIVE_SUB_TAB}" 
+						th:if="${menuList.parent_code == null}"
+						th:class="${activeSubTab != null && activeTab.equals(menuList.menu_code) ? 'collapse collapseExample show' : 'collapse collapseExample'}"
+						th:id="'collapseExample'+${index_count.count}">
+						<th:block th:each="subMenuList ,index: ${session.ASSIGNED_MENU}"
+							th:if="${subMenuList.parent_code != null && subMenuList.parent_code == menuList.menu_code}">
+							
+							<li th:title="${subMenuList.menu_name}"
+								th:class="${activeSubTab != null && activeSubTab.equals(subMenuList.menu_code) ? 'active' : ''}"><a
+								th:href="${subMenuList.menu_url !=null ? subMenuList.menu_url :'#'}" 
+								th:attr="onclick=|setActiveTab('${menuList.menu_code}','${subMenuList.menu_code}')|"><i class="fa fa-long-arrow-right mr-2" aria-hidden="true"></i><span th:text="${subMenuList.menu_name}"></span></a></li>
+						  
+						   </th:block>
+					</ul>
+				</li>
+			</th:block>
+
+			<!-- <li title="BGL Reconciliation" class="hasChild" data-toggle="collapse" data-target="#collapseExample2"><a href="#"><i
+                                     class="fa fa-rupee mr-2" aria-hidden="true"></i>Item 1<i class="fa fa-chevron-down hasChild-icon ml-2"
+                                     aria-hidden="true"></i></a>
+                     <ul class="collapse collapseExample" id="collapseExample2">
+                             <li title="BGL Balances"><a href="">Sub Item 1</a></li>
+                             <li title="BGL Reports"><a href="">Sub Item 2</a></li>
+                     </ul>
+             </li>  -->
+			
+
+		</ul>
+
+		<!-- <div class="position-absolute sessionId-section w-100 text-right p-1">
+			<p class="mb-1">
+				Session Id : <span>12677</span> | <span>12755</span>
+			</p>
+		</div> -->
+		
+		
+	</div>
+
+	<script type="text/javascript">
+		/* var h = window.innerHeight;
+
+		var sidebarHeight = h - 135 + "px"
+		document.getElementById("nav_menus").style.maxHeight = sidebarHeight; */
+		
+		function setActiveTab(menu_code,submenu_code){
+			var url = "./setActiveTabInSession?menu_code="+menu_code+"&submenu_code="+submenu_code;
+			ajaxPostUrl(url);
+		}
+		
+</script> 
+
+	
+</div>
+
+</html>

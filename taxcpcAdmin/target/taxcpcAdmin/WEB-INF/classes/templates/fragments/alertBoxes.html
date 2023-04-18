@@ -1,0 +1,69 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="alertBoxes">
+
+	<!-- 	Change assessment confirm modal -->
+	<div class=" alert  conformation-alert" id="dialog-confirm_change_assessment" title="Confirmation Box" style="display: none;">
+		<div class="modal-header position-relative d-flex justify-content-center">
+			<i class="fa fa-question-circle" aria-hidden="true"></i>
+		</div>
+		<p style="font-size: 15px;">Are you sure you want to change the assessment ?</p>
+	</div>
+
+	<!-- 	Global confirm message modal -->
+	<div class="modal alert conformation-alert fade" id="confirmAlert" tabindex="-1" role="dialog" aria-labelledby="confirmAlert" aria-modal="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+		<div class="modal-content">
+		<div class="modal-header position-relative d-flex justify-content-center">
+			<i class="fa fa-question-circle" aria-hidden="true"></i>
+		</div>
+		<div class="modal-body py-5 text-center">
+		<p style="font-size: 15px;" id="globalConfirmMsg">Are you sure..?</p>
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<button type="button" class="btn btn-primary" id="confirmOkBtn">Ok</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
+			</div>
+			<!-- <div class="col-md-5 pl-0">
+				<button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
+			</div> -->
+		</div>
+		</div>
+		</div>
+		</div>
+	</div>
+
+	<!-- Error modal -->
+	<div class="modal alert danger-alert fade" id="dangerAlert" tabindex="-1" role="dialog" aria-labelledby="dangerAlert" aria-modal="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header position-relative d-flex justify-content-center">
+					<i class="fa fa-exclamation-triangle mr-2" aria-hidden="true"></i>
+
+				</div>
+				<div class="modal-body py-5 text-center">
+					<h4 id="errorAlertMsg">Please Enter a Valid Page Number to Jump</h4>
+					<button id="errorBtn" type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close" onclick="">OK</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!--Success modal-->
+	<div class="modal alert success-alert fade" id="successAlert" tabindex="-1" role="dialog" aria-labelledby="successAlert" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header position-relative d-flex justify-content-center">
+					<i class="fa fa-check-circle-o" aria-hidden="true"></i>
+				</div>
+				<div class="modal-body py-5 text-center">
+					<h4 id="successAlertMsg">Data Save Successfully</h4>
+					<button id="successBtn" type="button" class="btn btn-success" data-dismiss="modal" aria-label="Close">OK</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

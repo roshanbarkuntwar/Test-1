@@ -1,0 +1,268 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+	
+<div  th:fragment="ajaxAppList">
+<div class="divScroll">
+<input type="hidden" id="viewText" name="viewText" th:value="${mode}" />
+ 
+  <table class="table"  id="table">
+						<thead>
+					     <tr class="text-center">
+							<th class="th-action">Action</th>
+                                <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Sr. No</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+									
+                               <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Entity Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Application Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Application Type</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Server IP</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+							   <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Application server IP</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Application Server Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+							
+								<!-- <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Jar Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Branch Access Url</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Local Application Url</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th> -->
+								
+						
+								
+							</tr>
+
+						</thead>
+						
+						<tbody >
+						
+						<input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}">
+				   <input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				  <input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				   <input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}">
+				 <tr   th:if="${appGrid!= null && !appGrid.isEmpty()}"
+								th:each="dataGrid,index_count : ${appGrid}"
+								th:id="'tr-'+${index_count.count}+'-'+${dataGrid.app_code}">
+								<input type="hidden" th:id="${'portno1-'+index_count.count}"th:value="${dataGrid.port1}">
+								<input type="hidden" th:id="${'portno2-'+index_count.count}"th:value="${dataGrid.port2}">
+				
+								<td class="td-action text-center">
+									<div class="custom-control custom-checkbox action-check checkbox-mt">
+										<input  type="checkbox"
+												class="custom-control-input toggle-action-section"
+												name="actionCheckbox"
+												th:id="'action~'+${index_count.count}+'~'+${dataGrid.app_code}+'~'+${mode}"
+												onclick="openActionDiv(this.id);"> 
+											
+										<label
+											class="custom-control-label"
+											th:for="'action~'+${index_count.count}+'~'+${dataGrid.app_code}+'~'+${mode}">
+										</label>
+									</div>
+								</td>
+
+				<td th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10"  class="text-center"></td>
+							    <td class="text-left">
+							    <span th:each="user : ${entityNameList.entrySet()}"
+							      th:if="${user.key} == ${dataGrid.entity_code}"
+										th:text="${user.value}"> </span>
+							    </td>
+							    
+							    <td class="text-left">
+							    <span th:each="user : ${projectList.entrySet()}"
+							      th:if="${user.key} == ${dataGrid.project_code}"
+										th:text="${user.value}"> </span>
+							    </td>
+							      <td class="text-left">
+							    <span th:each="user : ${applicationList.entrySet()}"
+							      th:if="${user.key} == ${dataGrid.application_type}"
+										th:text="${user.value}"> </span>
+							    </td>
+							   	<td th:text="${dataGrid.server_ip}" class="text-left"></td>
+							   	<td th:text="${dataGrid.app_server_ip}" class="text-left"></td>
+							   
+							<!-- <td class="text-left">
+							    <span th:each="user : ${appServerIP.entrySet()}"
+							      th:if="${user.key} == ${dataGrid.app_server_ip}"
+										th:text="${user.value}"> </span>
+							    </td>   -->
+							     <td class="text-left">
+							    <span th:each="user : ${appServerName.entrySet()}"
+							      th:if="${user.key} == ${dataGrid.app_server_name}"
+										th:text="${user.value}"> </span>
+							    </td>
+							    
+							   <!--  <td th:text="${dataGrid.jar_name}" class="text-left"></td>
+							    <td th:text="${dataGrid.local_app_url}" class="text-left"></td>
+							    <td th:text="${dataGrid.public_app_url}" class="text-left"></td> -->
+							    
+								
+ 							</tr>
+ 
+
+                 <tr th:unless="${appGrid != null && !appGrid.isEmpty()}">
+				<td colspan="9" class="text-center">No Record Found</td>
+			</tr> 
+
+
+						</tbody>
+						
+ 
+						
+					</table>
+					</div>
+			</div>
+			
+			
+	 	   <form action="">
+			<div class="tab-content form-wrapper px-6 py-6" id="dataSpan" >
+		    <div class="row pt-6" th:fragment="ajaxAppListCard">
+			<input type="hidden" id="viewCard" name="viewCard" th:value="${mode}" />
+			 <input type="hidden" id="totalrecordsgrid"
+					th:value="${dataGridDTO.paginator.totalRecords}">
+				   <input type="hidden" id="totalPagesgrid"
+					th:value="${dataGridDTO.paginator.totalPages}">
+				  <input type="hidden" id="pageNumbergrid"
+					th:value="${dataGridDTO.paginator.pageNumber}">
+				   <input type="hidden" id="recordsPerPageSelectgrid"
+					th:value="${dataGridDTO.paginator.recordsPerPage}"> 
+			
+		 <div class="col-md-3"  th:if="${appGrid!= null && !appGrid.isEmpty()}" th:each="item:${appGrid}">
+		
+			 <div class="media header p-3 kpi bg-white">
+					<div class="position-relative mx-3 d-flex align-self-center justify-content-center align-items-center">
+				    <img th:if="${(item.project_code== '1422')}" th:src=" './static/images/v2.png'"   title="TaxcpcV2" style="width: 72px;height:60px">
+				    <img th:if="${(item.project_code == '1549')}" th:src=" './static/images/V3.png'"   title="TaxcpcV3" style="height: 60px; width: 60px">
+					<img th:if="${(item.project_code == '1548') }" th:src=" './static/images/admin.png'"  title="TaxcpcAdmin"  style="height: 60px; width: 60px">
+					<img th:if="${(item.project_code == '1443')}" th:src=" './static/images/3tb.png'"  title="Taxcpc-3TB"  style="height: 60px; width: 60px"> 
+					<img th:if="${(item.project_code == '1502')}" th:src=" './static/images/admin.png'"  title="TaxcpcGam"  style="height: 60px; width: 60px">
+				   </div>
+			
+					<div class="media-body text-muted">
+										<b th:each="user : ${projectList.entrySet()}" th:if="${user.key} == ${item.project_code}" th:text="${user.value}"  title="Project Name"></b>
+										<h6 th:each="user : ${entityNameList.entrySet()}"  th:if="${user.key} == ${item.entity_code}" th:text="${user.value}" title="Entity Name"></h6>
+										<h6  th:text="${item.server_ip}" title="Server IP"></h6>
+										<h6 th:each="user : ${applicationList.entrySet()}"  th:if="${user.key} == ${item.application_type}" th:text="${user.value}" title="Application Type"></h6>
+					</div>	
+						<div class="text-right">
+						
+						<span th:attr="onclick=|viewAppList('${item.app_code}')|"><i class="fa fa-eye view-button"
+							style="background-color: #4dd5e8; color: #fff; padding: 2px 2px; border-radius: 5px"
+							data-toggle="modal" data-target="#myModal" title="View"></i>
+						</span> 
+						<span th:attr="onclick=|editAppList('${item.app_code}')|"
+							title="Edit"><i class="fa fa-pencil edit-button "
+							style="background-color: #14de9b; color: #fff; padding: 2px 2px; border-radius: 5px"></i>
+						</span>
+						 <span class="mr-2"
+								th:attr="onclick=|deleteAppList('${item.app_code}')|"
+								>
+								<i class="fa fa-trash delete-button" title="Delete" style="background-color:  red; 
+								color: #fff; padding: 2px 2px; border-radius: 5px; "></i></span>
+
+					</div>
+					
+					 
+                  </div>
+				</div>
+
+			
+			<div class="row" >
+			     <div class="col-md-4"></div>
+				<div class="col-md-12" style="margin-left: 650px;">
+				<div class="input-group">
+				<div  th:unless="${appGrid != null && ! appGrid.isEmpty()}">
+			    <div class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"> 
+				<img src="static/images/global/empty-box.png"> No Records Found</div>
+			     </div>	
+				</div>
+				</div>
+				<div class="col-md-4"></div>
+				</div> 
+
+
+		</div>
+</div>
+	</div>
+			
+	</form>	
+	
+
+
+</html>

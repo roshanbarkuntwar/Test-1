@@ -1,0 +1,216 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+
+				<li
+					th:if="${#session.getAttribute('LOGIN_USER').add_right.equalsIgnoreCase('1')}"
+					class="nav-item mr-5"
+					onclick="window.location.href='./defaultentityDetail'"><a class="nav-link"
+					data-toggle="pill" href="#"><p>Default Entity Dashboard</p> </a></li>
+				<li
+					th:if="${#session.getAttribute('LOGIN_USER').add_right.equalsIgnoreCase('1')}"
+					class="nav-item"
+					onclick="window.location.href='./defaultEntityEntry'"><a class="nav-link active" data-toggle="pill" href="#"><p>Default
+							Entity Creation</p> </a></li>
+
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<input type="hidden" id="action" name="action" th:value="${action}" />
+
+
+		<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'edit' ? 'Edit' : 'Add'}">Add</th:block> Module</h4></div>  -->
+
+		<form id="defaultEntityEntry" th:object="${clientEntity}"
+			autocomplete="off">
+			<!-- <input type="hidden" class="form-control" id="client_code_edit"
+				name="client_code_edit"
+				th:value="${clientEntity != null ? clientEntity.client_code : ''}" /> -->
+			<div class="tab-content form-wrapper px-4 py-4">
+
+                <div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Entity Code <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="entity_code"
+							name="entity_code"
+							th:value="${clientEntity != null ? clientEntity.entity_code : ''}" placeholder="B0"/>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Client Code <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="client_code"
+							name="client_code"
+							th:value="${clientEntity != null ? clientEntity.client_code : ''}" placeholder="Client Code"/>
+					</div>
+				</div>
+				
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Client Name <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="client_name"
+							name="client_name"
+							th:value="${clientEntity != null ? clientEntity.client_name : ''}" placeholder="Client Name"/>
+					</div>
+				</div>
+				
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Parent Code <span
+							class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="parent_code"
+							name="parent_code"
+							th:value="${clientEntity != null ? clientEntity.parent_code : ''}" placeholder="Parent Code"/>
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Number Of Transaction <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="no_of_transaction" name="no_of_transaction"
+							th:value="${clientEntity != null ? clientEntity.no_of_transaction : ''}" placeholder="Transaction Count"/>
+					</div>
+
+				</div>
+
+				<!-- <div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Approved By <span
+							class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="login_id" name="login_id"
+							th:value="${clientEntity != null ? clientEntity.login_id : ''}" placeholder="Approved By"/>
+					</div>
+				</div> -->
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Initiate Date <span
+							class="text-danger font-weight-bold ml-1">*</span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<!-- <input type="text" class="form-control" id="initiate_date" name="initiate_date"
+							th:value="${clientEntity != null ? clientEntity.initiate_date : ''}" /> -->
+						
+									<div class="input-group">
+	                    	 <input type="text" name="initiate_date" id="initiate_date" class="form-control" placeholder="Approved Date" value="" onmouseover="openCalendarDefault('initiate_date', 'completionDateCal');" oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');" th:value="${clientEntity != null ? clientEntity.initiate_date : ''}"> 
+							<div class="input-group-append">
+                                <button type="button" class="btn btn-primary addon-btn" id="completionDateBtn" onmouseover="openCalendarDefault('initiate_date', 'completionDateCal');"><i class="fa fa-calendar" id="completionDateCal"></i>
+                               </button>
+                            </div> 
+	                    	</div>
+					</div>
+                          
+			
+
+				</div>
+				
+				<div th:if="${action != null && action == 'edit'}">
+						<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Closed Date <span
+							class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<!-- <input type="text" class="form-control" id="closed_date"
+							name="closed_date"
+							th:value="${clientEntity != null ? clientEntity.closed_date : ''}" placeholder="Closed Date"/> -->
+							
+							<div class="input-group">
+	                    	 <input type="text" name="closed_date" id="closed_date" class="form-control" placeholder="Closed Date" value="" onmouseover="openCalendarDefault('closed_date', 'completionDateCalNew');" oninput="this.value = this.value.replace(/[^0-9\-]+/g, '').replace(/(\..*)\./g, '$1');" th:value="${clientEntity != null ? clientEntity.closed_date : ''}"> 
+							<div class="input-group-append">
+                                <button type="button" class="btn btn-primary addon-btn" id="completionDateCalNew1" onmouseover="openCalendarDefault('closed_date', 'completionDateCalNew');"><i class="fa fa-calendar" id="completionDateCalNew"></i>
+                               </button>
+                            </div> 
+	                    	</div>
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Closed Remark <span
+							class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="closed_remark" name="closed_remark"
+							th:value="${clientEntity != null ? clientEntity.closed_remark : ''}" placeholder="Closed Remark"/>
+					</div>
+
+				</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-4 offset-md-4">
+						<div class="form-group  text-center">
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'save'}"
+								onclick="saveDefaultEntry();">
+								<i class="fa save" aria-hidden="true"></i>Save & Continue
+							</button>
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'save'}"
+								onclick="saveDefaultEntryDetail();">
+								<i class="fa fa-floppy-o" aria-hidden="true"></i><span>Save
+									& Exit</span>
+							</button>
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'edit'}"
+								onclick="saveDefaultEntry();">
+								<i class="fa save" aria-hidden="true"></i>Update & Continue
+							</button>
+							<button type="button" class="form-btn"
+								th:if="${action != null && action == 'edit'}"
+								onclick="saveDefaultEntryDetail();">
+								<i class="fa fa-floppy-o" aria-hidden="true"></i><span>Update
+									& Exit</span>
+							</button>
+							<button type="button" class="form-btn"
+								onclick="backToDefaultEntryDashboard();">
+								<i class="fa cancel" aria-hidden="true"></i>Cancel
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+	</div>
+	<script type="text/javascript"
+		src="./static/js/entityForm/entityMust.js"></script>
+		
+		<script type="text/javascript">
+		openCalendarDefault('closed_date', 'completionDateCalNew');
+		
+		openCalendarOnLoad('initiate_date', 'completionDateCal');
+		
+		onLoadFunctionDefault();
+		</script>
+</th:block>

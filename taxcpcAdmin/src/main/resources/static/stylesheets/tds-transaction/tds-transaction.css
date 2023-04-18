@@ -1,0 +1,121 @@
+/* line 1, ../../sass/tds-transaction/tds-transaction.scss */
+.clear-btn {
+  position: absolute;
+  right: -12px;
+  background: #607d8b;
+  color: #fff;
+  height: 25px;
+  padding: 1px;
+  font-size: 16px;
+  text-align: center;
+  width: 25px;
+  border: none;
+  border-radius: 5px;
+}
+
+/* line 14, ../../sass/tds-transaction/tds-transaction.scss */
+.process-rec {
+  width: 120px;
+  max-width: 120px;
+  min-width: 120px;
+}
+
+/* line 20, ../../sass/tds-transaction/tds-transaction.scss */
+.process-name {
+  width: 220px;
+  max-width: 220px;
+  min-width: 220px;
+}
+
+/* line 26, ../../sass/tds-transaction/tds-transaction.scss */
+.skip,
+.process-code {
+  width: 100px;
+  max-width: 100px;
+  min-width: 100px;
+}
+
+/* line 33, ../../sass/tds-transaction/tds-transaction.scss */
+.time {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+}
+
+/* line 39, ../../sass/tds-transaction/tds-transaction.scss */
+.error-remark {
+  text-align: right;
+  border-left: 0 !important;
+  font-weight: bold;
+}
+
+/* line 45, ../../sass/tds-transaction/tds-transaction.scss */
+.bold {
+  font-weight: bold !important;
+}
+
+/* line 49, ../../sass/tds-transaction/tds-transaction.scss */
+.w-125 {
+  width: 125px !important;
+}
+
+/* line 53, ../../sass/tds-transaction/tds-transaction.scss */
+.import-btn {
+  background: #4e8dff14;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+  border: 1px dashed #a5c5ff;
+}
+
+/* line 64, ../../sass/tds-transaction/tds-transaction.scss */
+.importTable {
+  max-height: 250px;
+}
+
+/* line 67, ../../sass/tds-transaction/tds-transaction.scss */
+.importTable th {
+  position: sticky;
+  top: -1px;
+  z-index: 1;
+  background: #4e8dff;
+}
+
+@media only screen and (max-width: 1920px) and (min-width: 1680px) {
+  /* line 74, ../../sass/tds-transaction/tds-transaction.scss */
+  .adj-col {
+    margin-left: 50px;
+  }
+
+  /* line 77, ../../sass/tds-transaction/tds-transaction.scss */
+  .importTable {
+    max-height: 580px;
+  }
+}
+@media only screen and (max-width: 1680px) and (min-width: 1440px) {
+  /* line 82, ../../sass/tds-transaction/tds-transaction.scss */
+  .adj-col {
+    margin-left: 38px;
+  }
+
+  /* line 85, ../../sass/tds-transaction/tds-transaction.scss */
+  .importTable {
+    max-height: 380px;
+  }
+}
+@media only screen and (max-width: 1440px) and (min-width: 1300px) {
+  /* line 90, ../../sass/tds-transaction/tds-transaction.scss */
+  .adj-col {
+    margin-left: 25px;
+  }
+}
+@media only screen and (max-width: 1300px) and (min-width: 1000px) {
+  /* line 95, ../../sass/tds-transaction/tds-transaction.scss */
+  .adj-col {
+    margin-left: 18px;
+  }
+}

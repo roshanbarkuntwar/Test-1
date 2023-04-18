@@ -1,0 +1,137 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+
+<link href="./static/stylesheets/importantUrl/importantUrl.css"
+	rel="stylesheet" />
+<link href="./static/stylesheets/dashboard/dashboard.css"
+	rel="stylesheet" />
+<link href="./static/stylesheets/dashboard/dashboard-new.css"
+	rel="stylesheet" />
+
+<div th:fragment="ajaxUserGrid">
+	<table class="table table-bordered table-striped mb-1" id="table">
+		<thead>
+			<tr class="text-center">
+				<th class="th-action">Action</th>
+				<th>Sr. No.</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Name of Database User / Schema</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc" aria-hidden="true"></i> <i
+								class="fa fa-sort-asc" aria-hidden="true"></i>
+						</div>
+					</div>
+				</th>
+
+
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Type of Database</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Type of Objects</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+
+				<!-- <th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Status</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								 -->
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">LastUpdate</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+
+
+
+				<th class="header">
+					<div class="table-head-inner">
+						<div class="table-heading">Status</div>
+						<div class="sort-icon">
+							<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+						</div>
+					</div>
+				</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<input type="hidden" id="totalrecordsgrid"
+				th:value="${dataGridDTO.paginator.totalRecords}">
+			<input type="hidden" id="totalPagesgrid"
+				th:value="${dataGridDTO.paginator.totalPages}">
+			<input type="hidden" id="pageNumbergrid"
+				th:value="${dataGridDTO.paginator.pageNumber}">
+			<input type="hidden" id="recordsPerPageSelectgrid"
+				th:value="${dataGridDTO.paginator.recordsPerPage}">
+			<tr
+				th:if="${databaseUserGrid != null && !databaseUserGrid.isEmpty()}"
+				th:each="dataGrid,index_count : ${databaseUserGrid}"
+				th:id="${'tr-'+index_count.count}">
+				<td class="td-action text-center">
+					<div
+						class="custom-control custom-checkbox action-check checkbox-mt">
+						<input type="checkbox"
+							class="custom-control-input toggle-action-section "
+							name="actionCheckbox" th:id="'action-'+${index_count.count}"
+							onclick="openActionDiv(this.id);"> <label
+							class="custom-control-label"
+							th:for="'action-'+${index_count.count}"></label>
+					</div>
+				</td>
+				<td
+					th:text="(${dataGridDTO.paginator.pageNumber } * 10 +${index_count.count}) - 10"
+					class="text-center"></td>
+
+				<td th:text="${dataGrid.db_object_name}"></td>
+
+				<td class="text-center" th:text="${dataGrid.type_of_database}"></td>
+				<td class="text-center" th:text="${dataGrid.object_type}"></td>
+
+				<!-- <td th:text="${dataGrid.status}"></td> -->
+
+				<td class="text-center"
+					th:text="${dataGrid.last_ddl_time != null ? #dates.format(dataGrid.last_ddl_time, 'dd-MM-yyyy HH:mm:ss.SS') : ''}"></td>
+
+				<td class="text-center"><span
+					th:class="${dataGrid.status == 'VALID'} ? 'text-success' : 'text-danger'"
+					th:text="${dataGrid.status == 'VALID'} ? 'Active' : 'Inactive'"></span>
+				</td>
+
+				<!-- <td th:text="${dataGrid.remark}"></td> -->
+			</tr>
+
+
+			<tr th:unless="${databaseUserGrid  != null && !databaseUserGrid .isEmpty()}">
+				<td colspan="9"
+					class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"><img
+					src="static/images/global/empty-box.png">No Record Found</td>
+			</tr>
+
+
+		</tbody>
+	</table>
+</div>
+</html>
+<script type="text/javascript"
+	src="./static/js/databaseMgmt/databaseMgmt.js"></script>

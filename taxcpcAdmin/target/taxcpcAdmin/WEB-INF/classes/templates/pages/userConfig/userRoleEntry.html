@@ -1,0 +1,123 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+<link rel="stylesheet" href="./static/css/global/bootstrap-select.css">
+<link rel="stylesheet" href="./static/css/global/bootstrap-multiselect.css">
+
+
+	<div class="right-section">
+		
+			<input type="hidden" id="action" name="action" th:value="${action}"/>
+			<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add</th:block> Role</h4></div> -->
+			<div class="tab-section col-md-12 mt-3">
+		        <ul class="nav nav-pills">
+					<li class="nav-item mr-5" onclick="window.location.href='./roleDetails'"><a class="nav-link " data-toggle="pill" href="#"><p>Role Dashboard</p> </a></li>
+		            <li class="nav-item" ><a class="nav-link active" data-toggle="pill" href="#"><p> <th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add</th:block> Role </p></a></li>
+				</ul>
+			 	<div class="clearfix"></div>
+			</div>
+		 	<div class="clearfix"></div>
+			
+			<form id="userRoleForm" th:object="${roleEntity}" autocomplete="off">            
+            	
+	            <input type="hidden" id="role_code" name="role_code" th:value="${roleEntity != null ? roleEntity.role_code : ''}"/>
+	           
+	            <div class="tab-content px-4 py-4">
+			<div class="tab-pane form-wrapper show in active">
+			<div class="container-fluid pt-2">
+			 <div class="row form-group pt-2">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Role Type Code<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                    <select id="role_type_code" name="role_type_code" class="form-control" >
+								<option value="">--Select--</option>
+							<option th:each="menu : ${roleTypeList.entrySet()}" th:value="${menu.key}" th:text="${menu.value}" th:selected="${roleEntity != null && roleEntity.role_type_code != null && roleEntity.role_type_code.contains(menu.key)}"></option>
+							</select>
+	                    </div>
+	                </div>
+	                <div class="row form-group pt-2">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Role Name<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        <input type="text" class="form-control" id="role_name" name="role_name" th:value="${roleEntity != null ? roleEntity.role_name : ''}" placeholder="Role Name"/>
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Assigned Menu<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        
+							<select id="multiselect" class="form-control" multiple="multiple">
+							<option th:each="menu : ${menulist.entrySet()}" th:value="${menu.key}" th:text="${menu.value}" th:selected="${roleEntity != null && roleEntity.assigned_menu != null && roleEntity.assigned_menu.contains(menu.key)}"></option>
+							</select>
+
+							<input type="hidden" id="assigned_menu" name="assigned_menu" />
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Assigned Dashboard<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+							<select id="assigned_dashboard" name="assigned_dashboard" class="form-control" >
+								<option value="">--Select--</option>
+								<option th:each="dashboard : ${dashboardList}" th:value="${dashboard}" th:text="${dashboard}" th:selected="${roleEntity != null && roleEntity.assigned_dashboard != null && roleEntity.assigned_dashboard.contains(dashboard)}"></option>
+							</select>
+	                    </div>
+	                </div>
+	                <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                            Status<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>
+	                    <div class="col-lg-7 col-xl-4">
+	                        <div class="form-check form-check-inline">
+								<input type="radio" class="form-check-input ml-2" name="role_status" id="role_status" th:value="A" th:checked="${roleEntity != null && 'A'.equals(roleEntity.role_status) ? 'checked' : ''}"/> <label class="form-check-label" for="newscheck1">Active</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input type="radio" class="form-check-input ml-2" name="role_status" id="role_status" th:value="I" th:checked="${roleEntity != null && 'I'.equals(roleEntity.role_status)}"/> <label class="form-check-label" for="newscheck2">Inactive</label>
+							</div>
+	                    </div>
+	                </div>
+	                <div class="row">
+	                    <div class="col-md-4 offset-md-4">
+	                        <div class="form-group  text-center">
+	                            <button type="button" class="form-btn" onclick="saveRole();"><i class="fa fa-floppy-o" aria-hidden="true"></i><span th:text="${action != null && action == 'edit' ? 'Update & Exit' : 'Save & Exit'}">Save & Exit</span></button>
+	                            <button type="button" class="form-btn" th:if="${action != null && action == 'save'}" onclick="window.location.href='./addNewRole'"><i class="fa fa-undo" aria-hidden="true"></i>Reset</button>
+	                            <button type="button" class="form-btn"  onclick="refreshRole();"><i class="fa cancel" aria-hidden="true"></i>Cancel</button>
+	                           	
+	                        </div>               
+	                    </div>
+	                </div>
+	               
+	                </div>
+	            </div>
+	            </div>
+        </form>
+	</div>
+	<script type="text/javascript" src="./static/js/global/bootstrap-multiselect.min.js"></script>
+	<script type="text/javascript" src="./static/js/userConfig/userConfig.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		  	$('#multiselect').multiselect({
+			    buttonWidth : '160px',
+			    includeSelectAllOption : true,
+				nonSelectedText: '--Select Menu--'
+		  	});
+		});
+	</script>
+</th:block>

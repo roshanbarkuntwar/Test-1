@@ -1,0 +1,207 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+
+	<div class="right-section">
+	
+		<div class="tab-section col-md-12 mt-3">
+        <ul class="nav nav-pills">
+        <li class="nav-item mr-5"><a class="nav-link active" data-toggle="pill" href="#"><p>Database Details</p> </a></li>
+		<li onclick="window.location.href='./databaseEntry'"class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p>Database Entry</p></a></li>
+				
+        <!-- <li class="nav-item mr-5" onclick="window.location.href='./database'"><a class="nav-link " data-toggle="pill" href="#"><p>Database User</p> </a></li>
+        <li class="nav-item mr-5" onclick="window.location.href='./databasePacakage'"><a class="nav-link " data-toggle="pill" href="#"><p>Database Package</p> </a></li>
+       <li class="nav-item mr-5"><a class="nav-link active" onclick="window.location.href='./databaseIndex'" data-toggle="pill" href="#"><p>Database Index</p></a></li>
+   <li class="nav-item mr-5" onclick="window.location.href='./databaseOther'"><a class="nav-link " data-toggle="pill" href="#"><p>Other</p> </a></li>
+   --> </ul>
+		 <div class="clearfix"></div>
+		</div>
+				<input type="hidden" id="action" name="action" th:value="${action}" />
+			<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add </th:block> Project</h4></div>  -->
+			<div class="tab-content form-wrapper px-4 py-4">
+			
+			<form id="databaseDetails" th:object="${dataGridDTO}">            
+<!--             	<input type="hidden" class="form-control" id="project_code" name="project_code" th:value="${projectEntity != null ? projectEntity.project_code : ''}">
+ -->	           
+	                      	
+               	<input type="hidden"  th:value="${dataGridDTO.paginator.totalRecords}"name="paginator.totalRecords" id="totalRecords" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.totalPages}" name="paginator.totalPages" id="totalPages" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.recordsPerPage}"name="paginator.recordsPerPage" id="recordsPerPage" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.dataGridAction}"	id="dataGridAction" /> 
+					    <input type="hidden" th:value="${dataGridDTO.paginator.pageNumber}" name="paginator.pageNumber" id="pageNumber" />
+            	<input type="hidden" id="fltrformId" value="databaseDetails">
+				
+				<div class="filter-section my-1 pt-1">
+                    <div class="row sec-bottom">
+                        <div class="col-lg-10 col-xl-11">
+                            <div class="row form-group">
+                                <!-- <div class="col-lg-3">
+                                 <input type="text" name="Name of Database users " id="Name of Database users " class="form-control" title="Name of Database users " placeholder="Name of Database users " value="">
+                                </div>
+                                <div class="col-lg-3">
+                                	<input type="text" name="Password" id="Password" class="form-control" title="Password" placeholder="Password" value="">
+                                </div> -->
+                                <div class="col-lg-3">
+                                <select class="form-control" name="type_of_db" id="type_of_db" 
+											title="type_of_db" placeholder="Database Type">
+											<option value="">--Select Database Type--</option>
+											<option value="FGS">FGS</option>
+											<option value="LHS">LHS</option>
+										</select>
+                                   </div>
+                                <div class="col-lg-3">
+                                    <input type="text" name="db_ip" value="" id="db_ip"  onblur="validateIPaddresdatabase(this);" class="form-control" title="db_ip" placeholder="Enter IP Address" onkeydown="return (event.keyCode!=13);">
+                                	
+                                </div>
+                                </div>
+                        </div>
+                        <div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Search" onclick="searchDatabaseFilter()"><i class="fa search"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn" title="Clear" onclick="resetDatabaseFilter()"><i class="fa clear"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn" title="No Filters"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button> 
+                        </div> 
+                    </div>  
+                </div>
+			</form>
+			
+			<div class="clearfix"></div>
+			<div th:replace="fragments/paginator/paginatorTop :: getPaginatorTop"></div>
+			<div
+				th:replace="fragments/paginator/paginatorSettings :: getPaginatorSettings"></div>
+			<div class="clearfix"></div>
+			
+			
+			
+				<div class="table-responsive mt-2 w-60" id="dataSpan">
+					<table class="table table-bordered table-striped mb-1" id="table">
+						<!-- <thead>
+							<tr class="text-center">
+								<th class="th-action">Action</th>
+								<th>Sr. No.</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Database Type</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc" aria-hidden="true"></i> <i
+												class="fa fa-sort-asc" aria-hidden="true"></i>
+										</div>
+									</div>
+								</th>
+								
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">IP Address</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Tag Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Port</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+							
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">SID</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Remark</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Lastupdate</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+							</tr> -->
+						</thead>
+					<!-- 	<tbody>
+							<tr
+								th:if="${databaseDetailGrid != null && !databaseDetailGrid.isEmpty()}"
+								th:each="dataGrid,index_count : ${databaseDetailGrid}"
+								th:id="${'tr-'+index_count.count}">
+								<td class="td-action text-center">
+									<div
+										class="custom-control custom-checkbox action-check checkbox-mt">
+										<input type="checkbox"
+											class="custom-control-input toggle-action-section "
+											name="actionCheckbox"
+											th:id="'action-'+${index_count.count}+'-'+${dataGrid.db_code}"
+											onclick="openActionDiv(this.id);"> <label
+											class="custom-control-label"
+											th:for="'action-'+${index_count.count}+'-'+${dataGrid.db_code}"></label>
+									</div>
+								</td>
+								<td th:text="${index_count.count}" class="text-center"></td>
+								
+								<td class="text-center" th:text="${dataGrid.type_of_db}"></td> 
+								<td class="text-center" th:text="${dataGrid.db_ip}"></td>
+								<td th:text="${dataGrid.tag_name}"></td>
+								<td class="text-center" th:text="${dataGrid.db_port}"></td>
+								<td class="text-center" th:text="${dataGrid.db_sid}"></td>
+								<td th:text="${dataGrid.remark}"></td>
+								<td class="text-center" th:text="${dataGrid.lastupdate != null ? #dates.format(dataGrid.lastupdate, 'dd-MM-yyyy HH:mm:ss.SS') : ''}"></td>
+							</tr>
+							<tr
+								th:unless="${databaseDetailGrid != null && !databaseDetailGrid.isEmpty()}">
+								<td colspan="16" class="text-center">No Record Found</td>
+							</tr>
+						</tbody> -->
+					</table>
+				</div>
+			</div>
+     <div class="action-section bg-white text-center fixed-bottom"
+			id="actiondiv">
+			<button 
+				type="button" class="action-btn action-btn--edit mr-2"
+				id="editBtn" onclick="editDatabaseDetails();" style="display: inline-block;">
+				<i class="fa fa-pencil"></i>Edit
+			</button>
+			
+
+		</div>
+        </div>
+		
+	</div>
+	<script type="text/javascript" src="./static/js/databaseMgmt/databaseMgmt.js"></script>
+	<script type="text/javascript">
+			loadDataUsingPaginator('databaseDetails');
+		</script>
+<script type="text/javascript">
+
+document.addEventListener('keypress', function (e) {
+    if (e.keyCode === 13 || e.which === 13) {
+        e.preventDefault();
+        return false;
+    }
+    
+});
+</script>	
+
+</th:block>

@@ -1,0 +1,147 @@
+/* line 1, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details {
+  border: 1px solid #d9d9d9;
+}
+/* line 3, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details .project-name {
+  background: #fffe03;
+  display: inline-block;
+  position: relative;
+  top: -14px;
+  left: 18px;
+  padding: 5px 15px;
+}
+/* line 10, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details .project-name h5 {
+  margin-bottom: 0;
+}
+/* line 14, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details .project-info {
+  padding: 0 20px;
+  position: relative;
+  top: -7px;
+}
+/* line 18, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details .project-info .float-left {
+  width: 90%;
+}
+/* line 20, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details .project-info .float-left .project-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 60px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0;
+}
+/* line 30, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details .project-info .collapsible {
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  background: #4e8dff;
+  border-radius: 15%;
+  padding-top: 3px;
+  font-size: 15px;
+  color: #fff;
+}
+/* line 42, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details .edit-button {
+  background: linear-gradient(to bottom, #3fecb2, #14de9b);
+  color: #fff;
+  padding: 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* line 49, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details .delete-button {
+  background: linear-gradient(to bottom, #ef4009, #ef4009);
+  color: #fff;
+  padding: 4px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* line 56, ../../sass/projectDictionary/projectDictionary.scss */
+.project-details .view-button {
+  background: linear-gradient(to bottom, #4dd5e8, #00BCD4);
+  color: #fff;
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* line 66, ../../sass/projectDictionary/projectDictionary.scss */
+.attachment-view {
+  border: 1px solid #ccc;
+  display: block;
+  float: left;
+  margin: 0 0 16px 16px;
+  height: 60px;
+  width: 60px;
+  position: relative;
+  overflow: hidden;
+  padding: 10px 6px;
+}
+/* line 68, ../../sass/projectDictionary/projectDictionary.scss */
+.attachment-view .attachment-img {
+  height: 120px;
+  overflow: hidden;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+/* line 73, ../../sass/projectDictionary/projectDictionary.scss */
+.attachment-view .attachment-img:hover img {
+  opacity: 0.2;
+}
+/* line 76, ../../sass/projectDictionary/projectDictionary.scss */
+.attachment-view .attachment-img:hover .download-attachment {
+  display: block !important;
+  position: absolute;
+  top: 40%;
+  left: 40%;
+}
+/* line 81, ../../sass/projectDictionary/projectDictionary.scss */
+.attachment-view .attachment-img:hover .download-attachment i {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+/* line 93, ../../sass/projectDictionary/projectDictionary.scss */
+.attachment-view .attachment-title p {
+  font-size: 14px;
+  font-weight: 700;
+  color: #9f9f9f;
+}
+/* line 97, ../../sass/projectDictionary/projectDictionary.scss */
+.attachment-view .attachment-title p i {
+  font-size: 18px;
+  color: white;
+  background: red;
+  padding: 2px 4px;
+  border-radius: 5px;
+}
+
+/* line 108, ../../sass/projectDictionary/projectDictionary.scss */
+.details-table td.pre-wrap {
+  white-space: pre-wrap;
+}
+/* line 111, ../../sass/projectDictionary/projectDictionary.scss */
+.details-table td.text-bold {
+  font-weight: 700;
+}
+
+/* line 115, ../../sass/projectDictionary/projectDictionary.scss */
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+  content: "Choose File";
+}
+
+/* line 118, ../../sass/projectDictionary/projectDictionary.scss */
+.custom-file-label::after {
+  background-color: #4e8dff;
+  border-left: 1px solid #4e8dff;
+}

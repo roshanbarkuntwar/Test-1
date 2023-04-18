@@ -1,0 +1,587 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+		<link href="./static/stylesheets/main/main.css" rel="stylesheet" />
+     	<link href="./static/stylesheets/dashboard/dashboard.css" rel="stylesheet" />    	
+<div class="right-section">
+
+   
+  
+  <!-- Heading and TAB BOTH  Start-->
+  
+  <div class="page-section heading-and-tab-page px-4">
+    <div class="col-md-12 my-1  main-page-heading">
+        <h4 class="page-title mb-2">Page Heading</h4>
+    </div>
+    <!-- Entry container start -->
+         <div class="tab-section col-md-12 my-1">
+        <ul class="nav nav-pills">
+
+            <li   class="nav-item mr-5"><a class="nav-link active" data-toggle="pill" href="#browse"><p>Entry Container Sample</p> </a></li>
+           
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="clearfix"></div>
+
+
+    <div class="tab-content px-4 py-4">
+        <div id="browse" class="tab-pane fade">
+
+        </div>
+
+        <div id="entry" class="tab-pane show in active">
+            <div class="container-fluid pt-2">
+               <h6>Filter Section</h6>
+            <div class="filter-section">
+                    <div class="row sec-bottom">
+                        <div class="col-lg-10 col-xl-11">
+                            <div class="row form-group">
+                                <div class="col-lg-3">
+
+                                    <input type="text"  value="" id="panno" class="form-control" title="PAN No." placeholder="PAN No.">
+                                </div>
+                                <div class="col-lg-3">
+
+                                    <input type="text"  value="" id="deducteeRefNo" class="form-control" title="Deductee Reference" placeholder="Deductee Reference">
+
+                                </div>
+
+                                <div class="col-lg-3">
+
+                                    <input type="text" name="deducteeFltr.deducteeName" value="" id="deducteeName" class="form-control" title="Deductee Name" placeholder="Deductee Name">
+
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="text" name="deducteeFltr.accountNo" value="" id="accountNo" class="form-control" title="Acc No." placeholder="Acc No.">
+
+                                </div>    
+
+                            </div>
+
+                            <div class="collapse" id="remainingFilter">
+                                <div class="row form-group">
+                                    <div class="col-lg-3">
+                                        <select  class="form-control" title="Verification Status" placeholder="Verification Status">
+    <option value="">---Select---</option>
+    <option value="Y">Verified</option>
+    <option value="N">Not Verified</option>
+    <option value="X">Invalid</option>
+
+
+</select>
+
+
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn  mr-1" onclick="validateFilter();" title="Show"><i class="fa search"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn  mr-1" onclick="lhsResetform('deducteeMgmtFrm', 'submit');" title="Clear"><i class="fa clear"></i></button>
+                            <button type="button" class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn" data-toggle="collapse" data-target="#remainingFilter" title="Extra Filters"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button> 
+                        </div> 
+                    </div>  
+                </div>
+                <hr>
+            
+                 <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label class="control-label">
+                           Form Type<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                       <!-- <input type="text" class="form-control" id="" placeholder="" name=""> -->
+                       <select class="form-control">
+                            <option>--Select--</option>
+                        </select>
+                    </div>
+                     <div class="col-lg-2">
+                        <label class="control-label">
+                          Financial Year<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                       <!-- <input type="text" class="form-control" id="" placeholder="" name=""> -->
+                       <select class="form-control">
+                            <option>--Select--</option>
+                        </select>
+                    </div>
+                      <div class="col-lg-2">
+                        <label class="control-label">
+                        Month<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                       <!-- <input type="text" class="form-control" id="" placeholder="" name=""> -->
+                       <select class="form-control">
+                            <option>--Select--</option>
+                        </select>
+                    </div>
+                </div>
+                <hr class="dashed-border-bottom">
+                 <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label class="control-label">
+                          Branch Code<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                      
+                    </div>
+                     <div class="col-lg-2">
+                        <label class="control-label">
+                         Name Of Deductee<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                      
+                    </div>
+                       <div class="col-lg-2">
+                        <label class="control-label">
+                         PAN Of Deductee<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                      
+                    </div>
+                 </div>
+                  <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label class="control-label">
+                          CIF/VENDOR ID<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                      
+                    </div>
+                       <div class="col-lg-2">
+                        <label class="control-label">
+                        Section ID<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                         <select class="form-control">
+                            <option>--Select--</option>
+                        </select>
+                      
+                    </div>
+                       <div class="col-lg-2">
+                        <label class="control-label">
+                         Date Of Tax Deduction<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <div  class="input-group">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                          <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary addon-btn" id="fromDateBtn" onmouseover="openCalendar('from_date', 'fromDateCal');">
+                                                <i class="fa fa-calendar" id="fromDateCal"></i>
+                                            </button>
+                                        </div>
+                    </div>
+                    </div>
+                  </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label class="control-label">
+                         Payment Amount<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                      
+                    </div>
+                     <div class="col-lg-2">
+                        <label class="control-label">
+                        Total TDS<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                      
+                    </div>
+                     <div class="col-lg-2 pr-0">
+                        <label class="control-label">
+                         Lower/Nil Deduction(If Any)
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                         <select class="form-control">
+                            <option>--Select--</option>
+                        </select>
+                      
+                    </div>
+                    </div>
+               
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label class="control-label">
+                        Challan BSR Code<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-1 px-0">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                      
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="control-label">
+                        Challan Date<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <div  class="input-group">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                          <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary addon-btn" id="fromDateBtn" onmouseover="openCalendar('from_date', 'fromDateCal');">
+                                                <i class="fa fa-calendar" id="fromDateCal"></i>
+                                           </button>
+                                        </div>
+                      
+                    </div>
+                    </div>
+                     <div class="col-lg-1 px-0">
+                        <label class="control-label">
+                        Challan No.<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-1 px-0">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                      
+                    </div>
+                     <div class="col-lg-2">
+                        <label class="control-label">
+                        Challan Amount<span class="text-danger font-weight-bold ml-1">*</span>
+                        </label>
+                    </div>
+                    <div class="col-lg-1 px-0">
+                        <input type="text" class="form-control" id="" placeholder="" name="">
+                      
+                    </div>
+                </div>
+                <hr class="dashed-border-bottom">
+                   <div class="col-md-12">
+                    <div class="button-section col-md-12 my-1 text-center"> 
+
+                        <button type="button" class="form-btn"><i class="fa save" aria-hidden="true"></i>Save</button>
+                        <button type="button" class="form-btn"><i class="fa refresh" aria-hidden="true"></i>Reset</button>
+                        <button type="button" class="form-btn" ><i class="fa fa-times" aria-hidden="true"></i>Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Entry container End -->
+    
+    
+ 
+   <!-- Heading and TAB BOTH End -->
+    <h6 class="text-primary my-2"> <b>Modals:-</b></h6>
+    <!-- Simple modal -->
+    <div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="fileModal" aria-modal="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Simple Modal Example</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                   
+                    </div>
+                </div>
+            </div>  </div>
+    <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#simpleModal" type="button">Simple Modal</button>
+    <!-- Simple modal -->
+    
+    <!-- Error modal -->
+      <div class="modal alert danger-alert fade" id="dangerAlert" tabindex="-1" role="dialog"
+        aria-labelledby="dangerAlert" aria-modal="true">
+         <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header position-relative d-flex justify-content-center">
+            <i class="fa fa-exclamation-triangle mr-2" aria-hidden="true"></i>
+
+          </div>
+          <div class="modal-body py-5 text-center">
+            <h4 id="errorAlertMsg">Please Enter a Valid Page Number to Jump</h4>
+            <button id="errorBtn" type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close"
+              onclick="">OK </button>
+          </div>
+
+        </div>
+        </div>
+      </div>
+       <button class="btn btn-md btn-danger" data-toggle="modal" data-target="#dangerAlert" type="button">Error Modal</button> 
+      <!-- Error modal -->
+
+          <!-- input types -->
+        <h6 class="text-primary my-2"> <b>Types of Inputs :-</b></h6>
+        <div class="row form-group">
+                        <div class="col-lg-4 col-xl-4 text-right">
+
+                            <label class="control-label">
+                                Example <span class="text-danger font-weight-bold ml-1">*</span>
+                            </label>
+                        </div>
+                        <div class="col-lg-7 col-xl-4">
+                            <input type="text"  class="form-control" placeholder="Placeholder">
+
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-4 col-xl-4 text-right">
+
+                            <label class="control-label">
+                                Example <span class="text-danger font-weight-bold ml-1">*</span>
+                            </label>
+                        </div>
+                        <div class="col-lg-7 col-xl-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Placeholder">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary btn-sm addon-btn">
+                                    <i  class="fa fa-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+          
+                    <div class="row form-group py-2">
+                    <div class="col-lg-4 col-xl-4 text-right">
+
+                        <label class="control-label">
+                            example
+                        </label>
+                    </div>
+                    <div class="col-lg-7 col-xl-4">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input form-control" >
+                            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                        </div>
+                    </div>
+            
+   
+                </div>
+                          <div class="row form-group">
+                        <div class="col-lg-12 col-xl-12 text-center">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1" onclick="pannotreqdCheckbx(this)">
+                                <label class="custom-control-label" for="customCheck1">Checkbox Example</label>
+                            </div>
+                        </div>
+
+                    </div>
+      <!-- input types -->
+    <h6 class="text-primary my-2"> <b>Table Example :- </b></h6>
+    <!-- Table Example -->
+    <div class="table-responsive mt-2 w-60" id="">
+      <table class="table table-bordered table-striped mb-1" id="table">
+        <thead>
+          <tr class="text-center">
+           <th class="th-action check-action text-center"></th>
+           <!--  <th class="th-action" colspan="2">Action</th> -->
+            <th class="header">
+              <div class="table-head-inner">
+                <div class="table-heading">
+                  Head 1</div>
+                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+              </div>
+            </th>
+            <th class="header">
+              <div class="table-head-inner">
+                <div class="table-heading">Head 2 </div>
+                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+              </div>
+            </th>
+            <th class="header">
+              <div class="table-head-inner">
+                <div class="table-heading"> Head 3 </div>
+                <div class="sort-icon"> <i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i> </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+						<tr>
+							<td class="td-action">
+								<div class="custom-control custom-checkbox action-check checkbox-mt">
+									<input type="checkbox" class="custom-control-input toggle-action-section" id="check-1" onclick="openActionDiv(this.id);"> 
+									<label class="custom-control-label" for="check-1"></label>
+								</div>
+							</td>
+							<td class="text-center data-height font-weight-bold">1</td>
+							<td>2</td>
+							<td>3</td>
+						</tr>
+						<tr>
+           <td class="td-action">
+								<div class="custom-control custom-checkbox action-check checkbox-mt">
+									<input type="checkbox" class="custom-control-input toggle-action-section" id="check-2" onclick="openActionDiv(this.id);"> 
+									<label class="custom-control-label" for="check-2"></label>
+								</div>
+							</td>
+            <td class="text-center data-height font-weight-bold">2</td>
+            <td> data </td>
+            <td> data </td>
+         </tr>
+          <tr>
+      <td class="td-action">
+								<div class="custom-control custom-checkbox action-check checkbox-mt">
+									<input type="checkbox" class="custom-control-input toggle-action-section" id="check-3" onclick="openActionDiv(this.id);"> 
+									<label class="custom-control-label" for="check-3"></label>
+								</div>
+							</td>
+            <td class="text-center data-height font-weight-bold">3</td>
+            <td> data </td>
+            <td> data </td>
+          </tr>
+          <tr>
+            <td class="td-action">
+								<div class="custom-control custom-checkbox action-check checkbox-mt">
+									<input type="checkbox" class="custom-control-input toggle-action-section" id="check-4" onclick="openActionDiv(this.id);"> 
+									<label class="custom-control-label" for="check-4"></label>
+								</div>
+							</td>
+            <td class="text-center data-height font-weight-bold">4</td>
+            <td> data </td>
+            <td> data </td>
+          </tr>
+        </tbody>
+      </table><input type="hidden" id="" name="pageNumber" value="1">
+    </div>
+    <!-- Table Example -->
+   <!-- See Record Section -->
+   <div class="col-md-12 text-center p-1 see-record">  Click The Above Button <button type="button" class="btn mx-1 btn-primary addon-btn filter-inner-btn"><i class="fa search"></i></button> To See The Records </div>
+    <!--No Records Div -->
+    <h6 class="text-primary my-2"><b>No Records Div :- </b></h6>
+    <div id="paginator_top" class="paginator-section">
+      <div class="row ">
+        <div class="col-lg-3">
+          <span>Total Records : <span id="totalRecordsSpan"> 0 </span></span>
+        </div>
+        <div class="col-lg-9">
+          <div id="paginationBlock">
+            <div class="cust_paginator_wrap cust_paginator_wrap d-flex justify-content-end text-center">
+              <input type="hidden" name="startValue" id="" value="1">
+              <input type="hidden" name="endValue" id="" value="6">
+              <ul class="pagination">
+
+                <!--                            <li class="page-item"> 
+                                                                    <a  class="no-cursor page-link ">
+                                                                        <label class="m-0"> <span>Total Records :<span>0 </span></span></label>
+                                                                    </a>
+                                                                </li>-->
+                <li class="page-item">
+                  <a href="#" class="page-link go-to-pageno-link">
+                    <div class="input-group">
+                      <input class="form-control m-0" id="pagination_number" placeholder="Page No" type="text" value="">
+                      <input id="totalPages" type="hidden" value="0">
+                      <div class="input-group-append">
+                        <button class="my-0 btn btn-primary addon-btn" style="width:25px;" type="button" id="">Go</button>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="current-page no-cursor page-link">
+
+                    <span id="pageNumberSpan">0</span>&nbsp;of&nbsp;
+                    <span id="totalPagesSpan">0</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a href="#settings" data-toggle="collapse" class="setting-btn page-link"> <i class="fa fa-cog"
+                      aria-hidden="true"></i></a>
+                </li>
+              </ul>
+             
+                <ul class="pagination m-0" style="margin-top:0px;">
+                  <li class="page-item" title="Go To First Page"><a class="page-link"><i class="fa fa-fast-backward"></i></a></li>
+                  <li class=" page-item" title="Go To Previous Page"><a class="page-link"><i class="fa fa-chevron-left"></i></a></li>
+                  <li class="page-item" title="Go To Next Page"><a class="page-link"><i class="fa fa-chevron-right"></i></a> </li>
+                  <li class="page-item" title="Go To Last Page"><a class="page-link" id="832"><i class="fa fa-fast-forward"></i></a></li>
+                </ul>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="table-responsive mt-2" id="dataSpan">
+      <div class="no-record-found-browse col-lg-6 offset-lg-3 my-3 text-center">
+       <img class="pr-3" src="./static/images/global/empty-box.png"> No Records Found</div>
+    </div>
+    <!--No Records Div --> 
+
+     <!--buttons  -->
+     <h6 class="text-primary my-2"><b>Buttons</b></h6>        
+     <button type="button" class="form-btn my-2 mx-2" id="" title="Select filter for download"><i class="fa download" aria-hidden="true"></i>Download</button>
+     <button type="button" class="form-btn my-2 mx-2"><i class="fa import" aria-hidden="true"></i>Import</button>
+     <button type="button" class="form-btn my-2 mx-2"><i class="fa refresh" aria-hidden="true"></i>Refresh Allocation</button>
+     <button type="button" class="form-btn my-2 mx-2"><i class="fa challan" aria-hidden="true"></i>Challan Verification</button>
+     <button type="button" class="form-btn my-2 mx-2"><i class="fa centralize-allocation" aria-hidden="true"></i>Centralize Allocation</button>
+     <button type="button" id="saveBtn" class="form-btn my-2 mx-2" ><i class="fa save" aria-hidden="true"></i>Save &amp; Next</button>
+     <button type="button" id="saveExitBtn" class="form-btn my-2 mx-2"><i class="fa save" aria-hidden="true"></i>Save &amp; Exit</button>
+     <button class="form-btn form-red-btn my-2 mx-2" id=""><i class="fa kill-process" aria-hidden="true"></i> Kill Process</button>
+     <button type="button" class="form-btn my-2 mx-2"><i class="fa refresh" aria-hidden="true"></i> Refresh</button>
+     <button type="button" id="viewBtn" class="form-btn my-2 mx-2"><i class="fa view" aria-hidden="true"></i>View Template Records</button>
+     <button type="button" id="importBtn" class="form-btn  my-2 mx-2"><i class="fa import" aria-hidden="true"></i>Import New</button>
+     <button type="button" id="saveContinue" class="form-btn my-2 mx-2" ><i class="fa save" aria-hidden="true"></i>Save &amp; Continue</button>
+     <button type="button" id="saveexit" class="form-btn my-2 mx-2" ><i class="fa save" aria-hidden="true"></i>Save &amp; Exit</button> 
+     <a href=""><button type="button" class="form-btn my-2 mx-2"><i class="fa cancel" aria-hidden="true"></i>Cancel</button></a>
+     <a href=""><button type="button" class="form-btn my-2 mx-2" onclick=""><i class="fa fa-download" aria-hidden="true"></i>Generate and Download XML</button></a>
+     <button type="button" class="form-btn my-2 mx-2" onclick="" data-toggle="collapse" data-target="#"><i class="fa fa-upload" aria-hidden="true"></i>Upload CSV</button>                     
+     <button type="button" id="saveBtn" class="form-btn my-2 mx-2" ><i class="fa save" aria-hidden="true"></i>Save</button>    
+     <a href=""><button type="button" class="form-btn my-2 mx-2"><i class="fa cancel" aria-hidden="true"></i>Cancel</button></a>
+     <button type="submit" id="viewBtn" class="form-btn my-2 mx-2"><i class="fa fa-eye" aria-hidden="true"></i>View Processed Data</button>
+     <button type="button" id="fvuBtn" class="form-btn my-2 mx-2" ><i class="fa generate" aria-hidden="true"></i>Generate FVU Text File</button>
+     <button type="button" id="" class="form-btn my-2 mx-2"><i class="fa generate" aria-hidden="true"></i>Generate FVU File</button>                                            
+     <button type="button" id="" class="form-btn my-2 mx-2" ><i class="fa download" aria-hidden="true"></i>Download FVU File</button>
+     <a href=""><button type="submit" id="" class="form-btn my-2 mx-2"><i class="fa new-error-process-request" aria-hidden="true"></i>New Error Process Request</button></a>
+     <button type="button" class="form-btn" ><i class="fa refresh" aria-hidden="true"></i>Refresh/Append Records</button>
+     <button type="button" class="form-btn" id=""><i class="fa information" aria-hidden="true"></i>Click here to see client details</button>
+        <!--buttons  -->
+
+          <!-- Icon buttons  -->
+          <h6 class="text-primary mt-2"> <b>Icon Buttons </b></h6>  
+          <button type="button" class="btn btn-primary addon-btn filter-inner-btn my-2 mx-2"><i class="fa fa-search"></i></button>
+          <button type="button" class="btn btn-primary addon-btn filter-inner-btn my-2 mx-2" ><i class="fa fa-eraser"></i></button>
+          <button type="button" class="btn btn-primary addon-btn filter-inner-btn my-2 mx-2"><i class="fa fa-refresh"></i></button>
+          <button type="button" class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn  my-2 mx-2" data-toggle="collapse" data-target="#"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+          <button type="button" class="btn btn-sm btn-primary logout-btn" title="Logout"> <i class="fa fa-sign-out"></i>  </button>
+            <!-- Icon buttons  -->
+  </div>
+</div>
+<div class="action-section bg-white text-center fixed-bottom" id="actiondiv">
+			<button type="button" class="action-btn action-btn--edit mr-2" id="editBtn"  style="display: inline-block;"> <i class="fa fa-pencil"></i>Edit</button>
+			<button type="button" class="action-btn action-btn--delete mr-2" id="deleteBtn"  style="display: inline-block;"> <i class="fa fa-trash"></i>Delete</button>
+		</div>
+<script>
+function openActionDiv(id){
+	var checkbox = document.getElementById(id).checked;
+    if (checkbox) {
+         $("#actiondiv").css('display', 'block');
+    }else{
+     	$("#actiondiv").css('display', 'none');
+    }
+}
+</script>
+</th:block>
+
+</html>

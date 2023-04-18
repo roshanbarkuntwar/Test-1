@@ -1,0 +1,117 @@
+.req-w-20 {width:20% !important;}
+.req-w-65 {width:65% !important;}
+.req-w-15 {width:15% !important;}
+.input-group-append .btn:first-child {border-right: 2px solid #a5abb1 !important;}
+.ui-widget-content {
+    border: 1px solid #ddd;
+    background: #eee url(images/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x;
+    color: #333;
+}
+
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-left: 18px;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    border: 0;
+    background: #d0dff9 url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+    
+}
+.ui-menu-item-wrapper{ padding:4px 10px;}
+.ui-menu .ui-menu-item{padding:0;}
+.error-Group-Description h5 {
+    color: #fff;
+    background: #007bff;
+    padding: 4px 10px;
+}
+.error-Group-Description .form-control{
+	height: 30px;
+    padding: 0px 7px;
+}
+.error-Group-Description .sample-code {
+	margin-left:5px;
+}
+.error-Group-Description p:last-of-type{
+	margin-bottom:0
+}
+.legends-wrapper {
+	display: flex;
+    align-items: center;
+    justify-content: end;
+}
+.legend {
+	height: 18px;
+    width: 18px;    
+    display: inline-block;
+}
+.approve-legend {background-color: #9edbae;}
+.devstart-legend {background-color: #9edbae;} 
+.reject-legend {background-color: #ffaeb6;}
+.devclose-legend {background-color: #f77d62;}
+.custom-file-label{ 
+&:after{background-color: #4e8dff;border-color: #4e8dff;}
+}
+
+.btn.btn-primary.btn-addon {background-color: #4e8dff;border-color: #4e8dff;}
+
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+.details-table td.text-bold {
+  font-weight: 700;
+}
+
+
+.accordion .card-header:after {
+    font-family: 'FontAwesome';  
+    content: "\f068";
+    float: right; 
+}
+
+.accordion .card-header.collapsed:after 
+{
+    /* symbol for "collapsed" panels */
+    content: "\f067"; 
+}

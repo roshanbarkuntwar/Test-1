@@ -1,0 +1,310 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link href="./static/stylesheets/importantUrl/importantUrl.css"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="./static/css/global/bootstrap-select.css">
+	<link rel="stylesheet" href="./static/css/global/bootstrap-multiselect.css">
+	<div class="right-section">
+		<div class="tab-section col-md-12 mt-3">
+		<ul class="nav nav-pills">
+	         <li class="nav-item mr-5"   onclick="window.location.href='./appDetailDashboard'"><a class="nav-link" data-toggle="pill" href="#"><p>Application Detail Dashboard</p></a></li>
+              <li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Application Detail Entry</p> </a></li>
+			</ul>
+			
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+
+		<div class="tab-content form-wrapper px-4 py-4">
+
+			<div class="clearfix"></div>
+
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+           	<input type="hidden" id="mode" name="mode" th:value="${View}" />
+           	<input type="hidden" id="app_type" name="app_type" th:value="${application_type}" />
+           	
+
+			
+
+			<form id="appEntryForm" autocomplete="off"enctype="multipart/form-data"  method="post" th:object="${AppEntity}">
+			
+				<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Entity Name<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="entity_code" name="entity_code">
+							<option value="">--Select Entity Name--</option>
+							<option th:each="project : ${entityList.entrySet()}"
+									th:value="${project.key}" th:text="${project.value}"
+									th:selected="${AppEntity!= null && AppEntity.entity_code != null && AppEntity.entity_code.contains(project.key)}"></option>
+							</select>
+						</div>
+				</div>	
+				
+				
+				<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Server IP<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select class="form-control" id="server_ip" name="server_ip"  onchange=getApp_serverIP(); style="font-weight: bold;">
+							<option value=" ">-- Select Server IP --</option> 
+							 <option th:each="ip : ${serverIpList.entrySet()}"
+								th:value="${ip.value}"  th:text="${ip.value}" 
+								th:selected="${AppEntity!= null && AppEntity.server_ip != null && AppEntity.server_ip.contains(ip.value)}"></option> 
+
+						</select>
+						</div>
+					</div>
+					
+			
+			 <div class="row form-group">
+	                    <div class="col-lg-4 col-xl-4 text-right">
+	                        <label class="control-label">
+	                           Project Name<span class="text-danger font-weight-bold ml-1">*</span>
+	                        </label>
+	                    </div>	
+	                    
+	                    <div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="project_code" name="project_code">
+			             <option value="">--Select Project Name--</option>
+  						<option th:each="project : ${projectList.entrySet()}" 
+  						th:value="${project.key}" th:text="${project.value}" 
+  						th:selected="${AppEntity != null && AppEntity.project_code!= null && AppEntity.project_code.contains(project.key)}"></option>
+                       </select>
+                        </div>
+	                </div>
+			
+			
+			<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Application Type <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select class="form-control" id="application_type" name="application_type" onchange="getApplicationType();">
+								<option value="">--Select Application Type--</option>
+							
+								<option
+									th:each="application_type : ${applicationList.entrySet()}"
+									th:value="${application_type.key}"
+									th:text="${application_type.value}"
+									th:selected="${AppEntity != null && AppEntity.application_type != null && AppEntity.application_type.contains(application_type.key)}"></option>
+							</select>
+
+						</div>
+					</div>
+					
+					
+					
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Application Server IP<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<div th:if="${appServerIP!= null && !appServerIP.isEmpty()}">
+						
+						<select class="form-control" id="app_server_ip" name="app_server_ip" 
+						 th:value="${AppEntity != null  && AppEntity.app_server_ip != null ? AppEntity.app_server_ip : ''}"  onchange="getApplicationServerName();"  >
+						<option value="">-- Select App Server IP --</option> 
+								<option th:each="application_ip : ${appServerIP.entrySet()}"
+									th:value="${application_ip.key}"
+									th:text="${application_ip.value}"
+									th:selected="${AppEntity != null && AppEntity.app_server_ip != null && AppEntity.app_server_ip.contains(application_ip.key)}"></option>
+							</select>
+						</div>	
+							
+					</div>
+					</div>
+					
+					<div class="row form-group">
+					<div class="col-lg-4 col-xl-4 text-right">
+						<label class="control-label"> Application  server name<span
+							class="text-danger font-weight-bold ml-1"></span>
+						</label>
+					</div>
+					<div class="col-lg-7 col-xl-4">
+						<select class="form-control" id="app_server_name" name="app_server_name" 
+						th:value="${AppEntity != null  && AppEntity.app_server_name != null && AppEntity.app_server_name != null ? AppEntity.app_server_name : ''}" >
+							<option value=" ">-- Select Application  Server Name --</option>
+							<option th:each="ip : ${appServerName.entrySet()}"
+								th:value="${ip.key}" th:text="${ip.value}"
+								th:selected="${AppEntity != null && AppEntity.app_server_name != null  && AppEntity.app_server_name.contains(ip.key)}"></option>
+						</select>
+					</div>
+				
+					</div>
+			
+				
+						
+						<div class="row form-group" id="app_name1">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Application  Name<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="app_name" name="app_name" th:value="${AppEntity != null ? AppEntity.app_name : ''}"   onblur="getappname();" />
+
+						</div>
+					</div>
+					
+					
+					<div class="row form-group" id="app_url">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Local Access  Url<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<div class="input-group" >
+						<select class="form-control"  id="protocol1"   name="protocol1"> 
+						<option value="http://">http://</option>
+						<option value="https://">https://</option>
+						</select>
+							<input type="hidden" class="form-control" id="port1" th:value="${Port}" />
+							<input type="text" class="form-control" th:id="ip1" th:name="ip1" th:value="${url1}" style="width: 60%;"/>
+         					<!--  <input type="url" class="form-control" id="local_app_url" name="local_app_url"  
+							th:value="${url1}"   oninput="this.value = this.value.replace(/[^A-z\-]+/g, '').replace(/(\..*)\./g, '$1');"/>  -->
+                        </div>  
+						</div>
+					</div>
+					
+					
+						<div class="row form-group" id="local_url">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Branch Access Url<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<div class="input-group" name="app_url" >
+						<select id="protocol2" class="form-control" name="protocol2" >
+						<option value="http://">http://</option>
+						<option value="https://">https://</option>
+						</select>
+						 <input type="text" class="form-control"  id="domain_name" name="domain_name"  th:value="${domain_name}" placeholder=" Enter Domain Name"  style="width: 35%;" >
+				          <input type="url" class="form-control" id="public_app_url" name="public_app_url"   th:value="${url2}"  style="width: 10%;"/> 
+ 						</div>
+						</div>
+					</div>
+					
+					
+					
+					
+					
+					<div class="row form-group" id="jar_name">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Jar Name<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="jar_name" name="jar_name" 
+							th:value="${AppEntity != null ? AppEntity.jar_name : ''}" />
+
+						</div>
+					</div>
+					
+					<div class="row form-group" id="jar_parameter">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Jar Parameter<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<input type="text" class="form-control" id="jar_parameter"
+							name="jar_parameter" 
+							th:value="${AppEntity != null ? AppEntity.jar_parameter : ''}" />
+
+						</div>
+					</div>
+					
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Remark 1<span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<textarea  class="form-control" id="remark1"
+							name="remark1" rows="8" th:value="${AppEntity.remark1}"
+							th:text="${AppEntity != null ? AppEntity.remark1 : ''}" ></textarea>
+						</div>
+					</div>
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label">Remark 2<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+						<textarea class="form-control" id="remark2" name="remark2"  rows="8" th:value="${AppEntity.remark2}"
+							th:text="${AppEntity != null ? AppEntity.remark2 : ''}" ></textarea>
+						</div>
+					</div>
+					
+					
+					<div class="col-md-4 offset-md-4">
+						<div class="form-group  text-center">
+
+							
+							<button type="button" class="form-btn"  th:if="${action!= null && action =='save'}"
+								onclick="saveAppDetailEntry();">
+								<i class="fa save" aria-hidden="true"> </i><span id="btn-1" 
+									name="btn-1">Save & Exit</span>
+							</button>
+							
+							<button type="button" class="form-btn" th:if="${action!= null && action =='edit'}"
+								onclick="UpdateAppDetailEntry();">
+								<i class="fa save" aria-hidden="true"> </i><span id="btn-1"  
+									name="btn-1">Update & Exit</span>
+							</button>
+							<button type="reset" class="form-btn"
+								th:if="${action!= null && action =='save'}">
+								<i class="fa fa-undo" aria-hidden="true"></i> Reset
+							</button>
+							<button type="button" class="form-btn" onclick="cancelAppdetail();">
+								<i class="fa cancel" aria-hidden="true"></i>Cancel
+								</button>
+								
+							
+							
+
+						</div>
+					</div>
+					
+						
+			
+			</form>
+
+
+		</div>
+	</div>
+	<script type="text/javascript"
+	
+		src="./static/js/global/bootstrap-multiselect.min.js"></script>
+	<script type="text/javascript"
+		src="./static/js/server details/serverDetails.js"></script>
+	<script type="text/javascript"
+		src="./static/js/global/lhs/lhsGlobal.js"></script>
+<script type="text/javascript">
+onLoadAppType();
+</script>
+	
+</th:block>

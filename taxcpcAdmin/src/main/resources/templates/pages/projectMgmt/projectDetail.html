@@ -1,0 +1,280 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link
+		href="./static/stylesheets/projectDictionary/projectDictionary.css"
+		rel="stylesheet" />
+	<div class="right-section">
+
+
+
+		<div class="tab-section col-md-12 mt-3">
+			<ul class="nav nav-pills">
+				<li class="nav-item mr-5"><a class="nav-link active"
+					data-toggle="pill" href="#"><p>Project Details</p> </a></li>
+				<li
+					th:if="${#session.getAttribute('LOGIN_USER').add_right.equalsIgnoreCase('1')}"
+					onclick="window.location.href='./projectEntry'"
+					class="nav-item mr-5"><a class="nav-link" data-toggle="pill"
+					href="#"><p>Project Entry</p></a></li>
+				<!--  <li onclick="OpenProjectMenu();"  class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p> Project Menu Detail </p></a></li> -->
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+		<!-- <div class="container-fluid mt-3"> -->
+		<div class="tab-content form-wrapper px-4 py-4">
+
+			<form id="projectForm" th:object="${projectDetailGrid}"
+				autocomplete="off">
+
+
+				<div class="filter-section my-1 pt-1">
+					<div class="row sec-bottom">
+						<div class="col-lg-10 col-xl-11">
+							<div class="row form-group">
+								<div class="col-lg-3">
+									<select class="form-control" id="project_name"
+										name="project_name" placeholder="project_name"
+										title="project_name">
+										<option value="">--Select Project Name--</option>
+										<option th:each="project : ${projectList.entrySet()}"
+											th:value="${project.key}" th:text="${project.value}"></option>
+									</select>
+								</div>
+
+								<div class="col-lg-3">
+									<select class="form-control" name="project_status"
+										id="project_status" title="project_status"
+										placeholder="project_status">
+										<option value="">--Select Project Status--</option>
+										<option value="A">Active</option>
+										<option value="I">Inactive</option>
+									</select>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="col-lg-2 col-xl-1 pl-0 d-flex justify-content-between">
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn"
+								title="Search" onclick="searchProjectDetailFilter()">
+								<i class="fa search"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn" title="Clear"
+								onclick="resetProjectDetailFilter()">
+								<i class="fa clear"></i>
+							</button>
+							<button type="button"
+								class="btn btn-primary addon-btn filter-inner-btn more-filter-option-btn"
+								data-toggle="collapse" data-target="#remainingFilter"
+								title="Extra Filters" aria-expanded="false">
+								<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+							</button>
+
+						</div>
+					</div>
+				</div>
+
+			</form>
+
+			<div th:fragment="ajaxRoleList">
+				<div class="table-responsive mt-2 w-60" id="projtable">
+					<table class="table table-bordered table-striped mb-1" id="table">
+						<thead>
+							<tr class="text-center">
+								<th class="th-action">Action</th>
+								<th>Sr. No.</th>
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Project Name</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc" aria-hidden="true"></i> <i
+												class="fa fa-sort-asc" aria-hidden="true"></i>
+										</div>
+									</div>
+								</th>
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Project Info</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+
+								<th class="header">
+									<div class="table-head-inner">
+										<div class="table-heading">Project Status</div>
+										<div class="sort-icon">
+											<i class="fa fa-sort-desc"></i> <i class="fa fa-sort-asc"></i>
+										</div>
+									</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								th:if="${projectDetailGrid != null && !projectDetailGrid.isEmpty()}"
+								th:each="dataGrid,index_count : ${projectDetailGrid}"
+								th:id="${'tr-'+index_count.count}">
+								<td class="td-action text-center">
+									<div
+										class="custom-control custom-checkbox action-check checkbox-mt">
+										<input type="checkbox"
+											class="custom-control-input toggle-action-section "
+											name="actionCheckbox"
+											th:id="'action-'+${index_count.count}+'-'+${dataGrid.project_code}"
+											onclick="openActionDiv(this.id);"> <label
+											class="custom-control-label"
+											th:for="'action-'+${index_count.count}+'-'+${dataGrid.project_code}"></label>
+									</div>
+								</td>
+								<td th:text="${index_count.count}" class="text-center"></td>
+
+								<td th:text="${dataGrid.project_name}"></td>
+								<td th:text="${dataGrid.project_info}"></td>
+
+								<td class="text-center"><span
+									th:class="${dataGrid.project_status == 'A'} ? 'text-success' : 'text-danger'"
+									th:text="${dataGrid.project_status == 'A'} ? 'Active' : 'Inactive'"></span>
+								</td>
+							</tr>
+
+
+							<tr
+								th:unless="${projectDetailGrid != null && !projectDetailGrid.isEmpty()}">
+								<td colspan="9"
+									class="no-record-found-browse col-lg-12 offset-lg-4 my-4 text-center"><img
+									src="static/images/global/empty-box.png">No Record Found</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="action-section bg-white text-center fixed-bottom"
+			id="actiondiv">
+			<button
+				th:if="${#session.getAttribute('LOGIN_USER').edit_right.equalsIgnoreCase('1')}"
+				type="button" class="action-btn action-btn--edit mr-2" id="editBtn"
+				onclick="editWork();" style="display: inline-block;">
+				<i class="fa fa-pencil"></i>Edit
+			</button>
+			<button
+				th:if="${#session.getAttribute('LOGIN_USER').delete_right.equalsIgnoreCase('1')}"
+				type="button" class="action-btn action-btn--delete mr-2"
+				id="deleteBtn" onclick="deleteWork();"
+				style="display: inline-block;">
+				<i class="fa fa-trash"></i>Delete
+			</button>
+			<button type="button" class="action-btn action-btn--view mr-2"
+				id="viewBtn" onclick="viewButton();" style="display: inline-block;"
+				data-toggle="modal" data-target="#detail-modal">
+				<i class="fa fa-eye view-button"></i>View
+			</button>
+
+		</div>
+	</div>
+	<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog"
+		aria-labelledby="detail-modal" aria-modal="true"
+		data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalCenterTitle">Project
+						Details</h5>
+					<button type="button" title="Close" class="close"
+						data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="">
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table details-table">
+									<tbody id="workModelTableBody">
+										<tr>
+											<td class="text-bold">Project Code :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Project Name :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Project Info :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+
+										<tr>
+											<td class="text-bold">Application Type :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Architecture :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Front End :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Back End :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Database :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Framework :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">SVN Link :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">War Filename :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Other War Filename :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Domain Code :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Parent Code :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+
+										<tr>
+											<td class="text-bold">Remark :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+										<tr>
+											<td class="text-bold">Project Status :</td>
+											<td class="pre-wrap"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript"
+		src="./static/js/projectMgmt/projectMgmt.js"></script>
+</th:block>

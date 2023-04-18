@@ -1,0 +1,134 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="title='Hello, template'">
+
+<th:block layout:fragment="content">
+	<link rel="stylesheet"
+		href="./static/css/global/bootstrap-multiselect.css">
+	<link rel="stylesheet" href="./static/css/global/bootstrap-select.css">
+	<div class="right-section">
+
+			<div class="tab-section col-md-12 mt-3">
+				<ul class="nav nav-pills">
+					<li class="nav-item mr-5"
+						onclick="window.location.href='./databaseMainTable'"><a
+						class="nav-link " data-toggle="pill" href="#"><p>Database
+								Table / View Browser</p> </a></li>
+					<li class="nav-item mr-5"><a class="nav-link active"
+						data-toggle="pill" href="#"><p>
+								<th:block>Database Table / View Entry </th:block>
+							</p></a></li>
+					<!--  <li onclick="OpenProjectMenu();"  class="nav-item mr-5"><a class="nav-link" data-toggle="pill" href="#"><p> Project Menu Detail </p></a></li> -->
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<input type="hidden" id="action" name="action" th:value="${action}" />
+			<!-- <div class="col-md-12 my-1"> <h4 class="page-title mb-2"><th:block th:text="${action != null && action == 'save' ? 'Add' : 'Edit'}">Add </th:block> Project</h4></div>  -->
+			<div class="tab-content form-wrapper px-4 py-4">
+				<form id="databaseTableEntryForm"
+					th:object="${LhssysMainTablesEntity}" autocomplete="off">
+					<input type="hidden" class="form-control" id="object_code" name="object_code"
+						th:value="${LhssysMainTablesEntity != null ? LhssysMainTablesEntity.object_code : ''}">
+
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Object Type <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<select class="form-control" id="object_type" name="object_type"
+								onchange="">
+								<option value="">--Select--</option>
+								<option value="Table"
+									th:selected="${LhssysMainTablesEntity != null && 'Table'.equals(LhssysMainTablesEntity.object_type)}">Table</option>
+								<option value="View"
+									th:selected="${LhssysMainTablesEntity != null && 'View'.equals(LhssysMainTablesEntity.object_type)}">View</option>
+							</select>
+						</div>
+
+
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Table / View Name <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="table_or_view_name"
+								name="table_or_view_name"
+								th:value="${LhssysMainTablesEntity != null && LhssysMainTablesEntity.object_code != null ? LhssysMainTablesEntity.table_or_view_name : ''}" />
+						</div>
+
+					</div>
+					
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Project Name <span
+								class="text-danger font-weight-bold ml-1">*</span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+
+	<div th:if="${projectList != null && !projectList.isEmpty()}">
+							<select class="form-control" id="project_code"
+
+								name="project_code">
+								<option >--Select Project Name--</option>
+								<option th:each="project : ${projectList.entrySet()}"
+                                     th:value="${project.key}" th:text="${project.value}" th:selected="${LhssysMainTablesEntity != null && LhssysMainTablesEntity.project_code != null && LhssysMainTablesEntity.project_code.equals(project.key)}">
+                                     </option>
+
+                             </select>
+						</div>
+
+						<div th:unless="${projectList!= null && !projectList.isEmpty()}">
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-4 col-xl-4 text-right">
+							<label class="control-label"> Remark<span
+								class="text-danger font-weight-bold ml-1"></span>
+							</label>
+						</div>
+						<div class="col-lg-7 col-xl-4">
+							<input type="text" class="form-control" id="remark" name="remark"
+								th:value="${LhssysMainTablesEntity != null && LhssysMainTablesEntity.object_code != null ? LhssysMainTablesEntity.remark : ''}" />
+
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-4 offset-md-4">
+							<div class="form-group  text-center">
+								<button type="button" class="form-btn"
+									th:if="${action != null && action == 'save'}"
+									onclick="saveDatabaseTableBrowser();">
+									<i class="fa save" aria-hidden="true"></i>Save & Exit
+								</button>
+								<button type="button" class="form-btn"
+									th:if="${action != null && action == 'edit'}"
+									onclick="saveDatabaseTableBrowser();">
+									<i class="fa fa-floppy-o" aria-hidden="true"></i><span>Update</span>
+								</button>
+								<button type="button" class="form-btn"
+									onclick="window.location.href='./databaseTableEntry'">
+									<i class="fa fa-undo" aria-hidden="true"></i>Reset
+								</button>
+								<button type="button" class="form-btn"
+									onclick="window.location.href='./databaseMainTable'">
+									<i class="fa previous" aria-hidden="true"></i>Back
+								</button>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		
+	</div>
+	<script type="text/javascript"
+		src="./static/js/databaseMgmt/databaseMgmt.js"></script>
+
+</th:block>

@@ -1,0 +1,77 @@
+/* line 1, ../../sass/docMgmt/docDetails.scss */
+th, td {
+  text-align: left;
+}
+
+/* line 2, ../../sass/docMgmt/docDetails.scss */
+td {
+  padding: 5px !important;
+}
+
+/* line 3, ../../sass/docMgmt/docDetails.scss */
+.sr-no {
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+}
+
+/* line 8, ../../sass/docMgmt/docDetails.scss */
+.doc-type {
+  width: 190px;
+  min-width: 190px;
+  max-width: 190px;
+}
+
+/* line 13, ../../sass/docMgmt/docDetails.scss */
+.td-action {
+  width: 30px;
+  min-width: 30px;
+  max-width: 30px;
+}
+
+/* line 18, ../../sass/docMgmt/docDetails.scss */
+.link {
+  width: 72px;
+  min-width: 72px;
+  max-width: 72px;
+}
+
+/* line 23, ../../sass/docMgmt/docDetails.scss */
+.last-column-collapsible {
+  position: relative;
+}
+/* line 25, ../../sass/docMgmt/docDetails.scss */
+.last-column-collapsible div {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  font-size: 17px;
+  cursor: pointer;
+}
+/* line 31, ../../sass/docMgmt/docDetails.scss */
+.last-column-collapsible div i {
+  font-size: 16px;
+}
+
+/*.last-column-collapsible:after {
+	font-family: FontAwesome;
+    content: "\f078";
+    position: absolute;
+    top: -3px;
+    right: 13px;
+    font-size: 17px;
+    cursor:pointer
+}*/
+/* line 46, ../../sass/docMgmt/docDetails.scss */
+td.ellipsis-td {
+  position: relative;
+}
+
+/* line 49, ../../sass/docMgmt/docDetails.scss */
+p.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 1000px;
+  margin-bottom: 0;
+}
